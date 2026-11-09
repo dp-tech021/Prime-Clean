@@ -4,10 +4,11 @@
 
 Projeto Supabase: `prime-clean-admin`; ref `zffigzpmwcbmqfgrhrao`; API `https://zffigzpmwcbmqfgrhrao.supabase.co`; região `sa-east-1`.
 
-Banco e Storage configurados diretamente pelo plugin Supabase. A migration versionada corresponde à **já aplicada** no projeto remoto:
-`supabase/migrations/20261109164735_prime_clean_admin_backend_initial.sql`.
+Banco e Storage configurados diretamente pelo plugin Supabase. As migrations versionadas correspondem às **já aplicadas** no projeto remoto:
+- `supabase/migrations/20261109164735_prime_clean_admin_backend_initial.sql`;
+- `supabase/migrations/20261109165520_prime_clean_storage_delete_guard.sql`.
 
-**Não reaplique essa migration ao projeto remoto nem recrie tabelas, policies ou bucket.** Para ambiente local novo, siga o processo oficial da CLI da versão instalada, conferindo o histórico de migrations.
+**Não reaplique essas migrations ao projeto remoto nem recrie tabelas, policies ou bucket.** Para ambiente local novo, siga o processo oficial da CLI da versão instalada, conferindo o histórico de migrations.
 
 Documentação: `docs/PAINEL-ADMIN-SUPABASE.md` e `docs/ADMIN-MIGRACAO-MIDIAS.md`.
 
