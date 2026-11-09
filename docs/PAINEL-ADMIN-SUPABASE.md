@@ -7,7 +7,7 @@
 - Organização: **D&P Develop**, projeto: **prime-clean-admin**, região: São Paulo (`sa-east-1`).
 - Dashboard: https://supabase.com/dashboard/project/zffigzpmwcbmqfgrhrao
 - URL pública da API: `https://zffigzpmwcbmqfgrhrao.supabase.co`.
-- Migration **aplicada**: `20261109164735_prime_clean_admin_backend_initial`.
+- Migrations **aplicadas**: `20261109164735_prime_clean_admin_backend_initial` e `20261109165520_prime_clean_storage_delete_guard`.
 - Cinco tabelas com RLS ativo; um registro inicial em `site_settings`, sem foto principal publicada; zero contas administrativas criadas.
 - Bucket `prime-clean-media` **público**, limite de **5 MiB por arquivo**, MIME `image/webp`, `image/jpeg`, `image/png`.
 - O site público atual permanece alimentado por `data/*.json`, com as 12 imagens originais em `media/`. Não foi feita migração/cutover.
@@ -65,13 +65,13 @@ values ('COLE_AQUI_O_UUID_REAL', true);
 
 1. Remover referência do serviço, configuração principal ou comparação e salvar.
 2. Verificar no banco que nenhuma linha usa o `media_assets.id`.
-3. Apagar o arquivo com Supabase Storage **API** (nunca só `DELETE FROM storage.objects` no SQL).
+3. Apagar o arquivo com Supabase Storage **API** (nunca só `DELETE FROM storage.objects` no SQL). A segunda migration **nega DELETE no Storage quando a mídia ainda estiver ligada a qualquer conteúdo**, mesmo que o administrador erre a ordem.
 4. Excluir registro `media_assets` apenas quando o arquivo foi excluído e não tem referências; tratar erros e permitir reconciliação.
 5. Se falhar entre DB e Storage, registrar a inconsistência e oferecer retentativa; operações não são transacionais entre esses dois serviços.
 
 ## Testes confirmados e limites
 
-- RLS ligado nas cinco tabelas; políticas de tabelas e Storage verificadas no catálogo.
+- RLS ligado nas cinco tabelas; políticas de tabelas e Storage verificadas no catálogo. A proteção de exclusão referenciada foi aplicada, mas ainda não testada por upload/delete real.
 - Transação com dados temporários: `anon` enxergou só serviço visível, e não recebeu `INSERT` em `services` ou `admin_users`.
 - Transação autenticada com UUID fictício não cadastrado: só enxergou serviço visível e não conseguiu modificá-lo. Transações revertidas.
 - Security Advisor do Supabase: **sem lints na consulta feita** (não substitui auditoria de segurança).
