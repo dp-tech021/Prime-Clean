@@ -28,8 +28,7 @@ cabeçalho `X-Prime-Clean-Config: worker` prevalece. Se o Worker indicar
 Pré-requisitos: Node.js 22+, conta Cloudflare legítima e Wrangler 4.159.0,
 versão consultada no npm em 09/11/2026.
 
-1. No painel Cloudflare, crie/configure o Worker ligado a este repositório ou
-   autentique o Wrangler na conta correta.
+1. No painel Cloudflare, selecione o **Worker existente `prime-clean`** e conecte-o a este repositório, ou autentique o Wrangler na conta correta. O nome do Worker no painel deve coincidir com o campo `name` em `wrangler.jsonc`. Configure as variáveis em **Settings > Variables & Secrets (runtime)**; variáveis exclusivas de build não ficam disponíveis em `env`.
 2. Configure `PUBLIC_CONTENT_SOURCE=json`.
 3. Configure `SUPABASE_URL` e `SUPABASE_PUBLISHABLE_KEY`. A chave pode ficar em
    variável criptografada, embora seja deliberadamente pública no frontend.
