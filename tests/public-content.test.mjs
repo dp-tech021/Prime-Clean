@@ -70,6 +70,7 @@ test('adaptador público faz somente requisições GET com chave publicável', a
   assert.equal(api.calls.length, 4);
   assert.ok(api.calls.every((call) => call.options.method === 'GET'));
   assert.ok(api.calls.every((call) => call.options.headers.apikey === key));
+  assert.ok(api.calls.every((call) => !('Authorization' in call.options.headers)));
 });
 
 test('ativação do Worker prevalece e configuração Supabase incompleta falha fechada', async () => {
