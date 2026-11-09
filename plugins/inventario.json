@@ -7,15 +7,16 @@
       "nome": "Pages CMS",
       "url": "https://pagescms.org/",
       "categoria": "CMS hospedado",
-      "status": "Conta GitHub conectada segundo o proprietario; integracao com o repositorio pendente",
-      "arquivo_configuracao_necessario": ".pages.yml",
-      "configuracao_prevista": "Prompt 03"
+      "status": "Arquivo .pages.yml configurado; login, permissoes e CRUD pendentes de teste manual na interface",
+      "arquivo_configuracao": ".pages.yml",
+      "colecao": "content/trabalhos",
+      "midia": "public/imagens/trabalhos"
     },
     {
       "nome": "GitHub",
       "url": "https://github.com/dp-tech021/Prime-Clean",
       "categoria": "versionamento",
-      "status": "repositorio e branches acessiveis"
+      "status": "Repositorio e branches acessiveis"
     }
   ],
   "nota": "Inventario documental; nao contem executaveis, pacotes, tokens ou codigo de plugins externos."
