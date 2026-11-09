@@ -67,7 +67,7 @@ export function safePublicImageUrl(value) {
 }
 
 function requestHeaders(key) {
-  return { Accept: 'application/json', apikey: key, Authorization: `Bearer ${key}` };
+  return { Accept: 'application/json', apikey: key };
 }
 
 async function table(fetchImpl, config, name, query) {
