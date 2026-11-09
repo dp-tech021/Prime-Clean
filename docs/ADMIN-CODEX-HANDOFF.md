@@ -50,3 +50,12 @@ Executar plano em `docs/ADMIN-MIGRACAO-MIDIAS.md`, homologar 12 mídias e dados,
 - A versão antiga do site continua funcional até a migração ser aceita.
 
 **Divisão entre duas pessoas:** Dev A: interface, responsividade, acessibilidade. Dev B: integração SDK, testes de permissões e upload. Revisão cruzada em PRs.
+
+## Estado do Prompt 11 no PR #13
+
+O painel consulta somente o vínculo `admin_users` correspondente ao UUID da
+sessão e exige `active=true`. A árvore `admin/supabase/` foi removida: as duas
+migrations da raiz são a única fonte oficial do backend compartilhado. Testes
+unitários exercitam os estados de sessão e autorização; os testes transacionais
+em `supabase/tests/rls_sem_credenciais.sql` cobrem também administradores ativos
+e inativos. Auth e RLS com contas reais ainda exigem homologação pela dupla.
