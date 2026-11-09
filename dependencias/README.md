@@ -5,8 +5,8 @@ Este inventário descreve somente o conteúdo verificável no repositório
 
 ## Estado atual
 
-O MVP é um site estático composto por `index.html`, `styles.css`, `content.js` e
-`app.js`. Não há `package.json`, lockfile, framework, etapa de build ou banco de
+O MVP é um site estático composto por `index.html`, `styles.css`, `app.js` e
+arquivos JSON em `data/`. Não há `package.json`, lockfile, framework, etapa de build ou banco de
 dados. O navegador executa diretamente HTML, CSS e JavaScript nativos.
 
 ## Dependências confirmadas

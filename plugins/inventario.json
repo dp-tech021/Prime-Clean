@@ -7,10 +7,17 @@
       "nome": "Pages CMS",
       "url": "https://pagescms.org/",
       "categoria": "CMS hospedado",
-      "status": "Arquivo .pages.yml configurado; login, permissoes e CRUD pendentes de teste manual na interface",
+      "status": "Configuracao versionada e frontend integrado a contatos e servicos; login, permissoes e CRUD pendentes de teste manual",
       "arquivo_configuracao": ".pages.yml",
-      "colecao": "content/trabalhos",
-      "midia": "public/imagens/trabalhos"
+      "conteudo": [
+        "data/site.json",
+        "data/servicos.json",
+        "content/trabalhos"
+      ],
+      "midia": [
+        "media/fotos-servicos",
+        "public/imagens/trabalhos"
+      ]
     },
     {
       "nome": "GitHub",

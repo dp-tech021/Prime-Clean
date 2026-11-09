@@ -1,4 +1,4 @@
 IMPORTAR SOMENTE NA BRANCH feat/mvp-prime-clean.
 A branch já existe no GitHub. Atualizar primeiro a partir de main após PR de docs.
 Este ZIP NÃO contém dependencias/ nem plugins/ para evitar duplicações. Use separadamente Prime-Clean-Imagens-Ilustrativas.zip.
-Não enviar imagem gerada para galeria de antes/depois. Os serviços estão em content.js.
+Não enviar imagem gerada para galeria de antes/depois. Os serviços estão em data/servicos.json.

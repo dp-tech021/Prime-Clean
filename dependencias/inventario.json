@@ -14,8 +14,9 @@
   "arquivos_principais": [
     "index.html",
     "styles.css",
-    "content.js",
-    "app.js"
+    "app.js",
+    "data/site.json",
+    "data/servicos.json"
   ],
   "observacao": "Site estatico sem etapa de build; nenhum npm install e necessario."
 }

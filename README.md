@@ -1,6 +1,6 @@
 # Prime-Clean — MVP atualizado (08/11/2026)
 
-Landing page comercial responsiva, sem framework e sem banco de dados. Objetivo: apresentar serviços e captar pedidos de orçamento. **Atualização: seção de antes/depois preparada, ainda sem fotos reais. A configuração do Pages CMS está versionada, mas não foi testada na interface hospedada nem integrada ao frontend.**
+Landing page comercial responsiva, sem framework e sem banco de dados. Objetivo: apresentar serviços e captar pedidos de orçamento. **Atualização: contatos, serviços e fotos de serviço foram migrados para JSON e integrados ao frontend. A configuração do Pages CMS está versionada, mas ainda não foi testada na interface hospedada. A seção de antes/depois continua sem fotos reais.**
 
 ## Como testar localmente
 
@@ -18,12 +18,15 @@ Nenhum `npm install` é necessário.
 - WhatsApp informado: `+55 (21) 4002-8922`. **Não configurado no site, pois não foi confirmado que recebe mensagens no WhatsApp.**
 - Identidade visual: ainda não existe. Layout atual em verde, creme e tons claros é uma **proposta**, não aprovação da marca.
 
-## Como editar o protótipo
+## Como editar o conteúdo
 
-No arquivo `content.js`, os campos `instagram`, `area` e `services` controlam o Instagram, área e cards de serviços.
+- `data/site.json`: Instagram informado, WhatsApp validado e área de atendimento.
+- `data/servicos.json`: título, descrição, foto, texto alternativo, indicação de imagem ilustrativa, ordem e visibilidade de cada serviço.
+- `.pages.yml`: apresenta esses arquivos e as bibliotecas de mídia no Pages CMS.
+
 O campo `whatsapp` deve ficar vazio até a confirmação do número correto e teste de conversa. Depois, preencher com DDI+DDD+número **apenas dígitos**, por exemplo `55...`. O padrão numérico sozinho **não prova** que existe WhatsApp nesse número.
 
-As seções fixas ainda estão em `index.html` e os dados do protótipo ficam em `content.js`. O repositório possui `.pages.yml` para trabalhos e fotos, mas o frontend ainda não consome os registros do CMS. Consulte `PLANEJAMENTO.md` e `plugins/PAGES-CMS.md`.
+O frontend carrega os JSONs por HTTP, valida seus tipos e usa conteúdo local de segurança se a leitura falhar. As demais seções fixas continuam em `index.html`. Consulte `PLANEJAMENTO.md` e `plugins/PAGES-CMS.md`.
 
 ## Imagens ilustrativas
 
@@ -61,11 +64,11 @@ Uma branch por alteração; abrir pull request, fazer revisão cruzada e só ent
 - Cloudflare Pages: https://developers.cloudflare.com/pages/platform/limits/
 - GitHub Pages limita uso comercial: https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits
 
-## Galeria de fotos e comparador (MVP sem CMS)
+## Galeria de fotos e comparador
 
-A página agora traz uma seção de resultados com comparador visual. Como **não recebemos fotos reais e autorizadas**, `content.js` usa `comparisons: []` e mostra um aviso. Não são mostrados resultados ilustrativos como se fossem casos reais.
+A página traz uma seção de resultados com comparador visual. Como **não recebemos fotos reais e autorizadas**, o frontend mantém a lista de comparações vazia e mostra um aviso. Não são mostrados resultados ilustrativos como se fossem casos reais.
 
-Para testar a visualização antes do CMS, inclua temporariamente em `comparisons` um objeto no formato abaixo, e coloque as duas imagens correspondentes na pasta `media/`:
+O modelo futuro de um registro de comparação será:
 
 ```js
 comparisons: [{
@@ -80,8 +83,8 @@ comparisons: [{
 }]
 ```
 
-Um serviço também pode ter campo `image`, como `image: "media/fotos-servicos/sofa.webp"`; caso não tenha, seu cartão continua com ícone. Para não publicar informações não autorizadas, os dados acima são **apenas um exemplo de estrutura**, não uma promessa nem fotos fornecidas.
+Um serviço em `data/servicos.json` pode ter campo `image`, como `image: "/media/fotos-servicos/sofa.webp"`; caso não tenha, seu cartão continua com ícone. Para não publicar informações não autorizadas, os dados acima são **apenas um exemplo de estrutura**, não uma promessa nem fotos fornecidas.
 
-O schema do Pages CMS permite criar, editar e excluir registros, mas esse fluxo ainda precisa ser testado na interface hospedada. O site também não lê esses registros automaticamente. Para o comparador atual, o conteúdo continua configurado por um desenvolvedor em `content.js`.
+O schema do Pages CMS permite criar, editar e excluir trabalhos, mas esse fluxo ainda precisa ser testado na interface hospedada. O site ainda não lê os registros de `content/trabalhos/`; essa integração permanece fora desta etapa.
 
 **Atenção:** apagar um registro não implica necessariamente apagar seu arquivo do Git, e apagar arquivos do Git não garante remoção do histórico público. Nunca inserir fotos privadas sem autorização.

@@ -1,51 +1,99 @@
 # Pages CMS — Prime-Clean
 
-**Configuracao versionada:** a raiz do repositorio contem `.pages.yml`, com uma colecao de trabalhos e uma biblioteca de imagens. Esta configuracao ainda **nao foi testada na interface hospedada do Pages CMS** e o site ainda nao possui codigo que apresente esses registros.
+O repositório contém `.pages.yml` na raiz. O frontend lê contatos e serviços de
+`data/site.json` e `data/servicos.json` por HTTP. A configuração hospedada ainda
+precisa ser aberta e testada pelo proprietário no Pages CMS.
 
-## Estrutura
+Fazer login com GitHub não concede acesso ao repositório por si só. O início
+rápido oficial também exige instalar a GitHub App na conta ou organização que
+possui o repositório e autorizar o repositório desejado.
 
-- `.pages.yml`: esquema de edicao do Pages CMS.
-- `content/trabalhos/*.json`: um registro JSON por trabalho, criado pelo editor.
-- `public/imagens/trabalhos/`: imagens enviadas pelo editor, referenciadas por caminhos `/imagens/trabalhos/...`.
-- `content/trabalhos/.gitkeep` e `public/imagens/trabalhos/.gitkeep`: mantem diretorios vazios no Git; nao representam dados reais.
+## Conteúdo editável
 
-### Campos da colecao
+- **Contatos e área:** `data/site.json`, com Instagram informado, WhatsApp
+  validado e área de atendimento.
+- **Serviços:** `data/servicos.json`, um array JSON editável com título,
+  descrição, foto, texto alternativo, indicação de imagem ilustrativa, ordem e
+  visibilidade.
+- **Trabalhos:** `content/trabalhos/*.json`, coleção de pares antes/depois ainda
+  não consumida pelo frontend.
 
-`titulo`, `servico`, `descricao`, `foto_antes`, `alt_antes`, `foto_depois`, `alt_depois`, `fotos_extras` (ate 5) e `publicado` (inicialmente `false`).
+As fotos de serviço ficam em `media/fotos-servicos/`. O CMS aceita WebP, JPEG e
+PNG, aplica nomes seguros (`rename: safe`) e grava caminhos públicos estáveis em
+`/media/fotos-servicos/`. Fotos de trabalhos ficam em
+`public/imagens/trabalhos/` com nomes aleatórios para evitar colisões.
 
-A colecao permite **criar, editar e excluir registros**. Renomear o arquivo foi desabilitado para evitar quebra de referencias. A biblioteca de midia permite gerenciar arquivos separadamente. Excluir um registro **nao garante** que as imagens enviadas sejam excluidas: verifique o uso e remova imagens orfas pela biblioteca de midia.
+## Permissões
 
-### Responsabilidade do futuro site
+A documentação oficial da GitHub App lista estas permissões:
 
-Ainda sera necessario implementar a leitura dos JSONs, renderizar comparativos antes/depois, filtrar `publicado === true` e fornecer `alt` nas imagens. A pasta `public/` e apropriada para um site com convencao de arquivos publicos como Vite; se a stack escolhida usar outra convencao, ajustar o caminho antes de integrar o frontend.
+- endereço de e-mail da conta: leitura;
+- administração do repositório: leitura e escrita;
+- Actions: leitura e escrita;
+- checks e status de commit: leitura;
+- conteúdo do repositório: leitura e escrita;
+- metadados do repositório: leitura.
 
-## Teste manual obrigatorio
+Ela também usa eventos de instalação, repositório, push, exclusão, checks,
+status e execução de workflows. Na instalação hospedada, limite o acesso ao
+repositório `dp-tech021/Prime-Clean` em vez de conceder acesso a todos os
+repositórios. Não copie tokens, chaves privadas ou segredos para este projeto.
 
-1. Acesse https://app.pagescms.org/ com a conta GitHub autorizada.
-2. Verifique se a GitHub App do Pages CMS possui acesso ao repositorio `dp-tech021/Prime-Clean`. Se nao aparecer, confira a selecao de repositorios na instalacao do app.
-3. Escolha `Prime-Clean`, branch `main`; confirme a colecao **Trabalhos (antes e depois)** e a biblioteca **Fotos dos trabalhos**.
-4. Com imagens de teste **sem pessoas identificaveis**, crie um trabalho, preenchendo titulo, tipo, fotos e descricoes alternativas. Confirme que foram gravados um JSON em `content/trabalhos/` e imagens em `public/imagens/trabalhos/`.
-5. Edite o registro e confirme novo commit no GitHub.
-6. Exclua o registro de teste; confirme a exclusao do JSON. Verifique e remova as imagens de teste pela biblioteca, se nao estiverem sendo usadas por outros registros.
-7. Nao marque fotos reais como publicadas sem autorizacao. Confira o comportamento de `publicado` no site quando ele existir.
+## Teste manual obrigatório com o proprietário
 
-**Nao concluido por este PR:** teste de login e CRUD dentro do app Pages CMS; validacao do acesso da GitHub App a este repositorio; integracao com frontend; deploy.
+Este fluxo ainda não foi executado nesta tarefa:
 
-## Seguranca e limites
+1. entrar em https://app.pagescms.org/ com a conta autorizada;
+2. confirmar que a GitHub App está instalada e consegue abrir
+   `dp-tech021/Prime-Clean`;
+3. selecionar a branch que contém a configuração e confirmar os editores
+   **Contatos e área de atendimento** e **Serviços**;
+4. criar um serviço de teste, editar título e descrição, alterar ordem, ocultar
+   e voltar a exibir;
+5. subir uma imagem sem dados pessoais, substituí-la e confirmar o caminho salvo
+   em `data/servicos.json`;
+6. servir o site por HTTP e verificar a atualização na página;
+7. apagar o item de teste e revisar se a imagem ficou órfã.
 
-- O repositorio e **publico**: imagens enviadas ficam expostas no GitHub, **mesmo com `publicado: false`**. Este campo controla apenas a futura exibicao no site.
-- Nao publique fotos sem consentimento, dados pessoais, documentos, rostos, placas ou enderecos identificaveis.
-- Nao envie tokens, senhas, chaves, `.env` ou segredos para o repositorio/CMS.
-- Usuarios do CMS podem gravar alteracoes via GitHub; revise permissoes e o historico de commits.
-- Renomear ou excluir um arquivo de imagem pode quebrar referencias existentes; remova apenas imagens sem uso.
+Nunca considere o CMS validado apenas porque `.pages.yml` é YAML válido. O teste
+acima confirma acesso, schema, gravação no Git e integração com a página.
 
-## Documentacao oficial (conferida em 08/11/2026)
+## Recuperar uma alteração
 
+As edições do CMS viram commits no GitHub. Para desfazer com histórico claro:
+
+1. encontre o commit da edição na aba **Commits** ou com `git log`;
+2. crie uma branch de correção a partir da `main` atual;
+3. use `git revert <sha-do-commit>` para criar a reversão, ou restaure somente
+   um arquivo com `git restore --source=<sha-anterior> -- caminho`;
+4. teste o site e abra PR para revisão.
+
+Não reescreva o histórico compartilhado da `main`. Uma imagem excluída pode ser
+recuperada restaurando seu caminho a partir de um commit anterior, desde que o
+histórico ainda esteja disponível.
+
+## Limpar mídias órfãs
+
+Excluir ou substituir um serviço não garante a remoção do arquivo antigo.
+
+1. liste os caminhos usados em `data/servicos.json` e nos registros de
+   `content/trabalhos/`;
+2. compare com os arquivos das duas bibliotecas de mídia;
+3. em uma branch, remova apenas arquivos sem referência confirmada;
+4. teste o site e a prévia do CMS antes de abrir PR;
+5. mantenha arquivos quando houver dúvida sobre outra referência ou uso externo.
+
+O repositório é público: remover um arquivo da versão atual não o elimina do
+histórico Git. Nunca envie fotografias privadas, rostos, placas, endereços,
+documentos ou metadados sensíveis.
+
+## Documentação oficial
+
+- https://pagescms.org/docs/quick-start/
 - https://pagescms.org/docs/configuration/
 - https://pagescms.org/docs/configuration/media/
-- https://pagescms.org/docs/configuration/content/
-- https://pagescms.org/docs/configuration/content/operations/
+- https://pagescms.org/docs/configuration/content/list/
 - https://pagescms.org/docs/configuration/fields/image/
-- https://pagescms.org/docs/quick-start/
+- https://pagescms.org/docs/guides/installing/github-app/
 
-Nao ha dependencia npm do Pages CMS instalada: foi configurado o CMS hospedado, baseado em arquivos no GitHub.
+Não há pacote npm do Pages CMS instalado no site.

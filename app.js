@@ -1,17 +1,73 @@
-(() => {
+(async () => {
   'use strict';
-  const c = window.PRIME_CLEAN || {};
-  const phone = typeof c.whatsapp === 'string' ? c.whatsapp.trim() : '';
-  // Sintaxe válida não garante conta de WhatsApp ativa: validar manualmente antes de preencher.
-  const validPhone = /^\d{12,15}$/.test(phone);
-  const instagram = typeof c.instagram === 'string' ? c.instagram.trim() : '';
-  const validInstagram = /^https:\/\/www\.instagram\.com\/[A-Za-z0-9._]+\/?$/.test(instagram);
+  const fallbackSite = {
+    whatsapp: '',
+    instagram: 'https://www.instagram.com/Prime_Clean/',
+    area: 'Rio de Janeiro, RJ — disponibilidade por bairro sob consulta'
+  };
+  const fallbackServices = [
+    { title: 'Limpeza de sofás', description: 'Higienização e cuidado para o sofá que reúne seus melhores momentos.', image: '/media/fotos-servicos/sofa.webp', imageAlt: 'Imagem ilustrativa gerada por IA de um sofá em uma sala', illustrative: true, order: 1, visible: true },
+    { title: 'Higienização de colchões', description: 'Cuidados de limpeza para o colchão e o ambiente de descanso.', image: '/media/fotos-servicos/colchao.webp', imageAlt: 'Imagem ilustrativa gerada por IA de um colchão', illustrative: true, order: 2, visible: true },
+    { title: 'Limpeza de cadeiras', description: 'Higienização de cadeiras estofadas para casa ou escritório.', image: '/media/fotos-servicos/cadeiras.webp', imageAlt: 'Imagem ilustrativa gerada por IA de cadeiras estofadas', illustrative: true, order: 3, visible: true },
+    { title: 'Limpeza de poltronas', description: 'Cuidado dedicado às poltronas do seu ambiente.', image: '/media/fotos-servicos/poltrona.webp', imageAlt: 'Imagem ilustrativa gerada por IA de uma poltrona', illustrative: true, order: 4, visible: true },
+    { title: 'Bancos automotivos', description: 'Higienização de bancos estofados e cuidado com o interior do veículo.', image: '/media/fotos-servicos/bancos-automotivos.webp', imageAlt: 'Imagem ilustrativa gerada por IA de bancos automotivos', illustrative: true, order: 5, visible: true }
+  ];
 
   // Somente arquivos locais no repositório. Não permitir links arbitrários ou caminhos ../.
   function safeLocalImage(value) {
     if (typeof value !== 'string' || value.includes('..')) return '';
     return /^(?:\.\/|\/)?media\/[a-zA-Z0-9_\/.-]+\.(?:jpe?g|png|webp|avif)$/i.test(value) ? value : '';
   }
+
+  async function loadJson(path) {
+    try {
+      const response = await fetch(path, { headers: { Accept: 'application/json' } });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return await response.json();
+    } catch (error) {
+      console.warn(`Prime-Clean: não foi possível carregar ${path}; usando conteúdo local de segurança.`, error);
+      return null;
+    }
+  }
+
+  function normalizeServices(value, fallback) {
+    if (!Array.isArray(value)) return fallback;
+    const services = value.flatMap((service, index) => {
+      if (!service || typeof service !== 'object' || Array.isArray(service)) return [];
+      if (typeof service.title !== 'string' || !service.title.trim()) return [];
+      if (typeof service.description !== 'string' || !service.description.trim()) return [];
+      return [{
+        title: service.title.trim(),
+        description: service.description.trim(),
+        image: safeLocalImage(service.image),
+        imageAlt: typeof service.imageAlt === 'string' ? service.imageAlt.trim() : '',
+        illustrative: service.illustrative !== false,
+        order: Number.isFinite(service.order) ? service.order : index + 1,
+        visible: service.visible !== false
+      }];
+    });
+    return value.length > 0 && services.length === 0 ? fallback : services;
+  }
+
+  const [siteData, servicesData] = await Promise.all([
+    loadJson('data/site.json'),
+    loadJson('data/servicos.json')
+  ]);
+  const site = siteData && typeof siteData === 'object' && !Array.isArray(siteData) ? siteData : {};
+  const c = {
+    whatsapp: typeof site.whatsapp === 'string' ? site.whatsapp : fallbackSite.whatsapp,
+    instagram: typeof site.instagram === 'string' ? site.instagram : fallbackSite.instagram,
+    area: typeof site.area === 'string' && site.area.trim() ? site.area.trim() : fallbackSite.area,
+    services: normalizeServices(servicesData, fallbackServices)
+      .filter(service => service.visible)
+      .sort((a, b) => a.order - b.order),
+    comparisons: []
+  };
+  const phone = c.whatsapp.trim();
+  // Sintaxe válida não garante conta de WhatsApp ativa: validar manualmente antes de preencher.
+  const validPhone = /^\d{12,15}$/.test(phone);
+  const instagram = c.instagram.trim();
+  const validInstagram = /^https:\/\/www\.instagram\.com\/[A-Za-z0-9._]+\/?$/.test(instagram);
 
   const url = service => 'https://wa.me/' + phone + '?text=' + encodeURIComponent(
     service ? 'Olá! Gostaria de um orçamento para ' + service + '.' : 'Olá! Gostaria de um orçamento com a Prime-Clean.'
@@ -45,37 +101,49 @@
 
   document.querySelectorAll('.whatsapp').forEach(a => setLink(a, ''));
   const grid = document.getElementById('services');
-  if (grid) (Array.isArray(c.services) ? c.services : []).forEach(s => {
-    if (!s || typeof s.title !== 'string' || typeof s.text !== 'string') return;
+  if (grid) c.services.forEach(s => {
     const card = document.createElement('article');
     card.className = 'service';
     const art = document.createElement('div');
     art.className = 'service-art';
-    art.textContent = typeof s.icon === 'string' ? s.icon : '✦';
+    art.textContent = '✦';
     art.setAttribute('aria-hidden', 'true');
     const serviceImage = safeLocalImage(s.image);
     if (serviceImage) {
       const photo = document.createElement('img');
+      let note = null;
       photo.src = serviceImage;
-      photo.alt = 'Imagem ilustrativa gerada por IA para ' + s.title;
+      photo.alt = s.imageAlt || 'Imagem do serviço: ' + s.title;
       photo.loading = 'lazy';
       photo.decoding = 'async';
-      photo.addEventListener('error', () => photo.remove());
+      photo.addEventListener('error', () => {
+        photo.remove();
+        if (note) note.remove();
+        art.setAttribute('aria-hidden', 'true');
+      });
       art.append(photo);
-      const note = document.createElement('span');
-      note.className = 'service-image-note';
-      note.textContent = 'Imagem ilustrativa';
-      art.append(note);
+      if (s.illustrative) {
+        note = document.createElement('span');
+        note.className = 'service-image-note';
+        note.textContent = 'Imagem ilustrativa';
+        art.append(note);
+      }
       art.removeAttribute('aria-hidden');
     }
     const body = document.createElement('div');
     body.className = 'service-body';
     const h = document.createElement('h3'); h.textContent = s.title;
-    const p = document.createElement('p'); p.textContent = s.text;
+    const p = document.createElement('p'); p.textContent = s.description;
     const a = document.createElement('a'); a.textContent = 'Consultar orçamento ↗';
     setLink(a, s.title);
     body.append(h, p, a); card.append(art, body); grid.append(card);
   });
+  if (grid && c.services.length === 0) {
+    const message = document.createElement('p');
+    message.className = 'results-empty';
+    message.textContent = 'Os serviços estão temporariamente indisponíveis. Use o canal de contato para obter informações.';
+    grid.append(message);
+  }
 
   // Comparador acessível: range funciona por toque, arraste, mouse e teclado.
   const comparisonGrid = document.getElementById('comparisons');
@@ -169,4 +237,6 @@
     document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
   }
   if (!validPhone) console.warn('Prime-Clean: WhatsApp pendente de validação. Não publicar um número não confirmado.');
-})();
+})().catch(error => {
+  console.error('Prime-Clean: falha ao iniciar a página.', error);
+});

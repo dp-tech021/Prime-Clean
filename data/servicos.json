@@ -1,0 +1,47 @@
+[
+  {
+    "title": "Limpeza de sofás",
+    "description": "Higienização e cuidado para o sofá que reúne seus melhores momentos.",
+    "image": "/media/fotos-servicos/sofa.webp",
+    "imageAlt": "Imagem ilustrativa gerada por IA de um sofá em uma sala",
+    "illustrative": true,
+    "order": 1,
+    "visible": true
+  },
+  {
+    "title": "Higienização de colchões",
+    "description": "Cuidados de limpeza para o colchão e o ambiente de descanso.",
+    "image": "/media/fotos-servicos/colchao.webp",
+    "imageAlt": "Imagem ilustrativa gerada por IA de um colchão",
+    "illustrative": true,
+    "order": 2,
+    "visible": true
+  },
+  {
+    "title": "Limpeza de cadeiras",
+    "description": "Higienização de cadeiras estofadas para casa ou escritório.",
+    "image": "/media/fotos-servicos/cadeiras.webp",
+    "imageAlt": "Imagem ilustrativa gerada por IA de cadeiras estofadas",
+    "illustrative": true,
+    "order": 3,
+    "visible": true
+  },
+  {
+    "title": "Limpeza de poltronas",
+    "description": "Cuidado dedicado às poltronas do seu ambiente.",
+    "image": "/media/fotos-servicos/poltrona.webp",
+    "imageAlt": "Imagem ilustrativa gerada por IA de uma poltrona",
+    "illustrative": true,
+    "order": 4,
+    "visible": true
+  },
+  {
+    "title": "Bancos automotivos",
+    "description": "Higienização de bancos estofados e cuidado com o interior do veículo.",
+    "image": "/media/fotos-servicos/bancos-automotivos.webp",
+    "imageAlt": "Imagem ilustrativa gerada por IA de bancos automotivos",
+    "illustrative": true,
+    "order": 5,
+    "visible": true
+  }
+]
