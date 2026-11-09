@@ -2,6 +2,9 @@
 Thumbs.db
 .env
 .env.*
+!admin/.env.example
+admin/.env.local
+admin/.env.*.local
 node_modules/
 dist/
 __pycache__/

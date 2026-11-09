@@ -39,6 +39,8 @@ deploy público.
 - `.pages.yml` para demonstrar edição de textos, listas e mídias no Pages CMS;
 - `_headers` com CSP e cabeçalhos de segurança para Cloudflare Pages;
 - validador Python com biblioteca padrão, fixtures e GitHub Actions.
+- painel administrativo experimental em `admin/`, com Vite e Supabase Auth,
+  ainda não publicado e sem modificar o conteúdo do site.
 
 ## Arquitetura
 
@@ -120,6 +122,15 @@ Consulte [`MANUAL-PROPRIETARIO.md`](MANUAL-PROPRIETARIO.md) e
 [`plugins/PAGES-CMS.md`](plugins/PAGES-CMS.md) para o fluxo editorial. A matriz
 de operações e exclusão segura está em
 [`docs/AUDITORIA-MIDIAS-CMS.md`](docs/AUDITORIA-MIDIAS-CMS.md).
+
+## Painel administrativo experimental
+
+A estrutura inicial em [`admin/`](admin/README.md) demonstra login por e-mail e
+senha com Supabase Auth e autorização separada por RLS. Uma sessão autenticada
+somente acessa o painel quando `public.is_admin()` confirma o usuário. As telas
+de gerenciamento são marcadores transparentes desta etapa e não exibem ações
+de salvamento que ainda não existem. O painel não foi publicado e depende de
+homologação em um projeto Supabase controlado pela dupla.
 
 ## O que aprendemos / decisões técnicas
 

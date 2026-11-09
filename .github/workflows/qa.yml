@@ -36,3 +36,28 @@ jobs:
 
       - name: Verificar sintaxe do JavaScript
         run: node --check app.js
+
+  painel-admin:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: admin
+    steps:
+      - name: Baixar o repositório
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: admin/package-lock.json
+
+      - name: Instalar dependências fixadas
+        run: npm ci
+
+      - name: Testar autenticação e configuração
+        run: npm test
+
+      - name: Gerar e auditar o build
+        run: npm run build

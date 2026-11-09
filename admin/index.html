@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23d8ed79'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='28' font-family='sans-serif' font-weight='700' fill='%23173f36'%3EPC%3C/text%3E%3C/svg%3E" />
+    <title>Painel Prime-Clean</title>
+    <meta name="description" content="Painel administrativo do projeto fictício Prime-Clean." />
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+    <main id="conteudo" class="app-shell">
+      <section id="loading-view" class="center-card" aria-live="polite">
+        <p>Verificando a sessão…</p>
+      </section>
+
+      <section id="config-view" class="center-card" hidden>
+        <p class="eyebrow">Configuração necessária</p>
+        <h1>Painel indisponível</h1>
+        <p id="config-message" role="alert"></p>
+        <p>Consulte o README do painel para configurar apenas as variáveis públicas do Supabase.</p>
+      </section>
+
+      <section id="login-view" class="login-layout" hidden>
+        <div class="brand-panel" aria-label="Prime-Clean, projeto fictício">
+          <span class="brand-mark" aria-hidden="true">PC</span>
+          <p class="eyebrow">Projeto fictício de portfólio</p>
+          <h1>Painel Prime-Clean</h1>
+          <p>Área reservada para administradores autorizados. Não há cadastro público.</p>
+        </div>
+        <form id="login-form" class="login-card" novalidate>
+          <h2>Entrar</h2>
+          <p>Use a conta criada pelo administrador do projeto.</p>
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="email" autocomplete="username" required />
+          <label for="password">Senha</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required />
+          <p id="login-status" class="status" role="alert" aria-live="polite"></p>
+          <button id="login-button" type="submit">Entrar com segurança</button>
+        </form>
+      </section>
+
+      <section id="dashboard-view" class="dashboard" hidden>
+        <aside class="sidebar">
+          <div>
+            <span class="brand-mark small" aria-hidden="true">PC</span>
+            <strong>Prime-Clean</strong>
+            <p>Painel administrativo</p>
+          </div>
+          <nav aria-label="Seções administrativas">
+            <a href="#inicio">Visão geral</a>
+            <a href="#foto-principal">Foto principal</a>
+            <a href="#servicos">Serviços</a>
+            <a href="#comparacoes">Antes e depois</a>
+            <a href="#biblioteca">Biblioteca de imagens</a>
+          </nav>
+          <button id="logout-button" class="secondary" type="button">Sair</button>
+        </aside>
+        <div class="dashboard-content">
+          <header>
+            <div>
+              <p class="eyebrow">Administração autorizada</p>
+              <h1 id="inicio" tabindex="-1">Visão geral</h1>
+            </div>
+            <p id="session-user" class="session-user"></p>
+          </header>
+          <p id="dashboard-status" class="status" role="status" aria-live="polite"></p>
+          <div class="notice">
+            <strong>Prime-Clean é uma demonstração de portfólio.</strong>
+            <span>O painel não representa uma empresa em operação.</span>
+          </div>
+          <div class="feature-grid">
+            <article id="foto-principal"><h2>Foto principal</h2><p>Gerenciamento ainda não disponível nesta etapa.</p></article>
+            <article id="servicos"><h2>Serviços</h2><p>Gerenciamento ainda não disponível nesta etapa.</p></article>
+            <article id="comparacoes"><h2>Antes e depois</h2><p>Gerenciamento ainda não disponível nesta etapa.</p></article>
+            <article id="biblioteca"><h2>Biblioteca de imagens</h2><p>Gerenciamento ainda não disponível nesta etapa.</p></article>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
