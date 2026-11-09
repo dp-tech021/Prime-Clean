@@ -1,1 +1,41 @@
-[]
+[
+  {
+    "title": "Sofá — exemplo sintético",
+    "service": "Limpeza de sofás",
+    "description": "Antes e depois fictícios criados por IA para demonstrar o comparador. Não representa um serviço realizado.",
+    "before": "/media/comparacoes/sofa-antes.webp",
+    "beforeAlt": "Cena gerada por IA: sofá bege com manchas simuladas no estofado",
+    "after": "/media/comparacoes/sofa-depois.webp",
+    "afterAlt": "Cena gerada por IA: versão visualmente limpa do sofá bege, sem manchas",
+    "order": 1,
+    "demonstrative": true,
+    "consentConfirmed": false,
+    "published": true
+  },
+  {
+    "title": "Colchão — exemplo sintético",
+    "service": "Higienização de colchões",
+    "description": "Comparação visual simulada por IA, sem relação com resultados de uma limpeza real.",
+    "before": "/media/comparacoes/colchao-antes.webp",
+    "beforeAlt": "Cena gerada por IA: colchão claro com marcas de sujeira simuladas",
+    "after": "/media/comparacoes/colchao-depois.webp",
+    "afterAlt": "Cena gerada por IA: colchão claro com aparência uniforme e sem manchas",
+    "order": 2,
+    "demonstrative": true,
+    "consentConfirmed": false,
+    "published": true
+  },
+  {
+    "title": "Cadeira — exemplo sintético",
+    "service": "Limpeza de cadeiras",
+    "description": "Ilustração digital de uma possível transformação estética; resultado não comprovado.",
+    "before": "/media/comparacoes/cadeira-antes.webp",
+    "beforeAlt": "Cena gerada por IA: cadeira estofada com manchas simuladas no assento e encosto",
+    "after": "/media/comparacoes/cadeira-depois.webp",
+    "afterAlt": "Cena gerada por IA: cadeira estofada com aparência limpa no assento e encosto",
+    "order": 3,
+    "demonstrative": true,
+    "consentConfirmed": false,
+    "published": true
+  }
+]

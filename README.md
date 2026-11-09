@@ -1,6 +1,6 @@
 # Prime-Clean — MVP atualizado (08/11/2026)
 
-Landing page comercial responsiva, sem framework e sem banco de dados. Objetivo: apresentar serviços e captar pedidos de orçamento. **Atualização: contatos, serviços e comparações foram migrados para JSON e integrados ao frontend. A configuração do Pages CMS está versionada, mas ainda não foi testada na interface hospedada. A seção de antes/depois continua vazia até receber fotos reais autorizadas.**
+Landing page comercial responsiva, sem framework e sem banco de dados. Objetivo: apresentar serviços e captar pedidos de orçamento. **Atualização: contatos, serviços e comparações foram migrados para JSON e integrados ao frontend. A configuração do Pages CMS está versionada, mas ainda não foi testada na interface hospedada. A seção de antes/depois contém três simulações geradas por IA para demonstrar o comparador, com identificação visual explícita; não são trabalhos reais.**
 
 ## Como testar localmente
 
@@ -71,7 +71,7 @@ Uma branch por alteração; abrir pull request, fazer revisão cruzada e só ent
 
 ## Galeria de fotos e comparador
 
-A página lê `data/comparacoes.json` e apresenta somente registros publicados, com consentimento confirmado, duas imagens locais distintas e textos alternativos. Como **não recebemos fotos reais e autorizadas**, o arquivo começa como `[]` e a página mostra um aviso. Não são mostrados resultados ilustrativos como se fossem casos reais.
+A página lê `data/comparacoes.json` e apresenta apenas registros publicados, com duas imagens locais distintas e textos alternativos. Fotografias reais precisam de `consentConfirmed: true`; imagens inteiramente sintéticas precisam de `demonstrative: true` e exibem aviso de simulação. Como **não recebemos fotos reais e autorizadas**, a página demonstra o comparador com três pares totalmente sintéticos, marcados como simulações por IA. Não devem ser apresentados como atendimentos reais.
 
 O modelo de um registro de comparação é:
 
@@ -95,3 +95,7 @@ Um serviço em `data/servicos.json` pode ter campo `image`, como `image: "/media
 O Pages CMS edita o array com `type: file`, `format: json` e `list: true`. O proprietário pode adicionar, editar, ocultar, reordenar pelo campo `order` e remover itens sem editar código. Esse fluxo ainda precisa ser testado na interface hospedada.
 
 **Atenção:** apagar um registro não implica necessariamente apagar seu arquivo do Git, e apagar arquivos do Git não garante remoção do histórico público. Nunca inserir fotos privadas sem autorização.
+
+### Demonstrações de antes/depois (portfólio)
+
+As três comparações de sofá, colchão e cadeira são totalmente geradas por IA e não registram atendimentos. Seus arquivos ficam em `media/comparacoes/` (`*-antes.webp` e `*-depois.webp`). O CMS expõe `demonstrative` (simulação) e `consentConfirmed` (autorização de fotos reais). Não altere uma simulação para registro real sem substituir as imagens por fotos autênticas autorizadas. O comparador permite arrastar o controle e também usar as setas do teclado.
