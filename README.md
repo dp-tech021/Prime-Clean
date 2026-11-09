@@ -127,7 +127,8 @@ de operações e exclusão segura está em
 
 A estrutura inicial em [`admin/`](admin/README.md) demonstra login por e-mail e
 senha com Supabase Auth e autorização separada por RLS. Uma sessão autenticada
-somente acessa o painel quando `public.is_admin()` confirma o usuário. As telas
+somente acessa o painel quando a leitura do próprio registro em `admin_users`
+confirma `active=true`. As telas
 de gerenciamento são marcadores transparentes desta etapa e não exibem ações
 de salvamento que ainda não existem. O painel não foi publicado e depende de
 homologação em um projeto Supabase controlado pela dupla.

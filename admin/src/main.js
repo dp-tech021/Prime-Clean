@@ -22,6 +22,11 @@ try {
 }
 
 if (auth) {
+  auth.onSessionLost(() => {
+    show('login');
+    status.textContent = 'Sua sessão terminou. Entre novamente.';
+  });
+
   auth.restore().then((session) => session ? showDashboard(session) : show('login')).catch((error) => {
     status.textContent = error.message;
     show('login');

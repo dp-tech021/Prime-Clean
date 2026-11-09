@@ -74,6 +74,26 @@ oficiais e fixadas por SHA:
 O workflow não foi executado no GitHub durante a preparação local. Seu status
 deve ser conferido no PR; não há aprovação de CI presumida.
 
+## Painel administrativo — autenticação
+
+Execute separadamente no diretório `admin/`:
+
+```bash
+npm ci
+npm test
+npm run build
+```
+
+Os testes automatizados simulam administrador ativo e inativo, usuário sem
+cadastro, falha de rede, credenciais inválidas, restauração, expiração e logout.
+Também verificam que o painel segue o contrato RLS das migrations oficiais da
+raiz e que não existe outra árvore de migrations em `admin/`.
+
+Os testes SQL em `supabase/tests/rls_sem_credenciais.sql` são transacionais e
+destinados a banco local ou descartável autorizado. Login real, revogação de
+sessão e chamada direta à API ainda dependem de contas controladas pela dupla e
+devem permanecer marcados como pendentes até execução efetiva.
+
 ## Contexto validado
 
 A Prime-Clean é uma marca fictícia para portfólio de dois desenvolvedores em
