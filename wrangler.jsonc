@@ -1,5 +1,5 @@
 {
-  "name": "prime-clean-site-publico",
+  "name": "prime-clean",
   "main": "worker/index.mjs",
   "compatibility_date": "2026-11-09",
   "build": {
