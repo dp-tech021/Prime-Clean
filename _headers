@@ -1,0 +1,13 @@
+/*
+  Content-Security-Policy: default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  X-Robots-Tag: noindex, nofollow
+
+/data/*
+  Cache-Control: no-cache
+
+/media/*
+  Cache-Control: public, max-age=3600

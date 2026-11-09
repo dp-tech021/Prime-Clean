@@ -11,6 +11,10 @@ Landing page comercial responsiva, sem framework e sem banco de dados. Objetivo:
 
 Nenhum `npm install` é necessário.
 
+Para operação do painel e revisão antes de publicar, consulte
+[`MANUAL-PROPRIETARIO.md`](./MANUAL-PROPRIETARIO.md) e
+[`QA-PUBLICACAO.md`](./QA-PUBLICACAO.md).
+
 ## Informações fornecidas
 
 - Região: **Rio de Janeiro, RJ**, com bairros ainda a confirmar.

@@ -2,7 +2,7 @@
   'use strict';
   const fallbackSite = {
     whatsapp: '',
-    instagram: 'https://www.instagram.com/Prime_Clean/',
+    instagram: '',
     area: 'Rio de Janeiro, RJ — disponibilidade por bairro sob consulta'
   };
   const fallbackServices = [
@@ -16,7 +16,9 @@
   // Somente arquivos locais no repositório. Não permitir links arbitrários ou caminhos ../.
   function safeLocalImage(value) {
     if (typeof value !== 'string' || value.includes('..')) return '';
-    return /^(?:\.\/|\/)?media\/[a-zA-Z0-9_\/.-]+\.(?:jpe?g|png|webp|avif)$/i.test(value) ? value : '';
+    if (!/^(?:\.\/|\/)?media\/[a-zA-Z0-9_\/.-]+\.(?:jpe?g|png|webp|avif)$/i.test(value)) return '';
+    // Caminho relativo funciona na raiz e em prévias publicadas sob subdiretório.
+    return value.replace(/^(?:\.\/|\/)/, '');
   }
 
   async function loadJson(path) {
@@ -263,7 +265,12 @@
       toggle.setAttribute('aria-label', opened ? 'Fechar menu' : 'Abrir menu');
     });
     nav.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && nav.classList.contains('open')) {
+        close();
+        toggle.focus();
+      }
+    });
   }
   if (!validPhone) console.warn('Prime-Clean: WhatsApp pendente de validação. Não publicar um número não confirmado.');
 })().catch(error => {
