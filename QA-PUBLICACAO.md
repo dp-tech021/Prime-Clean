@@ -3,6 +3,19 @@
 Auditoria visual original da branch `feat/portfolio-demonstracao` e automação
 reproduzível adicionada em `test/qa-automatizado` em 09/11/2026.
 
+## Preparação do case e publicação
+
+Na branch `docs/publicacao-portfolio`, o QA automatizado passou novamente. O
+teste em Chromium percorreu a página em 360, 768 e 1280 px e confirmou os dois
+avisos de ficção, 11 de 11 imagens carregadas, menu móvel por teclado, ausência
+de links externos, erros HTTP/JavaScript e overflow horizontal.
+
+A equipe optou explicitamente por permitir a indexação da futura publicação de
+produção. Apenas o `X-Robots-Tag: noindex, nofollow` global foi removido de
+`_headers`; CSP, Permissions Policy, Referrer Policy, `nosniff` e proteção
+contra frames foram preservados. O deploy e a validação dos cabeçalhos reais
+continuam pendentes, conforme `DEPLOY-PORTFOLIO.md`.
+
 ## Automação reproduzível
 
 Pré-requisitos: Python 3.10+ e Node.js. Não há dependências externas de teste.

@@ -1,95 +1,74 @@
-# Prime-Clean — projeto fictício de portfólio
+# Prime-Clean — case fictício de portfólio
 
 > **Projeto fictício para portfólio — demonstração de interface e gerenciamento
 > de conteúdo; não é uma empresa em operação.**
 
-A Prime-Clean é uma marca criada exclusivamente como estudo de portfólio por
-dois desenvolvedores em formação. O repositório demonstra um site estático
-responsivo, conteúdo em JSON e configuração do Pages CMS. Não há empresa,
-clientes, atendimento comercial ou contatos externos associados ao projeto.
+A Prime-Clean é uma marca criada para o portfólio de dois desenvolvedores em
+formação. O case mostra como construir uma interface estática responsiva,
+separar conteúdo dos componentes visuais e preparar um fluxo editorial baseado
+em Git. Não existem empresa, clientes, atendimento ou contatos comerciais.
 
-## Executar localmente
+## Objetivo e público
 
-```bash
-python3 -m http.server 8000
-```
+O objetivo é demonstrar fundamentos de frontend, acessibilidade, conteúdo
+estruturado, automação de QA e documentação de publicação. O público pretendido
+é formado por recrutadores, pessoas desenvolvedoras iniciantes e avaliadores de
+portfólio que queiram inspecionar tanto a interface quanto as decisões técnicas.
 
-Abra `http://localhost:8000`. Nenhuma dependência de execução ou etapa de build
-é necessária.
+O tema de higienização serve apenas como contexto visual. Imagens de serviços e
+comparações são sintéticas, geradas por IA e rotuladas como simulação; não são
+trabalhos realizados nem garantias de resultado.
 
-## Estrutura
+## Capturas reais do ambiente local
 
-- `index.html`, `styles.css` e `app.js`: interface em HTML, CSS e JavaScript.
-- `data/site.json`: campos institucionais mantidos para demonstrar o CMS; os
-  contatos permanecem vazios.
-- `data/servicos.json`: cinco cartões demonstrativos com imagens ilustrativas.
-- `data/comparacoes.json`: três pares sintéticos para demonstrar o comparador.
-- `.pages.yml`: schema demonstrativo para editar listas, textos e mídias.
-- `media/`: imagens locais do protótipo.
+![Início do projeto em viewport desktop](docs/capturas/inicio-desktop.jpg)
 
-Consulte `MANUAL-PROPRIETARIO.md` para o fluxo editorial demonstrativo e
-`QA-PUBLICACAO.md` para a auditoria e os testes.
+![Início do projeto em viewport móvel](docs/capturas/inicio-mobile.jpg)
 
-## Serviços e imagens
+As capturas foram obtidas localmente com Chromium em 1280 × 900 e 360 × 800 px.
+O procedimento e o resultado da verificação estão em
+[`docs/capturas/README.md`](docs/capturas/README.md). Elas não representam um
+deploy público.
 
-Os cinco serviços são categorias de demonstração. Suas imagens foram geradas
-por IA, usam textos alternativos e aparecem com o rótulo **Imagem ilustrativa /
-gerada por IA**. Elas não representam trabalhos realizados.
+## Stack e recursos
 
-Arquivos preservados:
+- HTML semântico, CSS responsivo e JavaScript puro, sem framework ou build;
+- três arquivos JSON em `data/` para site, serviços e comparações;
+- cinco cartões com imagens ilustrativas e três comparadores sintéticos;
+- navegação por teclado, foco visível, menu móvel e respeito a movimento reduzido;
+- `.pages.yml` para demonstrar edição de textos, listas e mídias no Pages CMS;
+- `_headers` com CSP e cabeçalhos de segurança para Cloudflare Pages;
+- validador Python com biblioteca padrão, fixtures e GitHub Actions.
 
-- `media/fotos-servicos/sofa.webp`
-- `media/fotos-servicos/colchao.webp`
-- `media/fotos-servicos/cadeiras.webp`
-- `media/fotos-servicos/poltrona.webp`
-- `media/fotos-servicos/bancos-automotivos.webp`
+## Arquitetura
 
-## Comparador demonstrativo
+O navegador recebe arquivos estáticos e `app.js` busca os JSONs por HTTP. O
+frontend valida tipos e caminhos locais antes de inserir textos com
+`textContent`. Assim, conteúdo editorial fica separado do layout sem introduzir
+backend, banco de dados ou etapa de build.
 
-O comparador usa três pares locais inteiramente sintéticos: sofá, colchão e
-cadeira. Cada cartão informa **SIMULAÇÃO**, identifica as imagens como geradas
-por IA e declara que não se trata de trabalho real. Os pares representam o
-mesmo objeto em dois estados gráficos e não constituem prova de resultado.
+O comparador só publica registros completos marcados como demonstrativos. Os
+contatos permanecem vazios e todos os CTAs navegam dentro da página. O Pages CMS
+é uma camada editorial externa baseada em commits Git; ele não faz parte do
+runtime nem adiciona dependências npm.
 
-Um registro sintético usa:
+## Divisão de trabalho em dupla
 
-```json
-{
-  "title": "Sofá — exemplo sintético",
-  "before": "/media/comparacoes/sofa-antes.webp",
-  "after": "/media/comparacoes/sofa-depois.webp",
-  "demonstrative": true,
-  "consentConfirmed": false,
-  "published": true
-}
-```
+A documentação não atribui commits anteriores a uma pessoa específica. Para
+manter uma divisão verificável sem inventar autoria, o projeto trabalha com duas
+frentes e revisão cruzada:
 
-O campo `consentConfirmed` foi concebido originalmente para fotos reais, mas
-fica `false` em todas as simulações. Ele permanece apenas para demonstrar o
-schema editorial e não constitui prova jurídica. O campo separado
-`demonstrative` identifica conteúdo sintético e é obrigatório para que uma
-comparação apareça neste portfólio.
+- **Frente de interface:** HTML, CSS, responsividade, acessibilidade e revisão
+  visual;
+- **Frente de conteúdo e qualidade:** JSON, schema do Pages CMS, validação,
+  documentação e CI.
 
-## Pages CMS
+Cada mudança passa pela revisão da outra frente antes do merge. As frentes podem
+trocar de responsável para que ambos pratiquem as duas áreas.
 
-O Pages CMS é apresentado como demonstração de administração de conteúdo em um
-site estático baseado em Git. Os campos de WhatsApp e Instagram foram
-preservados no schema para fins didáticos, mas ficam vazios e não geram links na
-interface.
+## Executar e testar
 
-O painel permite demonstrar a edição de textos, ordem, visibilidade e caminhos
-de mídia. Seu uso autenticado depende da instalação e das permissões da GitHub
-App e deve ser descrito como teste do protótipo, não como operação comercial.
-
-## QA reproduzível
-
-Pré-requisitos:
-
-- Python 3.10 ou superior;
-- Node.js instalado apenas para a verificação de sintaxe;
-- nenhuma biblioteca Python ou npm adicional.
-
-Execute na raiz do repositório:
+Pré-requisitos: Python 3.10+ e Node.js. Nenhuma biblioteca adicional é exigida.
 
 ```bash
 python3 scripts/validar_conteudo.py
@@ -98,39 +77,67 @@ node --check app.js
 python3 -m http.server 8000
 ```
 
-O validador confere os três JSONs, schemas básicos, campos `order`, caminhos e
-existência das imagens, rotulagem das simulações e ausência de contatos externos
-habilitados. Em sucesso, a primeira linha esperada é:
+Abra `http://localhost:8000`. O resultado esperado do validador começa com:
 
 ```text
 OK: dados do repositório válido; 11 imagem(ns) local(is) verificada(s).
 ```
 
-Os testes de fixtures devem terminar com `Ran 3 tests` e `OK`. `node --check`
-não imprime nada quando a sintaxe está válida. O servidor HTTP permanece aberto
-até receber `Ctrl+C`; visite `http://localhost:8000` para a revisão visual.
+As três fixtures devem terminar com `OK`; `node --check` não produz saída em
+sucesso. Falhas retornam código diferente de zero e identificam arquivo, índice
+e campo. Consulte [`QA-PUBLICACAO.md`](QA-PUBLICACAO.md) para o checklist.
 
-Uma falha retorna código diferente de zero e informa arquivo, índice e campo,
-por exemplo:
+## Publicação e indexação
 
-```text
-ERRO: tests/fixtures/comparacao_foto_ausente.json:before: arquivo de imagem não encontrado: media/comparacoes/inexistente.webp
-```
+A equipe optou explicitamente por permitir a indexação da publicação principal
+do portfólio. O bloqueio global `X-Robots-Tag: noindex, nofollow` foi removido de
+`_headers`, preservando a CSP e os demais cabeçalhos. Previews do Cloudflare
+Pages continuam recebendo `X-Robots-Tag: noindex` automaticamente.
 
-As três fixtures ficam em `tests/fixtures/`, fora das pastas consumidas pelo
-site e pelo CMS. Para observar uma falha esperada diretamente:
+Nenhum deploy ou domínio é declarado neste repositório. O passo a passo, a
+configuração sem framework e os comandos de verificação com uma URL real estão
+em [`DEPLOY-PORTFOLIO.md`](DEPLOY-PORTFOLIO.md).
 
-```bash
-python3 scripts/validar_conteudo.py --fixture tests/fixtures/comparacao_url_externa.json --tipo comparacao
-```
+## Pages CMS
 
-O workflow `.github/workflows/qa.yml` executa as três verificações automáticas
-em pull requests e pushes para `main`.
+O schema demonstra edição de campos institucionais, visibilidade e ordem dos
+serviços, comparações e caminhos de mídia. A interface hospedada do Pages CMS
+ainda precisa ser homologada com uma conta que tenha acesso legítimo ao
+repositório. Não há token, senha ou credencial no projeto.
 
-## Limites do projeto
+Consulte [`MANUAL-PROPRIETARIO.md`](MANUAL-PROPRIETARIO.md) e
+[`plugins/PAGES-CMS.md`](plugins/PAGES-CMS.md) para o fluxo editorial.
 
-- não oferece orçamento, atendimento ou contratação;
+## O que aprendemos / decisões técnicas
+
+- Um site pequeno pode separar conteúdo e interface sem adotar um framework.
+- Validar JSON, tipos e caminhos reduz falhas antes do deploy.
+- Dados configuráveis devem chegar ao DOM por `textContent` e URLs locais
+  permitidas.
+- Conteúdo sintético precisa de rótulos visuais e regras editoriais, não apenas
+  uma observação escondida na documentação.
+- Fixar Actions por SHA e usar testes da biblioteca padrão mantém o custo e a
+  superfície de dependências baixos.
+- Produção e preview exigem políticas de indexação diferentes: o case pode ser
+  encontrável enquanto versões temporárias permanecem fora dos buscadores.
+
+## O que ainda falta
+
+- testar login e funcionamento real do painel Pages CMS;
+- homologar upload, substituição e limpeza de mídia em uma branch segura;
+- confirmar o commit gerado pelo CMS e o fluxo completo até o preview;
+- executar e registrar o primeiro deploy com sua URL HTTPS real;
+- confirmar os cabeçalhos e respostas `200` na hospedagem;
+- revisar novamente os limites do plano gratuito antes da publicação.
+
+Os três pares demonstrativos já existem e são carregados pelo comparador. Falta
+homologar no CMS o fluxo de substituição dessas imagens, sem remover sua
+rotulagem sintética.
+
+## Limitações
+
+- não oferece orçamento, atendimento, formulário ou contratação;
 - não possui telefone, e-mail, endereço, domínio ou perfil social;
-- não usa analytics nem dependências de execução;
-- não representa uma empresa ou serviços realizados;
-- não deve ser publicado como operação comercial.
+- não usa analytics, autenticação própria, banco de dados ou API de aplicação;
+- não comprova que o Pages CMS ou o Cloudflare Pages foram publicados;
+- não representa uma empresa nem resultados de serviços reais.
