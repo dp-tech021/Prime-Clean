@@ -10,11 +10,11 @@ O proprietário deve conseguir **adicionar, visualizar, substituir/editar inform
 
 - [x] Página inicial, cinco serviços, contato e layout responsivo do MVP.
 - [x] Adicionada seção pública "Antes e depois"; comparador por deslizamento com controle de teclado e toque (implementação local).
-- [x] Exibição de imagens por serviço preparada em `content.js`, campo opcional `image`.
+- [x] Contatos e serviços migrados para `data/site.json` e `data/servicos.json`, consumidos pelo frontend.
 - [x] Galeria só exibe registros com fotos `before` e `after` válidas; sem fotos reais, exibe aviso de ausência. **Nenhum trabalho fictício foi apresentado como real.**
 - [ ] Não há ainda fotos reais autorizadas.
 - [x] O schema do Pages CMS está versionado em `.pages.yml` para trabalhos e imagens.
-- [ ] O uso hospedado do CMS, suas operações com arquivos e a integração com o frontend ainda precisam de validação.
+- [ ] O uso hospedado do CMS e suas operações com arquivos ainda precisam de validação com o proprietário.
 - [ ] Testes com CMS e proprietário e deploy: pendentes.
 
 ## Decisão técnica
@@ -25,8 +25,9 @@ Manter HTML/CSS/JavaScript e utilizar CMS baseado em Git. **Preferência: Pages 
 
 ### Modelo de dados proposto para a próxima etapa
 
-- `data/site.json`: contatos, região, textos e serviços; campo opcional `image` por serviço (foto avulsa).
-- `data/comparacoes.json`: array de pares; cada item contém `title`, `service`, `description`, `before`, `after`, `beforeAlt`, `afterAlt`, `published`. A página deve consumir o JSON com fetch num servidor estático. **Hoje a galeria lê `comparisons` de `content.js`, provisoriamente.**
+- `data/site.json`: contatos e região.
+- `data/servicos.json`: lista ordenada de serviços com título, descrição, imagem, texto alternativo e visibilidade.
+- `data/comparacoes.json`: modelo futuro para pares; cada item deverá conter `title`, `service`, `description`, `before`, `after`, `beforeAlt`, `afterAlt`, `published`. A galeria permanece vazia até essa integração e a disponibilidade de fotos reais autorizadas.
 - `media/`: arquivos jpg/png/webp/avif enviados pelo CMS. Usar nomes únicos e otimização.
 
 Não buscar diretórios via JS em produção: hospedagem estática não expõe listagem de arquivos de forma confiável. Preferir índice explícito em JSON ou um pequeno build automático.

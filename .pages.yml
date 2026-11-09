@@ -1,14 +1,97 @@
-# Prime-Clean - Pages CMS (conteudo e imagens do portfolio)
-# Imagens em public/ sao servidas pelo site futuramente em /imagens/.
+# Prime-Clean — Pages CMS
+# A configuracao e lida por repositorio e por branch. O login no Pages CMS nao
+# substitui a instalacao e a autorizacao da GitHub App neste repositorio.
 media:
+  - name: servicos
+    label: Fotos dos serviços
+    input: media/fotos-servicos
+    output: /media/fotos-servicos
+    extensions: [webp, jpg, jpeg, png]
+    rename: safe
+    commit:
+      templates:
+        create: "cms: adicionar foto de serviço {filename}"
+        update: "cms: atualizar foto de serviço {filename}"
+        delete: "cms: remover foto de serviço {filename}"
+        rename: "cms: renomear foto de serviço {oldFilename} para {newFilename}"
+
   - name: trabalhos
     label: Fotos dos trabalhos
     input: public/imagens/trabalhos
     output: /imagens/trabalhos
-    extensions: [jpg, jpeg, png, webp]
+    extensions: [webp, jpg, jpeg, png]
     rename: random
 
 content:
+  - name: site
+    label: Contatos e área de atendimento
+    type: file
+    path: data/site.json
+    format: json
+    fields:
+      - name: instagram
+        label: URL do Instagram informado
+        type: string
+        description: "Informe a URL completa. Confirme a titularidade antes de apresentá-la como perfil oficial."
+      - name: whatsapp
+        label: WhatsApp validado
+        type: string
+        description: "Deixe vazio até confirmar que a conta recebe mensagens. Depois, use somente DDI, DDD e número, sem símbolos."
+      - name: area
+        label: Área de atendimento
+        type: string
+        required: true
+        options:
+          maxlength: 160
+
+  - name: servicos
+    label: Serviços
+    type: file
+    path: data/servicos.json
+    format: json
+    list: true
+    fields:
+      - name: title
+        label: Título
+        type: string
+        required: true
+        options:
+          maxlength: 100
+      - name: description
+        label: Descrição
+        type: text
+        required: true
+      - name: image
+        label: Foto do serviço
+        type: image
+        description: "Use apenas imagem autorizada. Fotos ilustrativas não podem aparecer como resultado real."
+        options:
+          media: servicos
+          extensions: [webp, jpg, jpeg, png]
+          rename: safe
+      - name: imageAlt
+        label: Descrição da imagem (acessibilidade)
+        type: string
+        required: true
+        options:
+          maxlength: 180
+      - name: illustrative
+        label: Imagem ilustrativa
+        type: boolean
+        default: true
+        description: "Ative para imagens geradas ou de referência que não registram um atendimento real."
+      - name: order
+        label: Ordem
+        type: number
+        required: true
+        options:
+          min: 1
+          max: 99
+      - name: visible
+        label: Exibir no site
+        type: boolean
+        default: true
+
   - name: trabalhos
     label: Trabalhos (antes e depois)
     type: collection
@@ -27,18 +110,18 @@ content:
       delete: true
     fields:
       - name: titulo
-        label: Titulo do trabalho
+        label: Título do trabalho
         type: string
         required: true
         options:
           maxlength: 120
       - name: servico
-        label: Tipo de servico
+        label: Tipo de serviço
         type: string
         required: true
-        description: "Ex.: higienizacao de sofa, colchao ou cadeira."
+        description: "Ex.: higienização de sofá, colchão ou cadeira."
       - name: descricao
-        label: Descricao do resultado
+        label: Descrição do resultado
         type: text
       - name: foto_antes
         label: Foto antes
@@ -47,7 +130,7 @@ content:
         options:
           media: trabalhos
       - name: alt_antes
-        label: Descricao da foto antes (acessibilidade)
+        label: Descrição da foto antes (acessibilidade)
         type: string
         required: true
       - name: foto_depois
@@ -57,13 +140,13 @@ content:
         options:
           media: trabalhos
       - name: alt_depois
-        label: Descricao da foto depois (acessibilidade)
+        label: Descrição da foto depois (acessibilidade)
         type: string
         required: true
       - name: fotos_extras
-        label: Outras fotos do servico
+        label: Outras fotos do serviço
         type: image
-        description: "Ate 5 imagens complementares."
+        description: "Até 5 imagens complementares."
         options:
           media: trabalhos
           multiple:
@@ -73,12 +156,13 @@ content:
         label: Exibir no site
         type: boolean
         default: false
-        description: "O site precisa respeitar este campo. A imagem enviada ao repositorio publico ja e acessivel."
+        description: "O site precisa respeitar este campo. A imagem enviada ao repositório público já é acessível."
 
 settings:
   content:
     merge: true
   commit:
+    identity: app
     templates:
       create: "cms: adicionar {path}"
       update: "cms: atualizar {path}"
