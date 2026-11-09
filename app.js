@@ -55,7 +55,9 @@
     if (!Array.isArray(value)) return [];
     return value.flatMap((entry, index) => {
       if (!entry || typeof entry !== 'object' || Array.isArray(entry)) return [];
-      if (entry.published !== true || entry.consentConfirmed !== true) return [];
+      const demonstrative = entry.demonstrative === true;
+      // Fotos reais exigem autorização; cenas sintéticas são marcadas como demonstração.
+      if (entry.published !== true || (!demonstrative && entry.consentConfirmed !== true)) return [];
       if (typeof entry.title !== 'string' || !entry.title.trim()) return [];
       if (typeof entry.service !== 'string' || !entry.service.trim()) return [];
       const before = safeLocalImage(entry.before);
@@ -74,7 +76,8 @@
         beforeAlt: entry.beforeAlt.trim(),
         afterAlt: entry.afterAlt.trim(),
         order: Number.isFinite(entry.order) ? entry.order : index + 1,
-        published: true
+        published: true,
+        demonstrative
       }];
     }).sort((a, b) => a.order - b.order);
   }
@@ -198,7 +201,7 @@
       const tagAfter = document.createElement('span'); tagAfter.className = 'compare-tag after-tag'; tagAfter.textContent = 'DEPOIS';
       const handle = document.createElement('span'); handle.className = 'compare-handle'; handle.setAttribute('aria-hidden', 'true'); handle.textContent = '↔';
       const slider = document.createElement('input'); slider.type = 'range'; slider.min = '0'; slider.max = '100'; slider.value = '50'; slider.step = '1';
-      slider.className = 'compare-slider'; slider.setAttribute('aria-label', 'Comparar antes e depois: ' + entry.title);
+      slider.className = 'compare-slider'; slider.setAttribute('aria-label', 'Comparar antes e depois' + (entry.demonstrative ? ' (simulação)' : '') + ': ' + entry.title);
       function update() {
         frame.style.setProperty('--reveal', slider.value + '%');
         handle.style.left = slider.value + '%';
@@ -208,12 +211,16 @@
       frame.append(afterImage, beforeImage, tagBefore, tagAfter, handle, slider);
       update();
       const info = document.createElement('div'); info.className = 'compare-info';
+      const label = document.createElement('p'); label.className = 'compare-disclaimer';
+      label.textContent = entry.demonstrative
+        ? 'SIMULAÇÃO • imagens geradas por IA — não é um trabalho real'
+        : 'Registro de trabalho autorizado';
       const h = document.createElement('h3'); h.textContent = entry.title;
       const category = document.createElement('p'); category.className = 'compare-category';
       category.textContent = typeof entry.service === 'string' ? entry.service : '';
       const description = document.createElement('p');
       description.textContent = typeof entry.description === 'string' ? entry.description : '';
-      info.append(h, category, description); card.append(frame, info); comparisonGrid.append(card);
+      info.append(label, h, category, description); card.append(frame, info); comparisonGrid.append(card);
       let failed = false;
       function fail() {
         if (failed) return;

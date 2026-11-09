@@ -160,16 +160,21 @@ content:
         options:
           min: 1
           max: 999
+      - name: demonstrative
+        label: Simulação gerada por IA
+        type: boolean
+        default: false
+        description: "Ative somente em comparações inteiramente sintéticas, sem fotos ou clientes reais. O site identifica o registro como simulação."
       - name: consentConfirmed
         label: Consentimento confirmado
         type: boolean
         default: false
-        description: "Ative somente após confirmar autorização para publicar as duas fotos."
+        description: "Para fotos reais, exige autorização para publicar as duas fotos. Mantenha falso para imagens totalmente sintéticas."
       - name: published
         label: Exibir no site
         type: boolean
         default: false
-        description: "Só publique um par completo, real, autorizado e do mesmo estofado."
+        description: "Publique apenas pares completos: trabalhos reais com consentimento, ou simulações explícitas geradas por IA."
 
 settings:
   content:
