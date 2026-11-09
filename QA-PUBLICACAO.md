@@ -1,137 +1,62 @@
-# QA e publicação de prévia
+# QA do projeto demonstrativo
 
-Auditoria executada em 09/11/2026 na branch `chore/qa-publicacao`, iniciada na
-`main` após o merge revisado do PR 04.
+Auditoria da branch `feat/portfolio-demonstracao`, realizada em 09/11/2026.
 
-## Resultado da auditoria
+## Contexto validado
 
-- [x] Viewports 360 × 800, 390 × 844, 768 × 1024 e 1280 × 900.
-- [x] Sem overflow horizontal, erro JavaScript ou resposta HTTP 4xx/5xx.
-- [x] Menu aberto por teclado e fechado com Escape, com foco devolvido ao botão.
-- [x] Link **Pular para o conteúdo** leva o foco ao conteúdo principal.
-- [x] Foco visível em links, botões, resumos e comparador.
-- [x] Contraste corrigido nos textos pequenos, chamadas editoriais e números das
-  etapas. Elementos puramente decorativos foram desconsiderados.
-- [x] Cinco imagens de serviço com `alt`, `loading="lazy"` e carregamento válido.
-- [x] Imagens WebP consistentes em 764 × 337/338 px, total de mídia abaixo de
-  310 KiB e nenhum perfil de metadados identificado pelo ImageMagick.
-- [x] JSON válido; falha de rede, JSON inválido e listas vazias mantêm a página
-  utilizável e não publicam comparações.
-- [x] Galeria vazia e aviso visível enquanto não houver trabalho real autorizado.
-- [x] WhatsApp permanece vazio e nenhum link `wa.me` é criado.
-- [x] Instagram é apresentado como perfil informado, com `noopener noreferrer`;
-  titularidade não confirmada.
-- [x] Título, descrição, idioma, um único `h1` e hierarquia básica revisados.
-- [x] URL canônica, sitemap e metadados sociais não foram inventados; dependem
-  do domínio e da identidade comercial aprovados.
-- [x] Nenhum analytics ou rastreador adicionado.
-- [x] Site testado na raiz e no subdiretório `/Prime-Clean/`.
-- [x] Cabeçalhos de segurança preparados para Cloudflare Pages em `_headers`.
+A Prime-Clean é uma marca fictícia para portfólio de dois desenvolvedores em
+formação. O site não representa empresa, clientes, serviços realizados ou
+canais comerciais.
 
-O teste de contraste automatizado não consegue calcular fundos com imagem ou
-gradiente. A tarja **Imagem ilustrativa** usa branco sobre uma camada verde
-escura com 90% de opacidade; a inspeção visual confirmou legibilidade. O símbolo
-grande da seção Sobre é decorativo e está oculto da árvore de acessibilidade.
+## Controles de conteúdo
 
-## Etapas não executadas
+- aviso de ficção visível antes da primeira dobra e repetido no rodapé;
+- WhatsApp e Instagram vazios em `data/site.json`;
+- nenhuma lógica de navegação para contatos externos no frontend;
+- CTAs limitados a âncoras internas;
+- cinco serviços preservados com imagens locais, textos alternativos e rótulo
+  **Imagem ilustrativa / gerada por IA**;
+- três comparações inteiramente sintéticas, marcadas com `demonstrative: true`,
+  `consentConfirmed: false` e aviso visual de simulação;
+- frontend aceita somente comparações publicadas e demonstrativas;
+- conteúdo configurável inserido com `textContent` e caminhos locais validados.
 
-- [ ] Login autenticado no Pages CMS.
-- [ ] Editar e restaurar um serviço pelo painel hospedado.
-- [ ] Enviar e substituir uma foto pelo painel.
-- [ ] Criar, ocultar, republicar e excluir um par real antes/depois.
-- [ ] Confirmar a titularidade do Instagram informado.
-- [ ] Confirmar e testar um número de WhatsApp.
-- [ ] Criar o projeto Cloudflare Pages na conta do proprietário.
-- [ ] Testar os cabeçalhos HTTP no endereço público da prévia.
+## Validações executadas
 
-Essas etapas exigem as contas do proprietário. Nunca declarar o painel ou os
-contatos aprovados antes de executá-las.
+- [x] `node --check app.js`.
+- [x] `python3 -m json.tool` nos três arquivos de `data/`.
+- [x] `.pages.yml` analisado com PyYAML.
+- [x] Servidor HTTP local em 360 px, 768 px e 1280 px.
+- [x] Menu móvel por clique e teclado; fechamento com Escape e retorno de foco.
+- [x] Link de salto, FAQ e comparador acessíveis por teclado.
+- [x] Aviso de ficção presente no topo e no rodapé.
+- [x] Todos os CTAs usam âncoras internas.
+- [x] Nenhum link externo, `wa.me`, `instagram.com`, `mailto:` ou `tel:` na
+  interface executada.
+- [x] Cinco cartões de serviço e três comparações sintéticas carregados.
+- [x] Todas as imagens referenciadas existem e carregam sem erro.
+- [x] Sem erro JavaScript, resposta HTTP com erro ou overflow horizontal.
+- [x] Nenhuma dependência de execução adicionada.
 
-## Prévia gratuita escolhida
+## Pages CMS
 
-Usar **Cloudflare Pages** em um projeto chamado `prime-clean-preview`, conectado
-ao GitHub, com `main` como branch-base do projeto de prévia e previews de PR
-habilitados. Um PR criado dentro deste repositório recebe URL própria, sem
-alterar o endereço principal do projeto. O arquivo `_headers` aplica `noindex`
-também ao endereço-base; removê-lo somente em uma publicação comercial aprovada.
+O schema foi preservado e atualizado para linguagem demonstrativa. Os campos de
+contato continuam presentes apenas para mostrar a configuração do editor. O
+campo `consentConfirmed` não é prova jurídica; nas simulações ele permanece
+falso e o campo separado `demonstrative` identifica o conteúdo sintético.
 
-Configuração do projeto:
+O login e a edição autenticada no Pages CMS não foram testados nesta etapa.
 
-- framework: nenhum;
-- comando de build: vazio;
-- diretório de saída: `.`;
-- branch de produção: `main`;
-- previews: habilitados para branches e PRs;
-- domínio próprio: não configurar nesta etapa;
-- Cloudflare Access: recomendado se a prévia não puder ser pública.
+## GitHub e publicação
 
-Depois de conectar o repositório, o PR de `chore/qa-publicacao` deve gerar uma
-URL como `<hash>.<projeto>.pages.dev` e um alias de branch. A Cloudflare informa
-que previews recebem `X-Robots-Tag: noindex` automaticamente. Confirmar com:
-
-```bash
-curl -I https://<url-da-previa>.pages.dev
-```
-
-O plano Free documentado atualmente permite 500 builds por mês, 20.000 arquivos
-por site, arquivo individual de até 25 MiB e número ilimitado de previews ativos.
-Este site tem poucos arquivos, nenhuma etapa de build e cerca de 310 KiB de
-mídia, portanto fica muito abaixo desses limites.
-
-O proprietário precisa aceitar os termos apresentados na criação da conta e
-revisá-los antes de ativar a integração. A página oficial de termos não ficou
-acessível pela política de rede deste ambiente; não foi feita afirmação sobre
-cláusulas que não puderam ser lidas.
-
-O GitHub Pages não foi escolhido. A documentação oficial vigente diz que ele
-não se destina nem permite hospedagem gratuita de site voltado a operar um
-negócio ou facilitar transações comerciais.
-
-Fontes oficiais consultadas:
-
-- https://developers.cloudflare.com/pages/platform/limits/
-- https://developers.cloudflare.com/pages/configuration/preview-deployments/
-- https://developers.cloudflare.com/pages/get-started/git-integration/
-- https://docs.github.com/pages/getting-started-with-github-pages/github-pages-limits
-
-As fontes oficiais foram conferidas nos repositórios de documentação em
-`cloudflare/cloudflare-docs@2a4bfc4` e `github/docs@8cd1075`.
-
-## Aprovação antes de produção
-
-Não conectar domínio de produção nem divulgar a URL como oficial até confirmar:
-
-- identidade visual e dados empresariais;
-- região atendida;
-- perfil do Instagram e autorização para usá-lo;
-- WhatsApp ativo em teste real;
-- fotos reais e termos de consentimento;
-- revisão comercial dos textos;
-- teste completo do Pages CMS pelo proprietário.
-
-## Riscos restantes
-
-| Risco | Efeito | Controle atual |
-| --- | --- | --- |
-| Instagram sem titularidade confirmada | Cliente pode abrir perfil incorreto | Texto assume apenas “perfil informado”; validar antes de produção |
-| WhatsApp sem número validado | Canal comercial indisponível | Campo vazio e nenhum link `wa.me` |
-| Pages CMS não testado com a conta | Edição ou upload podem falhar | Roteiro manual obrigatório antes da aprovação |
-| Repositório e preview públicos | Foto enviada pode ficar acessível | Consentimento, revisão de privacidade e Cloudflare Access |
-| Histórico Git preserva mídias | Exclusão atual não apaga versões antigas | Não enviar foto privada; pedir limpeza especializada quando necessária |
-| Cache de mídia | Foto substituída pode demorar a atualizar | Cache limitado a uma hora em `_headers`; preferir novo nome |
+A conectividade Git de leitura e escrita foi validada pelo remoto configurado.
+O plugin GitHub marcado pelo usuário não disponibilizou ferramentas nesta
+sessão, e a credencial do `gh` não autorizou chamadas de API. Nenhum deploy ou
+merge foi realizado.
 
 ## Rollback
 
-Se uma mudança quebrar a prévia:
-
-1. ocultar o conteúdo pelo CMS, quando possível;
-2. identificar o commit anterior funcional;
-3. executar `git revert <commit-problemático>` em uma branch;
-4. abrir PR de correção e repetir o checklist de navegador;
-5. confirmar que o alias da prévia aponta para o novo deploy.
-
-Para retirar uma prévia da Cloudflare, exclua o deployment no painel ou com
-Wrangler. A documentação alerta que o deploy mais recente de uma branch não
-pode ser apagado; nesse caso, desative previews da branch ou remova a branch
-depois de preservar o histórico necessário. Reverter o repositório não apaga
-deployments antigos nem o histórico Git.
+Antes do merge, descarte a branch ou feche o PR. Depois de eventual merge,
+reverta o commit desta mudança com `git revert <sha>` em uma nova branch, execute
+novamente o checklist e abra outro PR. Reverter o Git não remove automaticamente
+uma prévia externa, caso ela seja criada no futuro.

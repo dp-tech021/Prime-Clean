@@ -1,5 +1,8 @@
 # Pages CMS — Prime-Clean
 
+> A Prime-Clean é uma marca fictícia de portfólio. Esta integração demonstra
+> administração de conteúdo baseada em Git; não gerencia uma empresa real.
+
 O repositório contém `.pages.yml` na raiz. O frontend lê contatos, serviços e
 comparações de `data/site.json`, `data/servicos.json` e
 `data/comparacoes.json` por HTTP. A configuração hospedada ainda
@@ -11,8 +14,8 @@ possui o repositório e autorizar o repositório desejado.
 
 ## Conteúdo editável
 
-- **Contatos e área:** `data/site.json`, com Instagram informado, WhatsApp
-  validado e área de atendimento.
+- **Campos institucionais:** `data/site.json`; Instagram e WhatsApp permanecem
+  vazios e a área informa que não há atendimento.
 - **Serviços:** `data/servicos.json`, um array JSON editável com título,
   descrição, foto, texto alternativo, indicação de imagem ilustrativa, ordem e
   visibilidade.
@@ -32,10 +35,11 @@ arquivo; o campo `order` controla a ordem pública. Isso evita uma coleção de
 arquivos individuais, que exigiria um índice gerado para o JavaScript descobrir
 os registros em uma hospedagem estática.
 
-Cada trabalho exige título, serviço, foto antes, foto depois e textos
-alternativos. `published` oculta ou publica, e `consentConfirmed` registra a
-confirmação editorial. O frontend ignora registros ocultos, sem consentimento,
-incompletos, com imagens externas ou com o mesmo caminho nas duas fotos.
+Cada comparação exige título, serviço, imagem antes, imagem depois e textos
+alternativos. O frontend deste portfólio mostra apenas registros publicados com
+`demonstrative: true`, imagens locais distintas e campos completos. O campo
+`consentConfirmed` permanece no schema, mas fica falso nas simulações e não
+constitui prova jurídica de consentimento.
 
 ## Permissões
 
@@ -61,11 +65,11 @@ Este fluxo ainda não foi executado nesta tarefa:
 2. confirmar que a GitHub App está instalada e consegue abrir
    `dp-tech021/Prime-Clean`;
 3. selecionar a branch que contém a configuração e confirmar o editor
-   **Trabalhos (antes e depois)** e a mídia **Fotos de antes e depois**;
-4. criar um trabalho de teste com duas fotos descartáveis claramente marcadas,
+   **Comparações demonstrativas** e a mídia **Fotos de antes e depois**;
+4. criar uma simulação de teste com duas imagens sintéticas claramente marcadas,
    sem pessoas ou dados pessoais, mantendo `published: false`;
 5. editar título e descrição, trocar uma foto e alterar `order`;
-6. ocultar, publicar apenas durante a verificação controlada e ocultar de novo;
+6. ativar `demonstrative`, ocultar, publicar durante a verificação e ocultar de novo;
 7. servir o site por HTTP e confirmar slider, rótulos e ordem;
 8. excluir o item de teste e confirmar que ele saiu do site;
 9. revisar e remover manualmente as mídias de teste que ficaram órfãs.

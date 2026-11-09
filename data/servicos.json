@@ -1,7 +1,7 @@
 [
   {
     "title": "Limpeza de sofás",
-    "description": "Higienização e cuidado para o sofá que reúne seus melhores momentos.",
+    "description": "Categoria demonstrativa para apresentar um cartão de serviço de sofás.",
     "image": "/media/fotos-servicos/sofa.webp",
     "imageAlt": "Imagem ilustrativa gerada por IA de um sofá em uma sala",
     "illustrative": true,
@@ -10,7 +10,7 @@
   },
   {
     "title": "Higienização de colchões",
-    "description": "Cuidados de limpeza para o colchão e o ambiente de descanso.",
+    "description": "Categoria demonstrativa para apresentar um cartão de colchões.",
     "image": "/media/fotos-servicos/colchao.webp",
     "imageAlt": "Imagem ilustrativa gerada por IA de um colchão",
     "illustrative": true,
@@ -19,7 +19,7 @@
   },
   {
     "title": "Limpeza de cadeiras",
-    "description": "Higienização de cadeiras estofadas para casa ou escritório.",
+    "description": "Categoria demonstrativa para apresentar cartões de cadeiras estofadas.",
     "image": "/media/fotos-servicos/cadeiras.webp",
     "imageAlt": "Imagem ilustrativa gerada por IA de cadeiras estofadas",
     "illustrative": true,
@@ -28,7 +28,7 @@
   },
   {
     "title": "Limpeza de poltronas",
-    "description": "Cuidado dedicado às poltronas do seu ambiente.",
+    "description": "Categoria demonstrativa para apresentar um cartão de poltronas.",
     "image": "/media/fotos-servicos/poltrona.webp",
     "imageAlt": "Imagem ilustrativa gerada por IA de uma poltrona",
     "illustrative": true,
@@ -37,7 +37,7 @@
   },
   {
     "title": "Bancos automotivos",
-    "description": "Higienização de bancos estofados e cuidado com o interior do veículo.",
+    "description": "Categoria demonstrativa para apresentar um cartão de bancos automotivos.",
     "image": "/media/fotos-servicos/bancos-automotivos.webp",
     "imageAlt": "Imagem ilustrativa gerada por IA de bancos automotivos",
     "illustrative": true,

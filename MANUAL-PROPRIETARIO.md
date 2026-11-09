@@ -1,139 +1,99 @@
-# Manual do proprietário — Prime-Clean
+# Manual da demonstração — Prime-Clean
 
-Este manual explica como atualizar o site sem editar código. Faça alterações
-com calma e confira a prévia antes de divulgar qualquer endereço.
+> **Projeto fictício para portfólio — demonstração de interface e gerenciamento
+> de conteúdo; não é uma empresa em operação.**
 
-## Antes de começar
+Este manual descreve como explorar o Pages CMS como ferramenta didática. A
+Prime-Clean não presta serviços, não recebe pedidos e não possui contatos
+comerciais.
 
-Você precisa entrar no Pages CMS com a conta GitHub autorizada para acessar
-`dp-tech021/Prime-Clean`. Entrar no Pages CMS não basta: a GitHub App também
-precisa ter acesso a este repositório.
+## Acessar o painel demonstrativo
 
-Antes de publicar, confirme:
+1. Entre no Pages CMS com uma conta GitHub autorizada.
+2. Abra o repositório `dp-tech021/Prime-Clean`.
+3. Selecione uma branch de teste, nunca a `main` diretamente.
+4. Confira os editores de campos institucionais, serviços demonstrativos e
+   comparações demonstrativas.
 
-- nome, identidade visual e textos aprovados pela empresa;
-- região atendida correta;
-- titularidade do perfil do Instagram;
-- número de WhatsApp ativo e testado em uma conversa real;
-- autorização para publicar cada foto de cliente.
+O login no CMS não concede acesso sozinho. A GitHub App também precisa estar
+autorizada para o repositório.
 
-Enquanto essas confirmações estiverem pendentes, mantenha a prévia sem domínio
-comercial e não divulgue o endereço como site oficial.
+## Campos institucionais
 
-## Alterar contatos e região
+`data/site.json` preserva `whatsapp`, `instagram` e `area` para demonstrar um
+schema já existente. Neste portfólio:
 
-1. Abra o Pages CMS e selecione o repositório `dp-tech021/Prime-Clean`.
-2. Confira se está trabalhando na branch desejada.
-3. Abra **Contatos e área de atendimento**.
-4. Atualize Instagram, WhatsApp ou área de atendimento.
-5. Salve e espere o commit terminar.
-6. Abra a prévia e confira o rodapé, os botões e o texto de contato.
+- `whatsapp` deve permanecer vazio;
+- `instagram` deve permanecer vazio;
+- `area` deve informar que não existe área de atendimento.
 
-Use o WhatsApp somente depois de confirmar que o número recebe mensagens. O
-campo deve conter DDI, DDD e número, apenas com dígitos. O site usa o Instagram
-informado como canal alternativo enquanto o WhatsApp estiver vazio.
+A interface ignora contatos externos e não cria links comerciais, mesmo que
+esses campos sejam alterados por engano.
 
-## Alterar um serviço
+## Editar um serviço demonstrativo
 
-1. Abra **Serviços** no Pages CMS.
-2. Escolha um item existente ou adicione um item à lista.
-3. Preencha título, descrição, texto alternativo e ordem.
-4. Envie uma foto em WebP, JPEG ou PNG.
-5. Marque **Imagem ilustrativa** quando a imagem não representar um serviço real.
-6. Use **Exibir no site** para mostrar ou ocultar o serviço.
-7. Salve e confira a prévia em celular e computador.
+1. Abra **Serviços demonstrativos**.
+2. Escolha um dos cinco cartões.
+3. Edite título, descrição, ordem ou visibilidade.
+4. Mantenha um texto alternativo que descreva a imagem.
+5. Deixe **Imagem ilustrativa ou gerada por IA** ativado.
+6. Salve e confira a branch em servidor local ou prévia.
 
-O texto alternativo deve explicar o conteúdo útil da imagem em uma frase curta.
-Não repita apenas o nome do arquivo.
+As imagens existentes são sintéticas. Elas não podem ser descritas como
+fotografias de trabalhos ou clientes.
 
-## Publicar um antes e depois
+## Editar uma comparação sintética
 
-Use apenas duas fotos reais, autorizadas e do mesmo estofado.
+1. Abra **Comparações demonstrativas**.
+2. Use somente um par inteiramente sintético do mesmo objeto em dois estados.
+3. Preencha título, categoria, descrição e textos alternativos.
+4. Mantenha **Simulação gerada por IA** ativado.
+5. Mantenha `consentConfirmed` desativado.
+6. Use **Exibir na demonstração** somente após revisar as duas imagens.
+7. Salve e teste o controle por mouse, toque e teclado.
 
-1. Abra **Trabalhos (antes e depois)**.
-2. Adicione um item à lista.
-3. Preencha título, categoria ou serviço e descrição.
-4. Envie a foto **antes** e a foto **depois**.
-5. Escreva um texto alternativo diferente para cada foto.
-6. Informe a ordem em que o trabalho deve aparecer.
-7. Confirme que existe autorização de publicação e ative **Consentimento
-   confirmado**.
-8. Ative **Exibir no site** somente após revisar o par completo.
-9. Salve e teste o controle de comparação na prévia.
+`consentConfirmed` existe por compatibilidade com o schema original. Em dados
+sintéticos, ele não representa nem comprova consentimento jurídico. O campo
+separado `demonstrative` identifica a simulação e é exigido pelo frontend.
 
-Um registro incompleto, oculto, sem consentimento ou com arquivo inexistente não
-aparece no site. Nunca use imagens geradas por IA ou banco de imagens para
-simular resultados.
+## Mídias
 
-## Privacidade das fotos
+- use WebP, JPEG ou PNG local;
+- não baixe imagens de terceiros sem licença;
+- não inclua pessoas, placas, documentos, endereços ou dados pessoais;
+- identifique conteúdo gerado por IA no texto alternativo e na descrição;
+- confirme que um par comparativo mostra o mesmo objeto.
 
-Antes do envio:
+Excluir um item da lista não remove automaticamente sua mídia nem versões
+antigas do histórico Git. Embora este projeto use apenas arquivos sintéticos,
+revise referências antes de apagar qualquer arquivo.
 
-- obtenha autorização clara para publicação;
-- remova rostos, placas, documentos, endereços e objetos com dados pessoais;
-- remova localização, EXIF e outros metadados quando existirem;
-- confirme que as duas fotos mostram o mesmo item;
-- evite nomes de clientes nos títulos e nomes dos arquivos.
+## Backup e recuperação
 
-O repositório é público. Uma mídia enviada pode ficar acessível mesmo com o item
-oculto. Excluir um registro não apaga automaticamente o arquivo de mídia e não
-remove versões antigas do histórico Git.
+Antes de uma alteração ampla:
 
-## Ocultar, excluir e limpar mídias
+1. anote o commit atual da `main`;
+2. crie uma branch;
+3. opcionalmente, use **Code → Download ZIP** no GitHub;
+4. salve pelo CMS e revise o commit criado.
 
-- Para tirar um conteúdo do site rapidamente, desative **Exibir no site** e
-  salve.
-- Para excluir, remova o item da lista e salve. Depois confirme na prévia que ele
-  desapareceu.
-- Acesse a biblioteca de mídia e remova o arquivo somente após confirmar que
-  nenhum serviço ou comparação ainda o utiliza.
-- A exclusão atual não apaga cópias presentes no histórico Git.
+Para desfazer uma alteração, crie uma branch de recuperação e use
+`git revert <commit>`. Teste novamente e abra um PR. Não reescreva o histórico
+compartilhado da `main`.
 
-Quando houver dúvida, apenas oculte o item e peça uma revisão técnica.
+## Checklist da prévia
 
-## Backup antes de uma alteração grande
-
-1. Na página do repositório no GitHub, anote o commit atual da `main`.
-2. Use **Code → Download ZIP** para guardar uma cópia local do site.
-3. Guarde separadamente os termos de consentimento das fotos; não coloque esses
-   documentos no repositório público.
-4. Faça a mudança em uma branch e preserve a `main` até a prévia ser aprovada.
-
-O ZIP é uma cópia de segurança prática. O histórico Git continua sendo a fonte
-principal para recuperar versões do site.
-
-## Recuperar uma versão
-
-Cada salvamento do Pages CMS cria um commit. Se uma atualização der problema:
-
-1. oculte o conteúdo problemático, se o painel ainda estiver funcionando;
-2. localize o commit anterior na aba **Commits** do GitHub;
-3. crie uma branch de recuperação a partir da `main`;
-4. reverta o commit problemático com `git revert <commit>` ou restaure os
-   arquivos a partir do commit anterior;
-5. teste a branch e abra um PR para revisão.
-
-Peça ajuda técnica se não estiver confortável com Git. Não apague nem reescreva
-o histórico compartilhado da `main`.
-
-## Conferência depois de salvar
-
-- a página abre sem aviso de erro;
-- o menu funciona no celular e fecha com Escape no teclado;
-- títulos, acentos e ordem estão corretos;
-- imagens carregam sem distorção e têm texto alternativo;
+- o aviso de projeto fictício aparece no topo e no rodapé;
+- nenhum botão abre telefone, e-mail, mapa, WhatsApp ou rede social;
+- os cinco serviços aparecem com aviso de imagem gerada por IA;
+- todas as comparações visíveis mostram o rótulo **SIMULAÇÃO**;
+- menu, FAQ e comparador funcionam por teclado;
 - conteúdos ocultos não aparecem;
-- a galeria não mostra pares incompletos;
-- Instagram abre o perfil informado;
-- WhatsApp só aparece depois do teste do número;
-- não há rosto, placa, endereço ou dado pessoal nas fotos.
+- não há erro de imagem ou overflow horizontal.
 
-## Limites desta configuração
+## Limites
 
-O site é estático e não tem banco de dados. O Pages CMS salva mudanças como
-commits no GitHub. A hospedagem pode manter cache por alguns minutos, e uma
-alteração pode demorar a aparecer. Não há analytics instalado.
-
-O acesso autenticado ao Pages CMS e o ciclo real de upload ainda precisam ser
-validados pelo proprietário. Não considere o painel aprovado antes de executar
-o roteiro registrado em `QA-PUBLICACAO.md`.
+O site é estático, não tem banco de dados e não possui formulário funcional. O
+Pages CMS cria commits no GitHub e serve apenas como demonstração de um fluxo de
+administração de conteúdo. Nenhuma alteração deve transformar o protótipo em
+uma empresa aparente ou adicionar contatos de terceiros.
