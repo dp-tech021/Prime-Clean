@@ -1,21 +1,32 @@
 import './styles.css';
 import { makeSupabaseClient } from './lib/supabase-client.js';
 import { createAuthService, AuthError } from './lib/auth-service.js';
+import { createMediaService } from './lib/media-service.js';
+import { createAdminController } from './lib/admin-controller.js';
 
 const views = Object.fromEntries(['loading', 'config', 'login', 'dashboard'].map((name) => [name, document.querySelector(`#${name}-view`)]));
 const show = (name) => Object.entries(views).forEach(([key, view]) => { view.hidden = key !== name; });
 const status = document.querySelector('#login-status');
 const loginButton = document.querySelector('#login-button');
 
-function showDashboard(session) {
+let controller;
+
+async function showDashboard(session) {
   document.querySelector('#session-user').textContent = session.user.email || 'Administrador autorizado';
   show('dashboard');
   document.querySelector('#inicio').focus({ preventScroll: true });
+  try { await controller.refresh(); }
+  catch {
+    document.querySelector('#dashboard-status').textContent = 'Não foi possível carregar os dados. Verifique sua conexão e atualize a lista.';
+  }
 }
 
 let auth;
 try {
-  auth = createAuthService(makeSupabaseClient(import.meta.env));
+  const client = makeSupabaseClient(import.meta.env);
+  auth = createAuthService(client);
+  const media = createMediaService(client, () => auth.requireAuthorized());
+  controller = createAdminController(media, { onUnauthorized: () => show('login') });
 } catch (error) {
   document.querySelector('#config-message').textContent = error.message;
   show('config');
@@ -39,7 +50,7 @@ if (auth) {
     loginButton.textContent = 'Verificando…';
     try {
       const data = new FormData(event.currentTarget);
-      showDashboard(await auth.login(String(data.get('email')).trim(), String(data.get('password'))));
+      await showDashboard(await auth.login(String(data.get('email')).trim(), String(data.get('password'))));
       event.currentTarget.reset();
     } catch (error) {
       status.textContent = error instanceof AuthError ? error.message : 'Falha inesperada ao entrar.';

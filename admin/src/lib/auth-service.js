@@ -20,6 +20,11 @@ export function createAuthService(client) {
   }
 
   return {
+    async requireAuthorized() {
+      const { data, error } = await client.auth.getSession();
+      if (error || !data.session) throw new AuthError('Sua sessão expirou. Entre novamente.');
+      return authorize(data.session);
+    },
     async restore() {
       const { data, error } = await client.auth.getSession();
       if (error) throw new AuthError('Não foi possível verificar a sessão.');

@@ -70,12 +70,74 @@
             <strong>Prime-Clean é uma demonstração de portfólio.</strong>
             <span>O painel não representa uma empresa em operação.</span>
           </div>
-          <div class="feature-grid">
-            <article id="foto-principal"><h2>Foto principal</h2><p>Gerenciamento ainda não disponível nesta etapa.</p></article>
-            <article id="servicos"><h2>Serviços</h2><p>Gerenciamento ainda não disponível nesta etapa.</p></article>
-            <article id="comparacoes"><h2>Antes e depois</h2><p>Gerenciamento ainda não disponível nesta etapa.</p></article>
-            <article id="biblioteca"><h2>Biblioteca de imagens</h2><p>Gerenciamento ainda não disponível nesta etapa.</p></article>
-          </div>
+          <p class="public-warning">As imagens enviadas ficam em um bucket público. Use somente imagens sintéticas e sem dados pessoais. Ocultar não revoga uma URL já compartilhada.</p>
+
+          <section id="foto-principal" class="admin-section" aria-labelledby="hero-title">
+            <div class="section-heading"><div><p class="eyebrow">Destaque</p><h2 id="hero-title">Foto principal</h2></div></div>
+            <div class="editor-grid">
+              <figure class="image-preview"><img id="hero-preview" alt="" hidden /><figcaption id="hero-caption">Nenhuma foto selecionada.</figcaption></figure>
+              <div>
+                <form id="hero-form" class="editor-form">
+                  <label for="hero-asset">Imagem da biblioteca</label>
+                  <select id="hero-asset" name="assetId" data-media-select data-empty-label="Sem foto principal"></select>
+                  <label class="check"><input name="visible" type="checkbox" /> Exibir foto principal</label>
+                  <button type="submit">Salvar foto principal</button>
+                </form>
+                <form id="hero-upload-form" class="editor-form compact" data-upload-prefix="hero">
+                  <h3>Enviar ou substituir</h3>
+                  <label for="hero-file">Arquivo WebP, JPEG ou PNG — até 5 MiB</label>
+                  <input id="hero-file" name="file" type="file" accept="image/webp,image/jpeg,image/png" required />
+                  <label for="hero-alt">Texto alternativo</label>
+                  <input id="hero-alt" name="altText" required placeholder="Imagem ilustrativa gerada por IA de uma sala" />
+                  <button type="submit">Enviar e usar nova imagem</button>
+                </form>
+              </div>
+            </div>
+          </section>
+
+          <section id="servicos" class="admin-section" aria-labelledby="services-title">
+            <div class="section-heading"><div><p class="eyebrow">Conteúdo</p><h2 id="services-title">Serviços</h2></div></div>
+            <form id="service-form" class="editor-form panel-form">
+              <input name="id" type="hidden" />
+              <label>Título<input name="title" maxlength="100" required /></label>
+              <label>Descrição<textarea name="description" rows="3" required></textarea></label>
+              <div class="form-row"><label>Ordem<input name="order" type="number" min="1" value="1" required /></label><label class="check"><input name="visible" type="checkbox" /> Publicado</label></div>
+              <label>Foto existente<select name="assetId" data-media-select data-empty-label="Sem imagem"></select></label>
+              <details><summary>Enviar uma foto nova</summary><label>Arquivo<input name="file" type="file" accept="image/webp,image/jpeg,image/png" /></label><label>Texto alternativo<input name="altText" placeholder="Imagem ilustrativa gerada por IA de um sofá" /></label></details>
+              <div class="button-row"><button type="submit">Salvar serviço</button><button id="service-cancel" class="secondary" type="button" hidden>Cancelar edição</button></div>
+            </form>
+            <div id="service-list" class="record-list" aria-live="polite"></div>
+          </section>
+
+          <section id="comparacoes" class="admin-section" aria-labelledby="comparisons-title">
+            <div class="section-heading"><div><p class="eyebrow">Simulações</p><h2 id="comparisons-title">Antes e depois</h2></div></div>
+            <form id="comparison-form" class="editor-form panel-form">
+              <input name="id" type="hidden" />
+              <label>Título<input name="title" maxlength="120" required /></label>
+              <label>Categoria ou serviço<input name="serviceName" maxlength="100" required /></label>
+              <label>Descrição<textarea name="description" rows="3"></textarea></label>
+              <div class="form-row"><label>Ordem<input name="order" type="number" min="1" value="1" required /></label><label class="check"><input name="published" type="checkbox" /> Publicado</label></div>
+              <div class="editor-grid">
+                <fieldset><legend>Imagem antes</legend><label>Foto existente<select name="beforeId" data-media-select data-empty-label="Selecione"></select></label><label>Ou novo arquivo<input name="beforeFile" type="file" accept="image/webp,image/jpeg,image/png" /></label><label>Texto alternativo<input name="beforeAlt" placeholder="Simulação gráfica gerada por IA — antes" /></label></fieldset>
+                <fieldset><legend>Imagem depois</legend><label>Foto existente<select name="afterId" data-media-select data-empty-label="Selecione"></select></label><label>Ou novo arquivo<input name="afterFile" type="file" accept="image/webp,image/jpeg,image/png" /></label><label>Texto alternativo<input name="afterAlt" placeholder="Simulação gráfica gerada por IA — depois" /></label></fieldset>
+              </div>
+              <p class="hint">As duas imagens são obrigatórias, distintas e apresentadas como simulação gráfica.</p>
+              <div class="button-row"><button type="submit">Salvar comparação</button><button id="comparison-cancel" class="secondary" type="button" hidden>Cancelar edição</button></div>
+            </form>
+            <div id="comparison-list" class="record-list" aria-live="polite"></div>
+          </section>
+
+          <section id="biblioteca" class="admin-section" aria-labelledby="library-title">
+            <div class="section-heading"><div><p class="eyebrow">Arquivos públicos</p><h2 id="library-title">Biblioteca de imagens</h2></div><button id="refresh-button" class="secondary" type="button">Atualizar lista</button></div>
+            <form id="library-upload-form" class="editor-form panel-form">
+              <label>Área<select name="prefix"><option value="hero">Foto principal</option><option value="services">Serviços</option><option value="comparisons">Antes e depois</option></select></label>
+              <label>Arquivo WebP, JPEG ou PNG — até 5 MiB<input name="file" type="file" accept="image/webp,image/jpeg,image/png" required /></label>
+              <label>Texto alternativo<input name="altText" required placeholder="Imagem ilustrativa gerada por IA" /></label>
+              <label class="check"><input name="publicVisible" type="checkbox" checked /> Metadados visíveis publicamente</label>
+              <button type="submit">Enviar para a biblioteca</button>
+            </form>
+            <div id="media-list" class="media-grid" aria-live="polite"></div>
+          </section>
         </div>
       </section>
     </main>

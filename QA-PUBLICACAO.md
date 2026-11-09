@@ -89,10 +89,20 @@ cadastro, falha de rede, credenciais inválidas, restauração, expiração e lo
 Também verificam que o painel segue o contrato RLS das migrations oficiais da
 raiz e que não existe outra árvore de migrations em `admin/`.
 
+O gerenciamento de imagens acrescenta casos de upload válido, MIME inválido,
+arquivo maior que 5 MiB, bloqueio sem autorização, falha de conexão,
+compensação de cadastro, substituição com nome novo, par repetido, exclusão
+referenciada e limpeza de mídia órfã. O build continua auditado contra
+credenciais privilegiadas.
+
 Os testes SQL em `supabase/tests/rls_sem_credenciais.sql` são transacionais e
 destinados a banco local ou descartável autorizado. Login real, revogação de
 sessão e chamada direta à API ainda dependem de contas controladas pela dupla e
 devem permanecer marcados como pendentes até execução efetiva.
+
+Também permanecem pendentes os testes E2E com Storage real: upload, troca,
+ocultação, ordenação, bloqueio por FK/policy, exclusão e reconciliação entre
+arquivo e registro. Não usar o projeto remoto para dados de teste sem aprovação.
 
 ## Contexto validado
 
