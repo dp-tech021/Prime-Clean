@@ -1,27 +1,14 @@
-# Plugins e integrações — Prime-Clean
+# Plugins e integracoes — Prime-Clean
 
-Este inventário cobre apenas integrações relacionadas ao repositório
-`dp-tech021/Prime-Clean`. Não há código de plugins, pacotes npm ou executáveis
-de terceiros nestas pastas.
+O repositorio utiliza GitHub para versionamento e possui configuracao de edicao de conteudo para o Pages CMS. Os arquivos em `plugins/` sao **documentacao**, nao plugins executaveis.
 
-| Integração | Tipo | Estado confirmado | Instalação no código? |
+| Integracao | Finalidade | Estado no repositorio | Pacote npm? |
 | --- | --- | --- | --- |
-| [Pages CMS](https://pagescms.org/) | CMS hospedado | O proprietário informou que conectou sua conta GitHub; o repositório ainda não contém `.pages.yml` | Não é um pacote do site |
-| [GitHub](https://github.com/dp-tech021/Prime-Clean) | Repositório e controle de versões | Repositório e branches acessíveis | Não |
+| [Pages CMS](https://pagescms.org/) | Editar registros de trabalhos e imagens | `.pages.yml` configurado; uso na interface precisa de teste manual | Nao |
+| [GitHub](https://github.com/dp-tech021/Prime-Clean) | Historico de arquivos, commits e PRs | Repositorio acessivel | Nao |
 
-## Pages CMS
+Veja [PAGES-CMS.md](./PAGES-CMS.md) para caminhos, campos, seguranca e testes de uso.
 
-A conexão da conta GitHub informada pelo proprietário não conclui a integração
-com este repositório. O Pages CMS depende de um arquivo `.pages.yml` na raiz do
-projeto, e esse arquivo ainda não existe. Ele será adicionado e validado no
-Prompt 03. Até lá, não há coleções ou campos do Prime-Clean configurados no CMS.
+## Manutencao
 
-Consulte [PAGES-CMS.md](./PAGES-CMS.md) para o estado e os cuidados da futura
-configuração.
-
-## Manutenção
-
-Registre uma integração somente quando houver evidência no repositório ou uma
-confirmação explícita do proprietário. Inclua finalidade, URL oficial, arquivo
-de configuração e versão apenas quando ela for aplicável e verificável. Nunca
-registre tokens, senhas ou outras credenciais.
+Documente apenas dependencias e integracoes verificadas. Nunca armazene tokens, credenciais, dados reais de clientes ou copias de servicos externos nesta pasta. O site ainda nao consome automaticamente os JSONs gerenciados pelo CMS.

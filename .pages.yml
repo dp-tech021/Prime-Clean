@@ -1,0 +1,86 @@
+# Prime-Clean - Pages CMS (conteudo e imagens do portfolio)
+# Imagens em public/ sao servidas pelo site futuramente em /imagens/.
+media:
+  - name: trabalhos
+    label: Fotos dos trabalhos
+    input: public/imagens/trabalhos
+    output: /imagens/trabalhos
+    extensions: [jpg, jpeg, png, webp]
+    rename: random
+
+content:
+  - name: trabalhos
+    label: Trabalhos (antes e depois)
+    type: collection
+    path: content/trabalhos
+    format: json
+    filename: "{year}-{month}-{day}-{hour}-{minute}-{second}-{primary}.json"
+    exclude: [".gitkeep"]
+    subfolders: false
+    view:
+      primary: titulo
+      fields: [titulo, servico, publicado]
+      sort: [titulo]
+    operations:
+      create: true
+      rename: false
+      delete: true
+    fields:
+      - name: titulo
+        label: Titulo do trabalho
+        type: string
+        required: true
+        options:
+          maxlength: 120
+      - name: servico
+        label: Tipo de servico
+        type: string
+        required: true
+        description: "Ex.: higienizacao de sofa, colchao ou cadeira."
+      - name: descricao
+        label: Descricao do resultado
+        type: text
+      - name: foto_antes
+        label: Foto antes
+        type: image
+        required: true
+        options:
+          media: trabalhos
+      - name: alt_antes
+        label: Descricao da foto antes (acessibilidade)
+        type: string
+        required: true
+      - name: foto_depois
+        label: Foto depois
+        type: image
+        required: true
+        options:
+          media: trabalhos
+      - name: alt_depois
+        label: Descricao da foto depois (acessibilidade)
+        type: string
+        required: true
+      - name: fotos_extras
+        label: Outras fotos do servico
+        type: image
+        description: "Ate 5 imagens complementares."
+        options:
+          media: trabalhos
+          multiple:
+            max: 5
+          unique: true
+      - name: publicado
+        label: Exibir no site
+        type: boolean
+        default: false
+        description: "O site precisa respeitar este campo. A imagem enviada ao repositorio publico ja e acessivel."
+
+settings:
+  content:
+    merge: true
+  commit:
+    templates:
+      create: "cms: adicionar {path}"
+      update: "cms: atualizar {path}"
+      delete: "cms: remover {path}"
+      rename: "cms: renomear {oldPath} para {newPath}"
