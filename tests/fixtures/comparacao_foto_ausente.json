@@ -1,0 +1,13 @@
+{
+  "title": "Comparação sintética com arquivo ausente",
+  "service": "Fixture inválido",
+  "description": "Simulação gerada por IA criada somente para testar uma referência quebrada.",
+  "before": "/media/comparacoes/inexistente.webp",
+  "beforeAlt": "Simulação gerada por IA antes do estado gráfico",
+  "after": "/media/comparacoes/sofa-depois.webp",
+  "afterAlt": "Simulação gerada por IA depois do estado gráfico",
+  "order": 1,
+  "demonstrative": true,
+  "consentConfirmed": false,
+  "published": true
+}
