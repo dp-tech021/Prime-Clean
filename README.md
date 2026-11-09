@@ -81,17 +81,51 @@ O painel permite demonstrar a edição de textos, ordem, visibilidade e caminhos
 de mídia. Seu uso autenticado depende da instalação e das permissões da GitHub
 App e deve ser descrito como teste do protótipo, não como operação comercial.
 
-## Verificações locais
+## QA reproduzível
+
+Pré-requisitos:
+
+- Python 3.10 ou superior;
+- Node.js instalado apenas para a verificação de sintaxe;
+- nenhuma biblioteca Python ou npm adicional.
+
+Execute na raiz do repositório:
 
 ```bash
+python3 scripts/validar_conteudo.py
+python3 -m unittest discover -s tests -p "test_*.py" -v
 node --check app.js
-python3 -m json.tool data/site.json
-python3 -m json.tool data/servicos.json
-python3 -m json.tool data/comparacoes.json
+python3 -m http.server 8000
 ```
 
-Também devem ser testados o aviso de ficção, menu móvel, comparador, navegação
-por teclado, imagens, links internos e viewports de 360 px, 768 px e desktop.
+O validador confere os três JSONs, schemas básicos, campos `order`, caminhos e
+existência das imagens, rotulagem das simulações e ausência de contatos externos
+habilitados. Em sucesso, a primeira linha esperada é:
+
+```text
+OK: dados do repositório válido; 11 imagem(ns) local(is) verificada(s).
+```
+
+Os testes de fixtures devem terminar com `Ran 3 tests` e `OK`. `node --check`
+não imprime nada quando a sintaxe está válida. O servidor HTTP permanece aberto
+até receber `Ctrl+C`; visite `http://localhost:8000` para a revisão visual.
+
+Uma falha retorna código diferente de zero e informa arquivo, índice e campo,
+por exemplo:
+
+```text
+ERRO: tests/fixtures/comparacao_foto_ausente.json:before: arquivo de imagem não encontrado: media/comparacoes/inexistente.webp
+```
+
+As três fixtures ficam em `tests/fixtures/`, fora das pastas consumidas pelo
+site e pelo CMS. Para observar uma falha esperada diretamente:
+
+```bash
+python3 scripts/validar_conteudo.py --fixture tests/fixtures/comparacao_url_externa.json --tipo comparacao
+```
+
+O workflow `.github/workflows/qa.yml` executa as três verificações automáticas
+em pull requests e pushes para `main`.
 
 ## Limites do projeto
 

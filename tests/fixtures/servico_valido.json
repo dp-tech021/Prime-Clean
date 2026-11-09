@@ -1,0 +1,9 @@
+{
+  "title": "Serviço sintético de teste",
+  "description": "Fixture válido que reutiliza uma imagem local do portfólio.",
+  "image": "/media/fotos-servicos/sofa.webp",
+  "imageAlt": "Imagem ilustrativa gerada por IA de um sofá",
+  "illustrative": true,
+  "order": 1,
+  "visible": true
+}

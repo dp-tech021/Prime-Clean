@@ -1,6 +1,47 @@
 # QA do projeto demonstrativo
 
-Auditoria da branch `feat/portfolio-demonstracao`, realizada em 09/11/2026.
+Auditoria visual original da branch `feat/portfolio-demonstracao` e automação
+reproduzível adicionada em `test/qa-automatizado` em 09/11/2026.
+
+## Automação reproduzível
+
+Pré-requisitos: Python 3.10+ e Node.js. Não há dependências externas de teste.
+
+```bash
+python3 scripts/validar_conteudo.py
+python3 -m unittest discover -s tests -p "test_*.py" -v
+node --check app.js
+```
+
+Resultado local desta branch:
+
+```text
+OK: dados do repositório válido; 11 imagem(ns) local(is) verificada(s).
+Ran 3 tests in ...
+OK
+```
+
+`node --check app.js` terminou com código 0 e sem saída. Os fixtures inválidos
+falharam, respectivamente, com `before: arquivo de imagem não encontrado` e
+`before: URL externa não é permitida`.
+
+O validador usa somente a biblioteca padrão. Duplicidade de `order` e lista fora
+de ordem geram aviso, pois o contrato atual permite empate e o frontend ordena
+os registros. Tipo incorreto, booleano no lugar de inteiro ou valor menor que 1
+geram erro.
+
+## GitHub Actions
+
+`.github/workflows/qa.yml` roda em pull requests e pushes para `main`, com
+permissão somente de leitura. Versões verificadas diretamente nos repositórios
+oficiais e fixadas por SHA:
+
+- `actions/checkout@v7`: `3d3c42e5aac5ba805825da76410c181273ba90b1`;
+- `actions/setup-python@v7`: `6d4fd22b20465ccc0f7354476588e8df7c9ca0e0`;
+- `actions/setup-node@v7`: `949feb2413d6458794dcd2491c4babbbce0c15c1`.
+
+O workflow não foi executado no GitHub durante a preparação local. Seu status
+deve ser conferido no PR; não há aprovação de CI presumida.
 
 ## Contexto validado
 
