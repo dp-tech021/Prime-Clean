@@ -39,3 +39,9 @@
 
 /* Comparações sintéticas sempre identificadas, inclusive em cards individuais. */
 .compare-disclaimer{display:inline-block;border-radius:8px;background:#e6efe7;color:#143d33;padding:6px 10px;font-size:11px!important;font-weight:800;letter-spacing:.01em;margin:0 0 10px!important}
+
+/* O aviso torna o caráter fictício evidente antes da primeira dobra. */
+.portfolio-notice{background:#d8edb9;color:#12372e;border-bottom:1px solid #b9d692;padding:10px 0;font-size:13px;line-height:1.4;text-align:center}
+.portfolio-notice strong,.footer-disclaimer strong{font-weight:900}
+.footer-disclaimer{padding:20px 0;border-top:1px solid #ffffff20;color:#d5e7dc;font-size:13px;line-height:1.55}
+@media(max-width:700px){.portfolio-notice{text-align:left;font-size:12px}.portfolio-notice span{display:block}.contact-inner .actions{margin:0}}

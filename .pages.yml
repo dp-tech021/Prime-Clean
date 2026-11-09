@@ -1,4 +1,4 @@
-# Prime-Clean — Pages CMS
+# Prime-Clean — demonstração do Pages CMS em projeto fictício
 # A configuracao e lida por repositorio e por branch. O login no Pages CMS nao
 # substitui a instalacao e a autorizacao da GitHub App neste repositorio.
 media:
@@ -30,28 +30,28 @@ media:
 
 content:
   - name: site
-    label: Contatos e área de atendimento
+    label: Campos institucionais (demonstração)
     type: file
     path: data/site.json
     format: json
     fields:
       - name: instagram
-        label: URL do Instagram informado
+        label: Instagram (manter vazio no portfólio)
         type: string
-        description: "Informe a URL completa. Confirme a titularidade antes de apresentá-la como perfil oficial."
+        description: "Campo preservado apenas para demonstrar o schema. O protótipo não publica contatos externos."
       - name: whatsapp
-        label: WhatsApp validado
+        label: WhatsApp (manter vazio no portfólio)
         type: string
-        description: "Deixe vazio até confirmar que a conta recebe mensagens. Depois, use somente DDI, DDD e número, sem símbolos."
+        description: "Campo preservado apenas para demonstrar o schema. O protótipo não cria links comerciais."
       - name: area
-        label: Área de atendimento
+        label: Contexto exibido no rodapé
         type: string
         required: true
         options:
           maxlength: 160
 
   - name: servicos
-    label: Serviços
+    label: Serviços demonstrativos
     type: file
     path: data/servicos.json
     format: json
@@ -68,9 +68,9 @@ content:
         type: text
         required: true
       - name: image
-        label: Foto do serviço
+        label: Imagem ilustrativa do cartão
         type: image
-        description: "Use apenas imagem autorizada. Fotos ilustrativas não podem aparecer como resultado real."
+        description: "Use somente mídia local autorizada e identifique imagens geradas por IA."
         options:
           media: servicos
           extensions: [webp, jpg, jpeg, png]
@@ -82,7 +82,7 @@ content:
         options:
           maxlength: 180
       - name: illustrative
-        label: Imagem ilustrativa
+        label: Imagem ilustrativa ou gerada por IA
         type: boolean
         default: true
         description: "Ative para imagens geradas ou de referência que não registram um atendimento real."
@@ -99,7 +99,7 @@ content:
         default: true
 
   - name: comparacoes
-    label: Trabalhos (antes e depois)
+    label: Comparações demonstrativas
     type: file
     path: data/comparacoes.json
     format: json
@@ -166,15 +166,15 @@ content:
         default: false
         description: "Ative somente em comparações inteiramente sintéticas, sem fotos ou clientes reais. O site identifica o registro como simulação."
       - name: consentConfirmed
-        label: Consentimento confirmado
+        label: Confirmação editorial do registro
         type: boolean
         default: false
-        description: "Para fotos reais, exige autorização para publicar as duas fotos. Mantenha falso para imagens totalmente sintéticas."
+        description: "Mantenha falso nas simulações sintéticas. O campo demonstra o schema e não constitui prova jurídica de consentimento."
       - name: published
-        label: Exibir no site
+        label: Exibir na demonstração
         type: boolean
         default: false
-        description: "Publique apenas pares completos: trabalhos reais com consentimento, ou simulações explícitas geradas por IA."
+        description: "Use somente um par local, completo, inteiramente sintético e claramente identificado como simulação gráfica."
 
 settings:
   content:

@@ -1,5 +1,11 @@
 # Planejamento Prime-Clean — atualização: fotos e antes/depois (08/11/2026)
 
+> **Contexto atualizado:** a Prime-Clean é uma marca fictícia de portfólio e
+> não representa empresa, clientes ou atendimento real. Menções abaixo a um
+> fluxo comercial descrevem apenas a evolução histórica do protótipo. Contatos
+> externos permanecem vazios e somente comparações sintéticas marcadas como
+> demonstração podem aparecer no site.
+
 ## Requisito adicional aprovado para o planejamento
 
 O proprietário deve conseguir **adicionar, visualizar, substituir/editar informações, ocultar e remover** fotografias sem abrir o código; também precisa cadastrar resultados com um par obrigatório de fotos do mesmo item **ANTES / DEPOIS**, e exibir comparações interativas na página pública.
@@ -11,10 +17,10 @@ O proprietário deve conseguir **adicionar, visualizar, substituir/editar inform
 - [x] Página inicial, cinco serviços, contato e layout responsivo do MVP.
 - [x] Adicionada seção pública "Antes e depois"; comparador por deslizamento com controle de teclado e toque (implementação local).
 - [x] Contatos e serviços migrados para `data/site.json` e `data/servicos.json`, consumidos pelo frontend.
-- [x] Galeria só exibe registros com fotos `before` e `after` válidas; sem fotos reais, exibe aviso de ausência. **Nenhum trabalho fictício foi apresentado como real.**
-- [ ] Não há ainda fotos reais autorizadas.
+- [x] Galeria exibe somente pares sintéticos completos com `demonstrative: true` e aviso explícito de simulação por IA.
+- [x] Nenhuma foto de cliente ou trabalho real faz parte do projeto.
 - [x] O schema do Pages CMS está versionado em `.pages.yml` para trabalhos e imagens.
-- [x] Comparações integradas por `data/comparacoes.json`, mantendo a galeria vazia sem fotos reais autorizadas.
+- [x] Três comparações sintéticas integradas por `data/comparacoes.json`, sem representar resultados reais.
 - [ ] O uso hospedado do CMS e suas operações com arquivos ainda precisam de validação com o proprietário.
 - [ ] Testes com CMS e proprietário e deploy: pendentes.
 
@@ -28,7 +34,7 @@ Manter HTML/CSS/JavaScript e utilizar CMS baseado em Git. **Preferência: Pages 
 
 - `data/site.json`: contatos e região.
 - `data/servicos.json`: lista ordenada de serviços com título, descrição, imagem, texto alternativo e visibilidade.
-- `data/comparacoes.json`: lista editável com `title`, `service`, `description`, `before`, `after`, `beforeAlt`, `afterAlt`, `order`, `consentConfirmed` e `published`. O frontend rejeita pares incompletos, não autorizados ou ocultos.
+- `data/comparacoes.json`: lista editável com `title`, `service`, `description`, `before`, `after`, `beforeAlt`, `afterAlt`, `order`, `demonstrative`, `consentConfirmed` e `published`. O frontend rejeita pares incompletos, externos, ocultos ou sem marcação demonstrativa.
 - `media/`: arquivos jpg/png/webp/avif enviados pelo CMS. Usar nomes únicos e otimização.
 
 Não buscar diretórios via JS em produção: hospedagem estática não expõe listagem de arquivos de forma confiável. Preferir índice explícito em JSON ou um pequeno build automático.
@@ -44,12 +50,12 @@ Não buscar diretórios via JS em produção: hospedagem estática não expõe l
 
 ## Regras de qualidade e privacidade
 
-- Publicar somente fotografias reais de trabalhos autorizadas pelo cliente. Retirar placas legíveis, rostos, documentos, endereços e metadados EXIF/GPS antes do upload.
-- Para comparar honestamente, usar o **mesmo estofado**, enquadramento e iluminação semelhantes. Não retocar para simular resultado ou usar imagens ilustrativas como provas.
+- Publicar somente imagens sintéticas locais, claramente identificadas como simulação gráfica gerada por IA.
+- Cada par deve mostrar o mesmo objeto em dois estados e jamais ser apresentado como prova de resultado.
 - Um par incompleto não pode ser publicado; alt text diferente para antes e depois.
 - Referência inicial de tamanho de arquivo: reduzir para ~1600px na maior dimensão e, quando possível, ~300–500 KB por foto; verificar a qualidade caso a foto precise de detalhe. São **metas internas sugeridas**, não limites do CMS.
 - Fotos em repositório Git público podem continuar acessíveis no histórico mesmo após exclusão. **Não enviar fotos privadas ou não autorizadas.**
-- Não armazenar segredos no repositório/IA. WhatsApp `+55 (21) 4002-8922` informado, mas não confirmado como conta ativa; manter sem ativar até confirmação. Região: Rio de Janeiro; Instagram `@Prime_Clean` ainda necessita validação.
+- Não armazenar segredos no repositório/IA. WhatsApp, Instagram, endereço e área de atendimento permanecem vazios porque não existe operação comercial.
 
 ## Ações da dupla
 

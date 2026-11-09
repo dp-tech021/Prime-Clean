@@ -1,43 +1,42 @@
-# Prime-Clean — MVP atualizado (08/11/2026)
+# Prime-Clean — projeto fictício de portfólio
 
-Landing page comercial responsiva, sem framework e sem banco de dados. Objetivo: apresentar serviços e captar pedidos de orçamento. **Atualização: contatos, serviços e comparações foram migrados para JSON e integrados ao frontend. A configuração do Pages CMS está versionada, mas ainda não foi testada na interface hospedada. A seção de antes/depois contém três simulações geradas por IA para demonstrar o comparador, com identificação visual explícita; não são trabalhos reais.**
+> **Projeto fictício para portfólio — demonstração de interface e gerenciamento
+> de conteúdo; não é uma empresa em operação.**
 
-## Como testar localmente
+A Prime-Clean é uma marca criada exclusivamente como estudo de portfólio por
+dois desenvolvedores em formação. O repositório demonstra um site estático
+responsivo, conteúdo em JSON e configuração do Pages CMS. Não há empresa,
+clientes, atendimento comercial ou contatos externos associados ao projeto.
 
-1. Extraia o ZIP ou copie os arquivos para uma pasta.
-2. Abra um terminal nessa pasta, execute `python3 -m http.server 8000` (Python instalado) e visite `http://localhost:8000`.
-3. Teste no celular (ou ferramentas responsivas do navegador) e clique no botão **Solicitar orçamento**.
-4. Enquanto não houver WhatsApp validado, a ação abre o Instagram informado, **não** o WhatsApp. Confira com o proprietário se o perfil de destino é dele.
+## Executar localmente
 
-Nenhum `npm install` é necessário.
+```bash
+python3 -m http.server 8000
+```
 
-Para operação do painel e revisão antes de publicar, consulte
-[`MANUAL-PROPRIETARIO.md`](./MANUAL-PROPRIETARIO.md) e
-[`QA-PUBLICACAO.md`](./QA-PUBLICACAO.md).
+Abra `http://localhost:8000`. Nenhuma dependência de execução ou etapa de build
+é necessária.
 
-## Informações fornecidas
+## Estrutura
 
-- Região: **Rio de Janeiro, RJ**, com bairros ainda a confirmar.
-- Instagram informado: `@Prime_Clean` → `https://www.instagram.com/Prime_Clean/`. **Titularidade e disponibilidade não verificadas.**
-- WhatsApp informado: `+55 (21) 4002-8922`. **Não configurado no site, pois não foi confirmado que recebe mensagens no WhatsApp.**
-- Identidade visual: ainda não existe. Layout atual em verde, creme e tons claros é uma **proposta**, não aprovação da marca.
+- `index.html`, `styles.css` e `app.js`: interface em HTML, CSS e JavaScript.
+- `data/site.json`: campos institucionais mantidos para demonstrar o CMS; os
+  contatos permanecem vazios.
+- `data/servicos.json`: cinco cartões demonstrativos com imagens ilustrativas.
+- `data/comparacoes.json`: três pares sintéticos para demonstrar o comparador.
+- `.pages.yml`: schema demonstrativo para editar listas, textos e mídias.
+- `media/`: imagens locais do protótipo.
 
-## Como editar o conteúdo
+Consulte `MANUAL-PROPRIETARIO.md` para o fluxo editorial demonstrativo e
+`QA-PUBLICACAO.md` para a auditoria e os testes.
 
-- `data/site.json`: Instagram informado, WhatsApp validado e área de atendimento.
-- `data/servicos.json`: título, descrição, foto, texto alternativo, indicação de imagem ilustrativa, ordem e visibilidade de cada serviço.
-- `data/comparacoes.json`: trabalhos com título, serviço, descrição, ordem, publicação, consentimento e duas fotos obrigatórias com textos alternativos.
-- `.pages.yml`: apresenta esses arquivos e as bibliotecas de mídia no Pages CMS.
+## Serviços e imagens
 
-O campo `whatsapp` deve ficar vazio até a confirmação do número correto e teste de conversa. Depois, preencher com DDI+DDD+número **apenas dígitos**, por exemplo `55...`. O padrão numérico sozinho **não prova** que existe WhatsApp nesse número.
+Os cinco serviços são categorias de demonstração. Suas imagens foram geradas
+por IA, usam textos alternativos e aparecem com o rótulo **Imagem ilustrativa /
+gerada por IA**. Elas não representam trabalhos realizados.
 
-O frontend carrega os JSONs por HTTP, valida seus tipos e usa conteúdo local de segurança se a leitura falhar. As demais seções fixas continuam em `index.html`. Consulte `PLANEJAMENTO.md` e `plugins/PAGES-CMS.md`.
-
-## Imagens ilustrativas
-
-Os cartões de serviço usam imagens ilustrativas geradas por IA. Elas não são
-fotografias de atendimentos da Prime-Clean e não podem ser apresentadas como
-resultados reais ou usadas na seção **Antes e depois**:
+Arquivos preservados:
 
 - `media/fotos-servicos/sofa.webp`
 - `media/fotos-servicos/colchao.webp`
@@ -45,57 +44,59 @@ resultados reais ou usadas na seção **Antes e depois**:
 - `media/fotos-servicos/poltrona.webp`
 - `media/fotos-servicos/bancos-automotivos.webp`
 
-O arquivo `media/hero/hero-sala.webp` também é uma imagem ilustrativa gerada por
-IA, mantida como opção editorial e ainda não usada pelo layout.
+## Comparador demonstrativo
 
-## Checklist para publicar
+O comparador usa três pares locais inteiramente sintéticos: sofá, colchão e
+cadeira. Cada cartão informa **SIMULAÇÃO**, identifica as imagens como geradas
+por IA e declara que não se trata de trabalho real. Os pares representam o
+mesmo objeto em dois estados gráficos e não constituem prova de resultado.
 
-- [ ] Validar titularidade do Instagram e testar link real.
-- [ ] Confirmar número oficial do WhatsApp da empresa e testar diálogo em aparelho externo.
-- [ ] Confirmar bairros atendidos e a disponibilidade dos cinco serviços.
-- [ ] Aprovar identidade visual, fotografias reais autorizadas, textos e chamadas comerciais.
-- [ ] Revisar alterações em PR e testar 360px, 768px e desktop, teclado, contraste e links.
-- [ ] Publicar no Cloudflare Pages quando aprovada a versão (plano gratuito com limites; confirmar antes de implantar).
-- [ ] Testar editor visual (Etapa 2) com o proprietário antes de declarar o requisito concluído.
+Um registro sintético usa:
 
-## Colaboração
-
-Uma branch por alteração; abrir pull request, fazer revisão cruzada e só então fazer merge. Não inserir senhas, tokens ou dados pessoais reais no código nem em ferramentas de IA.
-
-## Referências
-
-- WhatsApp clique para conversar: https://faq.whatsapp.com/5913398998672934/?locale=pt_BR
-- Pages CMS: https://pagescms.org/docs/quick-start/
-- Cloudflare Pages: https://developers.cloudflare.com/pages/platform/limits/
-- GitHub Pages limita uso comercial: https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits
-
-## Galeria de fotos e comparador
-
-A página lê `data/comparacoes.json` e apresenta apenas registros publicados, com duas imagens locais distintas e textos alternativos. Fotografias reais precisam de `consentConfirmed: true`; imagens inteiramente sintéticas precisam de `demonstrative: true` e exibem aviso de simulação. Como **não recebemos fotos reais e autorizadas**, a página demonstra o comparador com três pares totalmente sintéticos, marcados como simulações por IA. Não devem ser apresentados como atendimentos reais.
-
-O modelo de um registro de comparação é:
-
-```js
-comparisons: [{
-  title: "Limpeza de sofá — demonstração autorizada",
-  service: "Sofás",
-  description: "Comparação do mesmo sofá antes e depois do atendimento.",
-  before: "/media/comparacoes/sofa-antes.webp",
-  after: "/media/comparacoes/sofa-depois.webp",
-  beforeAlt: "Sofá antes do procedimento",
-  afterAlt: "Mesmo sofá após o procedimento",
-  order: 1,
-  consentConfirmed: true,
-  published: true
-}]
+```json
+{
+  "title": "Sofá — exemplo sintético",
+  "before": "/media/comparacoes/sofa-antes.webp",
+  "after": "/media/comparacoes/sofa-depois.webp",
+  "demonstrative": true,
+  "consentConfirmed": false,
+  "published": true
+}
 ```
 
-Um serviço em `data/servicos.json` pode ter campo `image`, como `image: "/media/fotos-servicos/sofa.webp"`; caso não tenha, seu cartão continua com ícone. Para não publicar informações não autorizadas, os dados acima são **apenas um exemplo de estrutura**, não uma promessa nem fotos fornecidas.
+O campo `consentConfirmed` foi concebido originalmente para fotos reais, mas
+fica `false` em todas as simulações. Ele permanece apenas para demonstrar o
+schema editorial e não constitui prova jurídica. O campo separado
+`demonstrative` identifica conteúdo sintético e é obrigatório para que uma
+comparação apareça neste portfólio.
 
-O Pages CMS edita o array com `type: file`, `format: json` e `list: true`. O proprietário pode adicionar, editar, ocultar, reordenar pelo campo `order` e remover itens sem editar código. Esse fluxo ainda precisa ser testado na interface hospedada.
+## Pages CMS
 
-**Atenção:** apagar um registro não implica necessariamente apagar seu arquivo do Git, e apagar arquivos do Git não garante remoção do histórico público. Nunca inserir fotos privadas sem autorização.
+O Pages CMS é apresentado como demonstração de administração de conteúdo em um
+site estático baseado em Git. Os campos de WhatsApp e Instagram foram
+preservados no schema para fins didáticos, mas ficam vazios e não geram links na
+interface.
 
-### Demonstrações de antes/depois (portfólio)
+O painel permite demonstrar a edição de textos, ordem, visibilidade e caminhos
+de mídia. Seu uso autenticado depende da instalação e das permissões da GitHub
+App e deve ser descrito como teste do protótipo, não como operação comercial.
 
-As três comparações de sofá, colchão e cadeira são totalmente geradas por IA e não registram atendimentos. Seus arquivos ficam em `media/comparacoes/` (`*-antes.webp` e `*-depois.webp`). O CMS expõe `demonstrative` (simulação) e `consentConfirmed` (autorização de fotos reais). Não altere uma simulação para registro real sem substituir as imagens por fotos autênticas autorizadas. O comparador permite arrastar o controle e também usar as setas do teclado.
+## Verificações locais
+
+```bash
+node --check app.js
+python3 -m json.tool data/site.json
+python3 -m json.tool data/servicos.json
+python3 -m json.tool data/comparacoes.json
+```
+
+Também devem ser testados o aviso de ficção, menu móvel, comparador, navegação
+por teclado, imagens, links internos e viewports de 360 px, 768 px e desktop.
+
+## Limites do projeto
+
+- não oferece orçamento, atendimento ou contratação;
+- não possui telefone, e-mail, endereço, domínio ou perfil social;
+- não usa analytics nem dependências de execução;
+- não representa uma empresa ou serviços realizados;
+- não deve ser publicado como operação comercial.
