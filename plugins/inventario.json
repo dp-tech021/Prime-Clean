@@ -7,16 +7,16 @@
       "nome": "Pages CMS",
       "url": "https://pagescms.org/",
       "categoria": "CMS hospedado",
-      "status": "Configuracao versionada e frontend integrado a contatos e servicos; login, permissoes e CRUD pendentes de teste manual",
+      "status": "Configuracao versionada e frontend integrado a contatos, servicos e comparacoes; login, permissoes e CRUD pendentes de teste manual",
       "arquivo_configuracao": ".pages.yml",
       "conteudo": [
         "data/site.json",
         "data/servicos.json",
-        "content/trabalhos"
+        "data/comparacoes.json"
       ],
       "midia": [
         "media/fotos-servicos",
-        "public/imagens/trabalhos"
+        "media/comparacoes"
       ]
     },
     {

@@ -49,9 +49,38 @@
     return value.length > 0 && services.length === 0 ? fallback : services;
   }
 
-  const [siteData, servicesData] = await Promise.all([
+  function normalizeComparisons(value) {
+    if (!Array.isArray(value)) return [];
+    return value.flatMap((entry, index) => {
+      if (!entry || typeof entry !== 'object' || Array.isArray(entry)) return [];
+      if (entry.published !== true || entry.consentConfirmed !== true) return [];
+      if (typeof entry.title !== 'string' || !entry.title.trim()) return [];
+      if (typeof entry.service !== 'string' || !entry.service.trim()) return [];
+      const before = safeLocalImage(entry.before);
+      const after = safeLocalImage(entry.after);
+      const canonicalBefore = before.replace(/^(?:\.\/|\/)/, '');
+      const canonicalAfter = after.replace(/^(?:\.\/|\/)/, '');
+      if (!before || !after || canonicalBefore === canonicalAfter) return [];
+      if (typeof entry.beforeAlt !== 'string' || !entry.beforeAlt.trim()) return [];
+      if (typeof entry.afterAlt !== 'string' || !entry.afterAlt.trim()) return [];
+      return [{
+        title: entry.title.trim(),
+        service: entry.service.trim(),
+        description: typeof entry.description === 'string' ? entry.description.trim() : '',
+        before,
+        after,
+        beforeAlt: entry.beforeAlt.trim(),
+        afterAlt: entry.afterAlt.trim(),
+        order: Number.isFinite(entry.order) ? entry.order : index + 1,
+        published: true
+      }];
+    }).sort((a, b) => a.order - b.order);
+  }
+
+  const [siteData, servicesData, comparisonsData] = await Promise.all([
     loadJson('data/site.json'),
-    loadJson('data/servicos.json')
+    loadJson('data/servicos.json'),
+    loadJson('data/comparacoes.json')
   ]);
   const site = siteData && typeof siteData === 'object' && !Array.isArray(siteData) ? siteData : {};
   const c = {
@@ -61,7 +90,7 @@
     services: normalizeServices(servicesData, fallbackServices)
       .filter(service => service.visible)
       .sort((a, b) => a.order - b.order),
-    comparisons: []
+    comparisons: normalizeComparisons(comparisonsData)
   };
   const phone = c.whatsapp.trim();
   // Sintaxe válida não garante conta de WhatsApp ativa: validar manualmente antes de preencher.
@@ -150,7 +179,7 @@
   const empty = document.getElementById('results-empty');
   if (comparisonGrid) {
     const records = Array.isArray(c.comparisons) ? c.comparisons : [];
-    records.forEach((entry, index) => {
+    records.forEach(entry => {
       if (!entry || entry.published !== true || typeof entry.title !== 'string' || !entry.title.trim()) return;
       const before = safeLocalImage(entry.before);
       const after = safeLocalImage(entry.after);

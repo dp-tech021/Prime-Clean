@@ -14,6 +14,7 @@ O proprietário deve conseguir **adicionar, visualizar, substituir/editar inform
 - [x] Galeria só exibe registros com fotos `before` e `after` válidas; sem fotos reais, exibe aviso de ausência. **Nenhum trabalho fictício foi apresentado como real.**
 - [ ] Não há ainda fotos reais autorizadas.
 - [x] O schema do Pages CMS está versionado em `.pages.yml` para trabalhos e imagens.
+- [x] Comparações integradas por `data/comparacoes.json`, mantendo a galeria vazia sem fotos reais autorizadas.
 - [ ] O uso hospedado do CMS e suas operações com arquivos ainda precisam de validação com o proprietário.
 - [ ] Testes com CMS e proprietário e deploy: pendentes.
 
@@ -27,7 +28,7 @@ Manter HTML/CSS/JavaScript e utilizar CMS baseado em Git. **Preferência: Pages 
 
 - `data/site.json`: contatos e região.
 - `data/servicos.json`: lista ordenada de serviços com título, descrição, imagem, texto alternativo e visibilidade.
-- `data/comparacoes.json`: modelo futuro para pares; cada item deverá conter `title`, `service`, `description`, `before`, `after`, `beforeAlt`, `afterAlt`, `published`. A galeria permanece vazia até essa integração e a disponibilidade de fotos reais autorizadas.
+- `data/comparacoes.json`: lista editável com `title`, `service`, `description`, `before`, `after`, `beforeAlt`, `afterAlt`, `order`, `consentConfirmed` e `published`. O frontend rejeita pares incompletos, não autorizados ou ocultos.
 - `media/`: arquivos jpg/png/webp/avif enviados pelo CMS. Usar nomes únicos e otimização.
 
 Não buscar diretórios via JS em produção: hospedagem estática não expõe listagem de arquivos de forma confiável. Preferir índice explícito em JSON ou um pequeno build automático.
@@ -59,7 +60,7 @@ Não buscar diretórios via JS em produção: hospedagem estática não expõe l
 ## Marcos
 
 - Etapa 2A: CMS de textos e serviços + fotos de serviço (MVP de edição).
-- Etapa 2B: CRUD de trabalhos antes/depois + comparador integrado ao CMS + remoção segura.
+- Etapa 2B: CRUD de trabalhos antes/depois + comparador integrado ao CMS + remoção segura. **Implementado no repositório; teste hospedado com o proprietário pendente.**
 - Etapa 3: validar com proprietário, publicar em hospedagem gratuita, ajustar SEO, analytics apenas se consentimento/base legal e necessidade.
 
 ## Fontes oficiais verificadas em 08/11/2026

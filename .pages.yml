@@ -15,12 +15,18 @@ media:
         delete: "cms: remover foto de serviço {filename}"
         rename: "cms: renomear foto de serviço {oldFilename} para {newFilename}"
 
-  - name: trabalhos
-    label: Fotos dos trabalhos
-    input: public/imagens/trabalhos
-    output: /imagens/trabalhos
+  - name: comparacoes
+    label: Fotos de antes e depois
+    input: media/comparacoes
+    output: /media/comparacoes
     extensions: [webp, jpg, jpeg, png]
-    rename: random
+    rename: safe
+    commit:
+      templates:
+        create: "cms: adicionar foto de comparação {filename}"
+        update: "cms: atualizar foto de comparação {filename}"
+        delete: "cms: remover foto de comparação {filename}"
+        rename: "cms: renomear foto de comparação {oldFilename} para {newFilename}"
 
 content:
   - name: site
@@ -92,71 +98,78 @@ content:
         type: boolean
         default: true
 
-  - name: trabalhos
+  - name: comparacoes
     label: Trabalhos (antes e depois)
-    type: collection
-    path: content/trabalhos
+    type: file
+    path: data/comparacoes.json
     format: json
-    filename: "{year}-{month}-{day}-{hour}-{minute}-{second}-{primary}.json"
-    exclude: [".gitkeep"]
-    subfolders: false
-    view:
-      primary: titulo
-      fields: [titulo, servico, publicado]
-      sort: [titulo]
+    list: true
     operations:
-      create: true
+      create: false
       rename: false
-      delete: true
+      delete: false
     fields:
-      - name: titulo
+      - name: title
         label: Título do trabalho
         type: string
         required: true
         options:
           maxlength: 120
-      - name: servico
-        label: Tipo de serviço
+      - name: service
+        label: Categoria ou serviço
         type: string
         required: true
         description: "Ex.: higienização de sofá, colchão ou cadeira."
-      - name: descricao
+        options:
+          maxlength: 100
+      - name: description
         label: Descrição do resultado
         type: text
-      - name: foto_antes
+      - name: before
         label: Foto antes
         type: image
         required: true
         options:
-          media: trabalhos
-      - name: alt_antes
+          media: comparacoes
+          extensions: [webp, jpg, jpeg, png]
+          rename: safe
+      - name: beforeAlt
         label: Descrição da foto antes (acessibilidade)
         type: string
         required: true
-      - name: foto_depois
+        options:
+          maxlength: 180
+      - name: after
         label: Foto depois
         type: image
         required: true
         options:
-          media: trabalhos
-      - name: alt_depois
+          media: comparacoes
+          extensions: [webp, jpg, jpeg, png]
+          rename: safe
+      - name: afterAlt
         label: Descrição da foto depois (acessibilidade)
         type: string
         required: true
-      - name: fotos_extras
-        label: Outras fotos do serviço
-        type: image
-        description: "Até 5 imagens complementares."
         options:
-          media: trabalhos
-          multiple:
-            max: 5
-          unique: true
-      - name: publicado
+          maxlength: 180
+      - name: order
+        label: Ordem
+        type: number
+        required: true
+        options:
+          min: 1
+          max: 999
+      - name: consentConfirmed
+        label: Consentimento confirmado
+        type: boolean
+        default: false
+        description: "Ative somente após confirmar autorização para publicar as duas fotos."
+      - name: published
         label: Exibir no site
         type: boolean
         default: false
-        description: "O site precisa respeitar este campo. A imagem enviada ao repositório público já é acessível."
+        description: "Só publique um par completo, real, autorizado e do mesmo estofado."
 
 settings:
   content:
