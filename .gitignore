@@ -7,5 +7,6 @@ admin/.env.local
 admin/.env.*.local
 node_modules/
 dist/
+dist-public/
 __pycache__/
 *.pyc

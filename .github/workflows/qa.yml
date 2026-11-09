@@ -35,7 +35,15 @@ jobs:
         run: python3 -m unittest discover -s tests -p "test_*.py" -v
 
       - name: Verificar sintaxe do JavaScript
-        run: node --check app.js
+        run: |
+          node --check app.js
+          node --check public-content.mjs
+          node --check worker/index.mjs
+
+      - name: Testar adaptador público e Worker
+        run: |
+          node --test tests/public-content.test.mjs
+          node scripts/build_public.mjs
 
   painel-admin:
     runs-on: ubuntu-latest

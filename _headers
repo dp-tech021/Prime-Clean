@@ -1,5 +1,5 @@
 /*
-  Content-Security-Policy: default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; connect-src 'self' https://zffigzpmwcbmqfgrhrao.supabase.co; img-src 'self' data: https://zffigzpmwcbmqfgrhrao.supabase.co; script-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   Referrer-Policy: strict-origin-when-cross-origin
   X-Content-Type-Options: nosniff
@@ -7,6 +7,12 @@
 
 /data/*
   Cache-Control: no-cache
+
+/public-content-config.json
+  Cache-Control: no-store
+
+/api/public-config
+  Cache-Control: no-store
 
 /media/*
   Cache-Control: public, max-age=3600

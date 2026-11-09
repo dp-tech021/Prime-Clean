@@ -32,33 +32,31 @@ deploy público.
 
 ## Stack e recursos
 
-- HTML semântico, CSS responsivo e JavaScript puro, sem framework ou build;
-- três arquivos JSON em `data/` para site, serviços e comparações;
-- foto principal, cinco cartões e três comparadores com imagens sintéticas;
+- HTML semântico, CSS responsivo e JavaScript puro, sem framework no site;
+- adaptador público para Supabase, com ativação controlada e rollback em JSON;
+- foto principal, cartões e comparadores com imagens sintéticas administráveis;
 - navegação por teclado, foco visível, menu móvel e respeito a movimento reduzido;
-- `.pages.yml` para demonstrar edição de textos, listas e mídias no Pages CMS;
-- `_headers` com CSP e cabeçalhos de segurança para Cloudflare Pages;
+- painel próprio em `admin/` para textos, visibilidade, ordem e mídias;
+- `_headers` com CSP restrita e Worker para configuração pública em runtime;
 - validador Python com biblioteca padrão, fixtures e GitHub Actions.
-- painel administrativo experimental em `admin/`, com Vite, Supabase Auth e
-  gerenciamento de imagens, ainda não publicado e sem modificar a fonte de
-  dados do site.
+- Supabase Auth, PostgreSQL, RLS e Storage no backend já existente.
 
 ## Arquitetura
 
-O navegador recebe arquivos estáticos e `app.js` busca os JSONs por HTTP. O
-frontend valida tipos e caminhos locais antes de inserir textos com
-`textContent`. Assim, conteúdo editorial fica separado do layout sem introduzir
-backend, banco de dados ou etapa de build.
+O navegador recebe arquivos estáticos e `app.js` usa `public-content.mjs` para
+consultar somente linhas públicas do Supabase. O adaptador cruza as referências
+com `media_assets`, valida a origem e o bucket das imagens e entrega conteúdo ao
+DOM por `textContent`. As policies RLS continuam sendo a autorização efetiva.
 
 O comparador só publica registros completos marcados como demonstrativos. Os
-contatos permanecem vazios e todos os CTAs navegam dentro da página. O Pages CMS
-é uma camada editorial externa baseada em commits Git; ele não faz parte do
-runtime nem adiciona dependências npm.
+contatos permanecem vazios e todos os CTAs navegam dentro da página. O painel
+administrativo atualiza o Supabase; após o cutover, o próximo recarregamento do
+site reflete essas edições sem commit ou novo deploy.
 
-A foto principal também vem de `data/site.json`. Se ela estiver oculta ou
-falhar, a ilustração CSS acessível permanece no lugar. Serviços podem continuar
-visíveis sem foto usando um fallback gráfico; pares antes/depois incompletos não
-são exibidos.
+A foto principal vem de `site_settings` e `media_assets`. Se estiver oculta ou
+falhar, a ilustração CSS acessível permanece. Serviços continuam íntegros sem
+foto; pares incompletos ou com mídia não pública não são exibidos. Os JSONs
+ficam disponíveis somente para rollback manual temporário.
 
 ## Divisão de trabalho em dupla
 
@@ -68,7 +66,7 @@ frentes e revisão cruzada:
 
 - **Frente de interface:** HTML, CSS, responsividade, acessibilidade e revisão
   visual;
-- **Frente de conteúdo e qualidade:** JSON, schema do Pages CMS, validação,
+- **Frente de conteúdo e qualidade:** Supabase, RLS, validação,
   documentação e CI.
 
 Cada mudança passa pela revisão da outra frente antes do merge. As frentes podem
@@ -83,6 +81,8 @@ python3 scripts/validar_conteudo.py
 python3 scripts/auditar_midias.py
 python3 -m unittest discover -s tests -p "test_*.py" -v
 node --check app.js
+node --check public-content.mjs
+node --test tests/public-content.test.mjs
 python3 -m http.server 8000
 ```
 
@@ -108,21 +108,11 @@ Nenhum deploy ou domínio é declarado neste repositório. O passo a passo, a
 configuração sem framework e os comandos de verificação com uma URL real estão
 em [`DEPLOY-PORTFOLIO.md`](DEPLOY-PORTFOLIO.md).
 
-## Pages CMS
+## Fonte editorial e rollback
 
-O schema permite gerenciar a foto principal, fotos dos serviços e pares
-antes/depois. Campos de visibilidade ocultam conteúdo sem apagar arquivos, e
-`order` controla a ordem pública. A auditoria de mídia bloqueia a limpeza de um
-caminho ainda referenciado e lista órfãos sem removê-los automaticamente.
-
-A interface hospedada do Pages CMS ainda precisa ser homologada com uma conta
-que tenha acesso legítimo ao repositório. Não há token, senha ou credencial no
-projeto.
-
-Consulte [`MANUAL-PROPRIETARIO.md`](MANUAL-PROPRIETARIO.md) e
-[`plugins/PAGES-CMS.md`](plugins/PAGES-CMS.md) para o fluxo editorial. A matriz
-de operações e exclusão segura está em
-[`docs/AUDITORIA-MIDIAS-CMS.md`](docs/AUDITORIA-MIDIAS-CMS.md).
+O painel próprio é a fonte editorial vigente. Pages CMS, `.pages.yml` e os três
+JSONs são mantidos temporariamente como legado e rollback manual; eles não devem
+receber edições paralelas depois do cutover.
 
 ## Painel administrativo experimental
 
@@ -131,8 +121,8 @@ senha com Supabase Auth e autorização separada por RLS. Uma sessão autenticad
 somente acessa o painel quando a leitura do próprio registro em `admin_users`
 confirma `active=true`. As telas
 de gerenciamento permitem administrar foto principal, serviços, comparações e
-biblioteca no backend separado. O painel não foi publicado, e a landing page
-continua usando os JSONs e imagens locais até o cutover revisado do Prompt 13.
+biblioteca no backend separado. O cutover é controlado por
+`PUBLIC_CONTENT_SOURCE` no Worker e exige homologação antes de usar `supabase`.
 
 ## O que aprendemos / decisões técnicas
 
@@ -149,26 +139,25 @@ continua usando os JSONs e imagens locais até o cutover revisado do Prompt 13.
 
 ## O que ainda falta
 
-- testar login e funcionamento real do painel Pages CMS;
-- homologar upload, substituição e limpeza de mídia em uma branch segura;
-- confirmar o commit gerado pelo CMS e o fluxo completo até o preview;
+- testar login e funcionamento real do painel administrativo;
+- homologar upload, substituição e limpeza de mídia com uma conta autorizada;
+- migrar e revisar os registros antes do cutover;
 - homologar no painel a trava operacional de não excluir mídia referenciada;
 - executar e registrar o primeiro deploy com sua URL HTTPS real;
 - confirmar os cabeçalhos e respostas `200` na hospedagem;
 - revisar novamente os limites do plano gratuito antes da publicação.
 
-Os três pares demonstrativos já existem e são carregados pelo comparador. Falta
-homologar no CMS o fluxo de substituição dessas imagens, sem remover sua
-rotulagem sintética.
+Os pares locais permanecem no rollback. O site em modo Supabase mostra somente
+pares publicados e inteiramente públicos cadastrados no backend.
 
 ## Limitações
 
 - não oferece orçamento, atendimento, formulário ou contratação;
 - não possui telefone, e-mail, endereço, domínio ou perfil social;
-- não usa analytics, autenticação própria, banco de dados ou API de aplicação;
-- não comprova que o Pages CMS ou o Cloudflare Pages foram publicados;
+- não usa analytics, autenticação própria ou APIs além do Supabase existente;
+- não comprova que o painel ou o Worker foram publicados;
 - não representa uma empresa nem resultados de serviços reais.
 
-## Evolução: painel administrativo próprio (em desenvolvimento)
+## Painel administrativo e publicação
 
-A estrutura de banco e segurança do futuro painel com login está documentada em [`docs/PAINEL-ADMIN-SUPABASE.md`](docs/PAINEL-ADMIN-SUPABASE.md). O planejamento de migração das fotos está em [`docs/ADMIN-MIGRACAO-MIDIAS.md`](docs/ADMIN-MIGRACAO-MIDIAS.md) e o escopo para Codex em [`docs/ADMIN-CODEX-HANDOFF.md`](docs/ADMIN-CODEX-HANDOFF.md). A interface administrativa ainda **não existe**; o site publicado continua usando os JSON locais e o Pages CMS permanece como solução legada até o cutover homologado.
+A estrutura de banco e segurança está em [`docs/PAINEL-ADMIN-SUPABASE.md`](docs/PAINEL-ADMIN-SUPABASE.md), o painel em [`admin/`](admin/README.md) e a ativação pública em [`DEPLOY-SITE-SUPABASE.md`](DEPLOY-SITE-SUPABASE.md). Nenhum deploy ou cutover é declarado concluído neste repositório.

@@ -10,7 +10,7 @@
 - Migrations **aplicadas**: `20261109164735_prime_clean_admin_backend_initial` e `20261109165520_prime_clean_storage_delete_guard`.
 - Cinco tabelas com RLS ativo; um registro inicial em `site_settings`, sem foto principal publicada; zero contas administrativas criadas.
 - Bucket `prime-clean-media` **público**, limite de **5 MiB por arquivo**, MIME `image/webp`, `image/jpeg`, `image/png`.
-- O site público atual permanece alimentado por `data/*.json`, com as 12 imagens originais em `media/`. Não foi feita migração/cutover.
+- A integração pública possui ativação controlada: `json` durante homologação e `supabase` após o cutover. Os 12 arquivos locais permanecem apenas para rollback manual temporário.
 
 ## Contrato de dados
 
@@ -76,6 +76,6 @@ values ('COLE_AQUI_O_UUID_REAL', true);
 - Transação autenticada com UUID fictício não cadastrado: só enxergou serviço visível e não conseguiu modificá-lo. Transações revertidas.
 - Security Advisor do Supabase: **sem lints na consulta feita** (não substitui auditoria de segurança).
 - **Não testados:** autenticação real, conta administrativa real, upload/delete real pelo navegador, navegador/UX, redirecionamentos, e-mail e hospedagem do admin, migração das 12 imagens.
-- Backend continua com zero serviços e zero comparações: **a landing page segue servida pelos JSON originais**.
+- A quantidade atual de serviços e comparações deve ser conferida novamente antes do cutover; não presuma os valores registrados durante a configuração inicial.
 
 Fontes: [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security), [Storage Access Control](https://supabase.com/docs/guides/storage/security/access-control), [Buckets](https://supabase.com/docs/guides/storage/buckets/creating-buckets), [Auth](https://supabase.com/docs/guides/auth), [API security](https://supabase.com/docs/guides/api/securing-your-api).

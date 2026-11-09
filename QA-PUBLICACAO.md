@@ -164,3 +164,19 @@ Antes do merge, descarte a branch ou feche o PR. Depois de eventual merge,
 reverta o commit desta mudança com `git revert <sha>` em uma nova branch, execute
 novamente o checklist e abra outro PR. Reverter o Git não remove automaticamente
 uma prévia externa, caso ela seja criada no futuro.
+
+## Integração pública com Supabase
+
+O adaptador em `public-content.mjs` deve passar em:
+
+```bash
+node --test tests/public-content.test.mjs
+node --check app.js
+node --check public-content.mjs
+node --check worker/index.mjs
+```
+
+O modo `json` preserva a página atual durante a homologação. Em modo `supabase`,
+falha de rede deve deixar foto, serviços e comparações indisponíveis, sem voltar
+automaticamente aos dados antigos. Testes com o projeto real, a URL de preview
+e uma conta anônima ainda precisam ser registrados antes do cutover.
