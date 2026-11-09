@@ -59,3 +59,12 @@ migrations da raiz são a única fonte oficial do backend compartilhado. Testes
 unitários exercitam os estados de sessão e autorização; os testes transacionais
 em `supabase/tests/rls_sem_credenciais.sql` cobrem também administradores ativos
 e inativos. Auth e RLS com contas reais ainda exigem homologação pela dupla.
+
+## Estado do Prompt 12
+
+O painel gerencia `site_settings`, `services`, `comparisons` e `media_assets`
+usando o bucket existente `prime-clean-media`. Uploads validam WebP/JPEG/PNG,
+5 MiB e rotulagem sintética; substituições usam nomes novos. A biblioteca mostra
+referências e só exclui órfãos, mantendo a proteção RLS e a policy de Storage.
+O site público continua nos JSONs. Testes com mocks estão automatizados; Auth e
+Storage reais permanecem pendentes de homologação.

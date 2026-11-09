@@ -39,8 +39,9 @@ deploy público.
 - `.pages.yml` para demonstrar edição de textos, listas e mídias no Pages CMS;
 - `_headers` com CSP e cabeçalhos de segurança para Cloudflare Pages;
 - validador Python com biblioteca padrão, fixtures e GitHub Actions.
-- painel administrativo experimental em `admin/`, com Vite e Supabase Auth,
-  ainda não publicado e sem modificar o conteúdo do site.
+- painel administrativo experimental em `admin/`, com Vite, Supabase Auth e
+  gerenciamento de imagens, ainda não publicado e sem modificar a fonte de
+  dados do site.
 
 ## Arquitetura
 
@@ -129,9 +130,9 @@ A estrutura inicial em [`admin/`](admin/README.md) demonstra login por e-mail e
 senha com Supabase Auth e autorização separada por RLS. Uma sessão autenticada
 somente acessa o painel quando a leitura do próprio registro em `admin_users`
 confirma `active=true`. As telas
-de gerenciamento são marcadores transparentes desta etapa e não exibem ações
-de salvamento que ainda não existem. O painel não foi publicado e depende de
-homologação em um projeto Supabase controlado pela dupla.
+de gerenciamento permitem administrar foto principal, serviços, comparações e
+biblioteca no backend separado. O painel não foi publicado, e a landing page
+continua usando os JSONs e imagens locais até o cutover revisado do Prompt 13.
 
 ## O que aprendemos / decisões técnicas
 
