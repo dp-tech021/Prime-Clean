@@ -5,29 +5,25 @@ Este inventário descreve somente o conteúdo verificável no repositório
 
 ## Estado atual
 
-A `main` está no commit inicial e contém apenas o `README.md` do projeto. Não há
-código executável, `package.json`, lockfile, manifesto de outra linguagem ou
-configuração de serviço. Portanto, nenhuma biblioteca, pacote ou versão de
-runtime pode ser confirmada ou deve ser instalada neste momento.
-
-O ZIP usado para criar este inventário mencionava um MVP local chamado
-`Prime-Clean-Fotos-v2`, mas os arquivos desse MVP não estão no repositório nem no
-anexo. Suas dependências não foram tratadas como dependências confirmadas.
+O MVP é um site estático composto por `index.html`, `styles.css`, `content.js` e
+`app.js`. Não há `package.json`, lockfile, framework, etapa de build ou banco de
+dados. O navegador executa diretamente HTML, CSS e JavaScript nativos.
 
 ## Dependências confirmadas
 
 - Dependências npm: nenhuma.
-- Frameworks de aplicação: nenhum confirmado.
+- Stack: HTML5, CSS e JavaScript nativo.
+- Frameworks de aplicação: nenhum.
 - Serviços externos necessários em runtime: nenhum confirmado.
-- Ferramentas opcionais para manter o repositório: Git e um editor de texto.
+- Ferramentas opcionais: Git, editor de texto, navegador com DevTools e Python 3
+  para servir os arquivos localmente.
 
-Git é uma ferramenta de desenvolvimento e não uma dependência de execução do
-site. Python, Node.js e navegadores também não são listados como dependências do
-projeto enquanto não houver código ou documentação do projeto que os exija.
+Git, Python e Node.js são ferramentas de desenvolvimento ou validação e não
+dependências de execução do site. Nenhum `npm install` é necessário.
 
 ## Manutenção
 
-Quando o código do site entrar no repositório:
+Se a stack mudar:
 
 1. conferir os manifestos e lockfiles reais;
 2. registrar aqui apenas dependências usadas pelo código, com as versões obtidas
