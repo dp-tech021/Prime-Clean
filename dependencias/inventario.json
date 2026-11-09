@@ -1,0 +1,10 @@
+{
+  "projeto": "Prime-Clean",
+  "data_revisao": "2026-11-08",
+  "escopo": "conteudo verificavel no repositorio dp-tech021/Prime-Clean",
+  "dependencias_npm": [],
+  "frameworks_confirmados": [],
+  "dependencias_externas_runtime": [],
+  "manifestos_encontrados": [],
+  "observacao": "A main contem apenas o README inicial; nao ha codigo ou manifesto que permita confirmar dependencias ou versoes."
+}
