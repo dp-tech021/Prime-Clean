@@ -155,3 +155,7 @@ rotulagem sintética.
 - não usa analytics, autenticação própria, banco de dados ou API de aplicação;
 - não comprova que o Pages CMS ou o Cloudflare Pages foram publicados;
 - não representa uma empresa nem resultados de serviços reais.
+
+## Evolução: painel administrativo próprio (em desenvolvimento)
+
+A estrutura de banco e segurança do futuro painel com login está documentada em [`docs/PAINEL-ADMIN-SUPABASE.md`](docs/PAINEL-ADMIN-SUPABASE.md). O planejamento de migração das fotos está em [`docs/ADMIN-MIGRACAO-MIDIAS.md`](docs/ADMIN-MIGRACAO-MIDIAS.md) e o escopo para Codex em [`docs/ADMIN-CODEX-HANDOFF.md`](docs/ADMIN-CODEX-HANDOFF.md). A interface administrativa ainda **não existe**; o site publicado continua usando os JSON locais e o Pages CMS permanece como solução legada até o cutover homologado.
