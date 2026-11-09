@@ -91,6 +91,7 @@ Confira ao menos uma imagem de cada conjunto; depois abra o site e confirme
 visualmente os cinco serviços e os três comparadores:
 
 ```bash
+curl --fail --silent --show-error --output /dev/null --write-out '%{http_code}\n' "$SITE_URL/media/hero/hero-sala.webp"
 curl --fail --silent --show-error --output /dev/null --write-out '%{http_code}\n' "$SITE_URL/media/fotos-servicos/sofa.webp"
 curl --fail --silent --show-error --output /dev/null --write-out '%{http_code}\n' "$SITE_URL/media/comparacoes/sofa-antes.webp"
 curl --fail --silent --show-error --output /dev/null --write-out '%{http_code}\n' "$SITE_URL/media/comparacoes/sofa-depois.webp"

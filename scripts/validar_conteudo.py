@@ -192,20 +192,28 @@ def validar_servico(
 
     texto_obrigatorio(registro, "title", arquivo, resultado)
     texto_obrigatorio(registro, "description", arquivo, resultado)
-    alt = texto_obrigatorio(registro, "imageAlt", arquivo, resultado)
     ilustrativa = booleano_obrigatorio(registro, "illustrative", arquivo, resultado)
     booleano_obrigatorio(registro, "visible", arquivo, resultado)
     ordem = ordem_obrigatoria(registro, "order", arquivo, resultado)
-    validar_caminho_imagem(registro.get("image"), arquivo, "image", resultado)
-
-    if ilustrativa is not True:
-        resultado.erro(arquivo, "illustrative", "deve ser true no modo portfólio")
-    if alt and not contem_marcador_simulacao(alt):
-        resultado.erro(
-            arquivo,
-            "imageAlt",
-            "deve identificar explicitamente a imagem como ilustrativa, sintética ou gerada por IA",
-        )
+    imagem = registro.get("image")
+    tem_imagem = isinstance(imagem, str) and bool(imagem.strip())
+    if imagem is not None and not isinstance(imagem, str):
+        resultado.erro(arquivo, "image", "deve ser texto ou ficar vazio")
+    if tem_imagem:
+        validar_caminho_imagem(imagem, arquivo, "image", resultado)
+        alt = texto_obrigatorio(registro, "imageAlt", arquivo, resultado)
+        if ilustrativa is not True:
+            resultado.erro(arquivo, "illustrative", "deve ser true no modo portfólio")
+        if alt and not contem_marcador_simulacao(alt):
+            resultado.erro(
+                arquivo,
+                "imageAlt",
+                "deve identificar explicitamente a imagem como ilustrativa, sintética ou gerada por IA",
+            )
+    else:
+        alt = registro.get("imageAlt")
+        if alt is not None and not isinstance(alt, str):
+            resultado.erro(arquivo, "imageAlt", "deve ser texto ou ficar vazio")
     return ordem
 
 
@@ -285,6 +293,45 @@ def validar_site(dados: Any, arquivo: str, resultado: Resultado) -> None:
     if isinstance(area, str) and not area.strip():
         resultado.erro(arquivo, "area", "deve explicar que não existe atendimento")
 
+    imagem = dados.get("heroImage")
+    if imagem is not None and not isinstance(imagem, str):
+        resultado.erro(arquivo, "heroImage", "deve ser texto ou ficar vazio")
+    alt = dados.get("heroImageAlt")
+    if alt is not None and not isinstance(alt, str):
+        resultado.erro(arquivo, "heroImageAlt", "deve ser texto ou ficar vazio")
+        alt = None
+    ilustrativa = booleano_obrigatorio(
+        dados, "heroImageIllustrative", arquivo, resultado
+    )
+    visivel = booleano_obrigatorio(dados, "heroImageVisible", arquivo, resultado)
+    tem_imagem = isinstance(imagem, str) and bool(imagem.strip())
+    if visivel is True and not tem_imagem:
+        resultado.erro(
+            arquivo,
+            "heroImage",
+            "é obrigatória quando heroImageVisible está true",
+        )
+    if tem_imagem:
+        validar_caminho_imagem(imagem, arquivo, "heroImage", resultado)
+        if not isinstance(alt, str) or not alt.strip():
+            resultado.erro(
+                arquivo,
+                "heroImageAlt",
+                "deve ser texto não vazio quando houver foto principal",
+            )
+        elif not contem_marcador_simulacao(alt):
+            resultado.erro(
+                arquivo,
+                "heroImageAlt",
+                "deve identificar a foto como ilustrativa, sintética ou gerada por IA",
+            )
+        if ilustrativa is not True:
+            resultado.erro(
+                arquivo,
+                "heroImageIllustrative",
+                "deve ser true no modo portfólio",
+            )
+
 
 def validar_lista(
     dados: Any,
@@ -363,7 +410,9 @@ def validar_fixture(caminho: Path, tipo: str) -> Resultado:
     if dados is None:
         return resultado
     arquivo = caminho_exibicao(caminho)
-    if tipo == "servico":
+    if tipo == "site":
+        validar_site(dados, arquivo, resultado)
+    elif tipo == "servico":
         validar_servico(dados, arquivo, resultado)
     else:
         validar_comparacao(dados, arquivo, resultado)
@@ -394,7 +443,7 @@ def main() -> int:
     parser.add_argument("--fixture", type=Path, help="valida um único fixture JSON")
     parser.add_argument(
         "--tipo",
-        choices=("servico", "comparacao"),
+        choices=("site", "servico", "comparacao"),
         help="tipo do registro passado em --fixture",
     )
     argumentos = parser.parse_args()

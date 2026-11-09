@@ -2,6 +2,19 @@
 # A configuracao e lida por repositorio e por branch. O login no Pages CMS nao
 # substitui a instalacao e a autorizacao da GitHub App neste repositorio.
 media:
+  - name: destaque
+    label: Foto principal do projeto
+    input: media/hero
+    output: /media/hero
+    extensions: [webp, jpg, jpeg, png]
+    rename: safe
+    commit:
+      templates:
+        create: "cms: adicionar foto principal {filename}"
+        update: "cms: atualizar foto principal {filename}"
+        delete: "cms: remover foto principal {filename}"
+        rename: "cms: renomear foto principal {oldFilename} para {newFilename}"
+
   - name: servicos
     label: Fotos dos serviços
     input: media/fotos-servicos
@@ -34,6 +47,10 @@ content:
     type: file
     path: data/site.json
     format: json
+    operations:
+      create: false
+      rename: false
+      delete: false
     fields:
       - name: instagram
         label: Instagram (manter vazio no portfólio)
@@ -49,6 +66,30 @@ content:
         required: true
         options:
           maxlength: 160
+      - name: heroImage
+        label: Foto principal ilustrativa
+        type: image
+        description: "Use somente imagem local fictícia ou gerada por IA. Para remover, desative a exibição antes de limpar este campo."
+        options:
+          media: destaque
+          extensions: [webp, jpg, jpeg, png]
+          rename: safe
+      - name: heroImageAlt
+        label: Descrição da foto principal (acessibilidade)
+        type: string
+        description: "Obrigatória quando houver foto. Declare que a imagem é ilustrativa ou gerada por IA."
+        options:
+          maxlength: 180
+      - name: heroImageIllustrative
+        label: Foto principal ilustrativa ou gerada por IA
+        type: boolean
+        default: true
+        description: "Mantenha ativado: este portfólio não apresenta fotografia de trabalho real."
+      - name: heroImageVisible
+        label: Exibir foto principal
+        type: boolean
+        default: true
+        description: "Desative para usar a ilustração gráfica de fallback sem excluir o arquivo de mídia."
 
   - name: servicos
     label: Serviços demonstrativos
@@ -56,6 +97,11 @@ content:
     path: data/servicos.json
     format: json
     list: true
+    # Protege o arquivo JSON inteiro; a lista interna continua editável.
+    operations:
+      create: false
+      rename: false
+      delete: false
     fields:
       - name: title
         label: Título
@@ -70,7 +116,7 @@ content:
       - name: image
         label: Imagem ilustrativa do cartão
         type: image
-        description: "Use somente mídia local autorizada e identifique imagens geradas por IA."
+        description: "Use somente mídia local fictícia. O cartão mostra um fallback gráfico se o campo ficar vazio."
         options:
           media: servicos
           extensions: [webp, jpg, jpeg, png]
@@ -78,7 +124,7 @@ content:
       - name: imageAlt
         label: Descrição da imagem (acessibilidade)
         type: string
-        required: true
+        description: "Obrigatória quando houver imagem. Declare que ela é ilustrativa ou gerada por IA."
         options:
           maxlength: 180
       - name: illustrative
@@ -90,6 +136,7 @@ content:
         label: Ordem
         type: number
         required: true
+        description: "Números menores aparecem primeiro. Atualize este campo ao reordenar; a posição visual da lista no editor não substitui o valor."
         options:
           min: 1
           max: 99
@@ -97,6 +144,7 @@ content:
         label: Exibir no site
         type: boolean
         default: true
+        description: "Desative para ocultar o cartão sem apagar seus dados ou sua mídia."
 
   - name: comparacoes
     label: Comparações demonstrativas
@@ -104,6 +152,8 @@ content:
     path: data/comparacoes.json
     format: json
     list: true
+    # Protege o arquivo JSON inteiro. Os itens internos continuam com adicionar,
+    # reordenar e remover pelo editor de lista do Pages CMS.
     operations:
       create: false
       rename: false
@@ -157,6 +207,7 @@ content:
         label: Ordem
         type: number
         required: true
+        description: "Números menores aparecem primeiro. Atualize este campo ao reordenar; a posição visual da lista no editor não substitui o valor."
         options:
           min: 1
           max: 999
@@ -174,7 +225,7 @@ content:
         label: Exibir na demonstração
         type: boolean
         default: false
-        description: "Use somente um par local, completo, inteiramente sintético e claramente identificado como simulação gráfica."
+        description: "Desative para ocultar sem apagar. Publique somente um par local, completo, inteiramente sintético e identificado como simulação gráfica."
 
 settings:
   content:
