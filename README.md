@@ -1,6 +1,6 @@
 # Prime-Clean — MVP atualizado (08/11/2026)
 
-Landing page comercial responsiva, sem framework e sem banco de dados. Objetivo: apresentar serviços e captar pedidos de orçamento. **Atualização: contatos, serviços e fotos de serviço foram migrados para JSON e integrados ao frontend. A configuração do Pages CMS está versionada, mas ainda não foi testada na interface hospedada. A seção de antes/depois continua sem fotos reais.**
+Landing page comercial responsiva, sem framework e sem banco de dados. Objetivo: apresentar serviços e captar pedidos de orçamento. **Atualização: contatos, serviços e comparações foram migrados para JSON e integrados ao frontend. A configuração do Pages CMS está versionada, mas ainda não foi testada na interface hospedada. A seção de antes/depois continua vazia até receber fotos reais autorizadas.**
 
 ## Como testar localmente
 
@@ -22,6 +22,7 @@ Nenhum `npm install` é necessário.
 
 - `data/site.json`: Instagram informado, WhatsApp validado e área de atendimento.
 - `data/servicos.json`: título, descrição, foto, texto alternativo, indicação de imagem ilustrativa, ordem e visibilidade de cada serviço.
+- `data/comparacoes.json`: trabalhos com título, serviço, descrição, ordem, publicação, consentimento e duas fotos obrigatórias com textos alternativos.
 - `.pages.yml`: apresenta esses arquivos e as bibliotecas de mídia no Pages CMS.
 
 O campo `whatsapp` deve ficar vazio até a confirmação do número correto e teste de conversa. Depois, preencher com DDI+DDD+número **apenas dígitos**, por exemplo `55...`. O padrão numérico sozinho **não prova** que existe WhatsApp nesse número.
@@ -66,25 +67,27 @@ Uma branch por alteração; abrir pull request, fazer revisão cruzada e só ent
 
 ## Galeria de fotos e comparador
 
-A página traz uma seção de resultados com comparador visual. Como **não recebemos fotos reais e autorizadas**, o frontend mantém a lista de comparações vazia e mostra um aviso. Não são mostrados resultados ilustrativos como se fossem casos reais.
+A página lê `data/comparacoes.json` e apresenta somente registros publicados, com consentimento confirmado, duas imagens locais distintas e textos alternativos. Como **não recebemos fotos reais e autorizadas**, o arquivo começa como `[]` e a página mostra um aviso. Não são mostrados resultados ilustrativos como se fossem casos reais.
 
-O modelo futuro de um registro de comparação será:
+O modelo de um registro de comparação é:
 
 ```js
 comparisons: [{
   title: "Limpeza de sofá — demonstração autorizada",
   service: "Sofás",
   description: "Comparação do mesmo sofá antes e depois do atendimento.",
-  before: "media/sofa-antes.webp",
-  after: "media/sofa-depois.webp",
+  before: "/media/comparacoes/sofa-antes.webp",
+  after: "/media/comparacoes/sofa-depois.webp",
   beforeAlt: "Sofá antes do procedimento",
   afterAlt: "Mesmo sofá após o procedimento",
+  order: 1,
+  consentConfirmed: true,
   published: true
 }]
 ```
 
 Um serviço em `data/servicos.json` pode ter campo `image`, como `image: "/media/fotos-servicos/sofa.webp"`; caso não tenha, seu cartão continua com ícone. Para não publicar informações não autorizadas, os dados acima são **apenas um exemplo de estrutura**, não uma promessa nem fotos fornecidas.
 
-O schema do Pages CMS permite criar, editar e excluir trabalhos, mas esse fluxo ainda precisa ser testado na interface hospedada. O site ainda não lê os registros de `content/trabalhos/`; essa integração permanece fora desta etapa.
+O Pages CMS edita o array com `type: file`, `format: json` e `list: true`. O proprietário pode adicionar, editar, ocultar, reordenar pelo campo `order` e remover itens sem editar código. Esse fluxo ainda precisa ser testado na interface hospedada.
 
 **Atenção:** apagar um registro não implica necessariamente apagar seu arquivo do Git, e apagar arquivos do Git não garante remoção do histórico público. Nunca inserir fotos privadas sem autorização.

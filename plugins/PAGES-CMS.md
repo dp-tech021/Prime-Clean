@@ -1,7 +1,8 @@
 # Pages CMS — Prime-Clean
 
-O repositório contém `.pages.yml` na raiz. O frontend lê contatos e serviços de
-`data/site.json` e `data/servicos.json` por HTTP. A configuração hospedada ainda
+O repositório contém `.pages.yml` na raiz. O frontend lê contatos, serviços e
+comparações de `data/site.json`, `data/servicos.json` e
+`data/comparacoes.json` por HTTP. A configuração hospedada ainda
 precisa ser aberta e testada pelo proprietário no Pages CMS.
 
 Fazer login com GitHub não concede acesso ao repositório por si só. O início
@@ -15,13 +16,26 @@ possui o repositório e autorizar o repositório desejado.
 - **Serviços:** `data/servicos.json`, um array JSON editável com título,
   descrição, foto, texto alternativo, indicação de imagem ilustrativa, ordem e
   visibilidade.
-- **Trabalhos:** `content/trabalhos/*.json`, coleção de pares antes/depois ainda
-  não consumida pelo frontend.
+- **Trabalhos:** `data/comparacoes.json`, array de pares antes/depois consumido
+  diretamente pelo frontend.
 
 As fotos de serviço ficam em `media/fotos-servicos/`. O CMS aceita WebP, JPEG e
 PNG, aplica nomes seguros (`rename: safe`) e grava caminhos públicos estáveis em
-`/media/fotos-servicos/`. Fotos de trabalhos ficam em
-`public/imagens/trabalhos/` com nomes aleatórios para evitar colisões.
+`/media/fotos-servicos/`. Fotos de comparações ficam em `media/comparacoes/`,
+também com nomes seguros e caminhos públicos em `/media/comparacoes/`.
+
+## Por que um único arquivo de comparações
+
+`data/comparacoes.json` usa `type: file`, `format: json` e `list: true`, a forma
+documentada para um array no topo. O editor permite manter os itens no próprio
+arquivo; o campo `order` controla a ordem pública. Isso evita uma coleção de
+arquivos individuais, que exigiria um índice gerado para o JavaScript descobrir
+os registros em uma hospedagem estática.
+
+Cada trabalho exige título, serviço, foto antes, foto depois e textos
+alternativos. `published` oculta ou publica, e `consentConfirmed` registra a
+confirmação editorial. O frontend ignora registros ocultos, sem consentimento,
+incompletos, com imagens externas ou com o mesmo caminho nas duas fotos.
 
 ## Permissões
 
@@ -46,14 +60,15 @@ Este fluxo ainda não foi executado nesta tarefa:
 1. entrar em https://app.pagescms.org/ com a conta autorizada;
 2. confirmar que a GitHub App está instalada e consegue abrir
    `dp-tech021/Prime-Clean`;
-3. selecionar a branch que contém a configuração e confirmar os editores
-   **Contatos e área de atendimento** e **Serviços**;
-4. criar um serviço de teste, editar título e descrição, alterar ordem, ocultar
-   e voltar a exibir;
-5. subir uma imagem sem dados pessoais, substituí-la e confirmar o caminho salvo
-   em `data/servicos.json`;
-6. servir o site por HTTP e verificar a atualização na página;
-7. apagar o item de teste e revisar se a imagem ficou órfã.
+3. selecionar a branch que contém a configuração e confirmar o editor
+   **Trabalhos (antes e depois)** e a mídia **Fotos de antes e depois**;
+4. criar um trabalho de teste com duas fotos descartáveis claramente marcadas,
+   sem pessoas ou dados pessoais, mantendo `published: false`;
+5. editar título e descrição, trocar uma foto e alterar `order`;
+6. ocultar, publicar apenas durante a verificação controlada e ocultar de novo;
+7. servir o site por HTTP e confirmar slider, rótulos e ordem;
+8. excluir o item de teste e confirmar que ele saiu do site;
+9. revisar e remover manualmente as mídias de teste que ficaram órfãs.
 
 Nunca considere o CMS validado apenas porque `.pages.yml` é YAML válido. O teste
 acima confirma acesso, schema, gravação no Git e integração com a página.
@@ -76,8 +91,8 @@ histórico ainda esteja disponível.
 
 Excluir ou substituir um serviço não garante a remoção do arquivo antigo.
 
-1. liste os caminhos usados em `data/servicos.json` e nos registros de
-   `content/trabalhos/`;
+1. liste os caminhos usados em `data/servicos.json` e
+   `data/comparacoes.json`;
 2. compare com os arquivos das duas bibliotecas de mídia;
 3. em uma branch, remova apenas arquivos sem referência confirmada;
 4. teste o site e a prévia do CMS antes de abrir PR;

@@ -16,7 +16,8 @@
     "styles.css",
     "app.js",
     "data/site.json",
-    "data/servicos.json"
+    "data/servicos.json",
+    "data/comparacoes.json"
   ],
   "observacao": "Site estatico sem etapa de build; nenhum npm install e necessario."
 }
