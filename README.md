@@ -34,7 +34,7 @@ deploy público.
 
 - HTML semântico, CSS responsivo e JavaScript puro, sem framework ou build;
 - três arquivos JSON em `data/` para site, serviços e comparações;
-- cinco cartões com imagens ilustrativas e três comparadores sintéticos;
+- foto principal, cinco cartões e três comparadores com imagens sintéticas;
 - navegação por teclado, foco visível, menu móvel e respeito a movimento reduzido;
 - `.pages.yml` para demonstrar edição de textos, listas e mídias no Pages CMS;
 - `_headers` com CSP e cabeçalhos de segurança para Cloudflare Pages;
@@ -51,6 +51,11 @@ O comparador só publica registros completos marcados como demonstrativos. Os
 contatos permanecem vazios e todos os CTAs navegam dentro da página. O Pages CMS
 é uma camada editorial externa baseada em commits Git; ele não faz parte do
 runtime nem adiciona dependências npm.
+
+A foto principal também vem de `data/site.json`. Se ela estiver oculta ou
+falhar, a ilustração CSS acessível permanece no lugar. Serviços podem continuar
+visíveis sem foto usando um fallback gráfico; pares antes/depois incompletos não
+são exibidos.
 
 ## Divisão de trabalho em dupla
 
@@ -72,6 +77,7 @@ Pré-requisitos: Python 3.10+ e Node.js. Nenhuma biblioteca adicional é exigida
 
 ```bash
 python3 scripts/validar_conteudo.py
+python3 scripts/auditar_midias.py
 python3 -m unittest discover -s tests -p "test_*.py" -v
 node --check app.js
 python3 -m http.server 8000
@@ -80,10 +86,11 @@ python3 -m http.server 8000
 Abra `http://localhost:8000`. O resultado esperado do validador começa com:
 
 ```text
-OK: dados do repositório válido; 11 imagem(ns) local(is) verificada(s).
+OK: dados do repositório válido; 12 imagem(ns) local(is) verificada(s).
+OK: 12 mídia(s) referenciada(s) existe(m); 0 arquivo(s) órfão(s).
 ```
 
-As três fixtures devem terminar com `OK`; `node --check` não produz saída em
+Os 11 testes devem terminar com `OK`; `node --check` não produz saída em
 sucesso. Falhas retornam código diferente de zero e identificam arquivo, índice
 e campo. Consulte [`QA-PUBLICACAO.md`](QA-PUBLICACAO.md) para o checklist.
 
@@ -100,13 +107,19 @@ em [`DEPLOY-PORTFOLIO.md`](DEPLOY-PORTFOLIO.md).
 
 ## Pages CMS
 
-O schema demonstra edição de campos institucionais, visibilidade e ordem dos
-serviços, comparações e caminhos de mídia. A interface hospedada do Pages CMS
-ainda precisa ser homologada com uma conta que tenha acesso legítimo ao
-repositório. Não há token, senha ou credencial no projeto.
+O schema permite gerenciar a foto principal, fotos dos serviços e pares
+antes/depois. Campos de visibilidade ocultam conteúdo sem apagar arquivos, e
+`order` controla a ordem pública. A auditoria de mídia bloqueia a limpeza de um
+caminho ainda referenciado e lista órfãos sem removê-los automaticamente.
+
+A interface hospedada do Pages CMS ainda precisa ser homologada com uma conta
+que tenha acesso legítimo ao repositório. Não há token, senha ou credencial no
+projeto.
 
 Consulte [`MANUAL-PROPRIETARIO.md`](MANUAL-PROPRIETARIO.md) e
-[`plugins/PAGES-CMS.md`](plugins/PAGES-CMS.md) para o fluxo editorial.
+[`plugins/PAGES-CMS.md`](plugins/PAGES-CMS.md) para o fluxo editorial. A matriz
+de operações e exclusão segura está em
+[`docs/AUDITORIA-MIDIAS-CMS.md`](docs/AUDITORIA-MIDIAS-CMS.md).
 
 ## O que aprendemos / decisões técnicas
 
@@ -126,6 +139,7 @@ Consulte [`MANUAL-PROPRIETARIO.md`](MANUAL-PROPRIETARIO.md) e
 - testar login e funcionamento real do painel Pages CMS;
 - homologar upload, substituição e limpeza de mídia em uma branch segura;
 - confirmar o commit gerado pelo CMS e o fluxo completo até o preview;
+- homologar no painel a trava operacional de não excluir mídia referenciada;
 - executar e registrar o primeiro deploy com sua URL HTTPS real;
 - confirmar os cabeçalhos e respostas `200` na hospedagem;
 - revisar novamente os limites do plano gratuito antes da publicação.

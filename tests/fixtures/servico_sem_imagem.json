@@ -1,0 +1,9 @@
+{
+  "title": "Serviço sem foto",
+  "description": "Demonstra o fallback gráfico após remover uma foto pelo CMS.",
+  "image": null,
+  "imageAlt": "",
+  "illustrative": true,
+  "order": 1,
+  "visible": true
+}

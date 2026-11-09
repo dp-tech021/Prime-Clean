@@ -15,17 +15,18 @@ possui o repositório e autorizar o repositório desejado.
 ## Conteúdo editável
 
 - **Campos institucionais:** `data/site.json`; Instagram e WhatsApp permanecem
-  vazios e a área informa que não há atendimento.
+  vazios, a área informa que não há atendimento e a foto principal possui
+  caminho, texto alternativo, rótulo ilustrativo e visibilidade.
 - **Serviços:** `data/servicos.json`, um array JSON editável com título,
   descrição, foto, texto alternativo, indicação de imagem ilustrativa, ordem e
   visibilidade.
 - **Trabalhos:** `data/comparacoes.json`, array de pares antes/depois consumido
   diretamente pelo frontend.
 
-As fotos de serviço ficam em `media/fotos-servicos/`. O CMS aceita WebP, JPEG e
-PNG, aplica nomes seguros (`rename: safe`) e grava caminhos públicos estáveis em
-`/media/fotos-servicos/`. Fotos de comparações ficam em `media/comparacoes/`,
-também com nomes seguros e caminhos públicos em `/media/comparacoes/`.
+A foto principal fica em `media/hero/`, as fotos de serviço em
+`media/fotos-servicos/` e os pares em `media/comparacoes/`. O CMS aceita WebP,
+JPEG e PNG, aplica nomes seguros (`rename: safe`) e grava caminhos públicos
+estáveis.
 
 ## Por que um único arquivo de comparações
 
@@ -64,15 +65,17 @@ Este fluxo ainda não foi executado nesta tarefa:
 1. entrar em https://app.pagescms.org/ com a conta autorizada;
 2. confirmar que a GitHub App está instalada e consegue abrir
    `dp-tech021/Prime-Clean`;
-3. selecionar a branch que contém a configuração e confirmar o editor
-   **Comparações demonstrativas** e a mídia **Fotos de antes e depois**;
-4. criar uma simulação de teste com duas imagens sintéticas claramente marcadas,
+3. selecionar a branch que contém a configuração e confirmar as três
+   bibliotecas de mídia;
+4. enviar, substituir e ocultar uma foto principal sintética;
+5. adicionar um serviço, trocar/remover a foto, editar `order`, ocultar e apagar;
+6. criar uma simulação de teste com duas imagens sintéticas claramente marcadas,
    sem pessoas ou dados pessoais, mantendo `published: false`;
-5. editar título e descrição, trocar uma foto e alterar `order`;
-6. ativar `demonstrative`, ocultar, publicar durante a verificação e ocultar de novo;
-7. servir o site por HTTP e confirmar slider, rótulos e ordem;
-8. excluir o item de teste e confirmar que ele saiu do site;
-9. revisar e remover manualmente as mídias de teste que ficaram órfãs.
+7. editar título e descrição, trocar uma foto e alterar `order`;
+8. ativar `demonstrative`, ocultar, publicar durante a verificação e ocultar de novo;
+9. servir o site por HTTP e confirmar fallbacks, slider, rótulos e ordem;
+10. excluir os itens de teste e confirmar que saíram do site;
+11. usar `scripts/auditar_midias.py` antes de remover mídias órfãs.
 
 Nunca considere o CMS validado apenas porque `.pages.yml` é YAML válido. O teste
 acima confirma acesso, schema, gravação no Git e integração com a página.
@@ -95,12 +98,13 @@ histórico ainda esteja disponível.
 
 Excluir ou substituir um serviço não garante a remoção do arquivo antigo.
 
-1. liste os caminhos usados em `data/servicos.json` e
+1. execute `python3 scripts/auditar_midias.py` para listar referências e órfãos;
+2. remova primeiro a referência em `data/site.json`, `data/servicos.json` ou
    `data/comparacoes.json`;
-2. compare com os arquivos das duas bibliotecas de mídia;
-3. em uma branch, remova apenas arquivos sem referência confirmada;
-4. teste o site e a prévia do CMS antes de abrir PR;
-5. mantenha arquivos quando houver dúvida sobre outra referência ou uso externo.
+3. execute `python3 scripts/auditar_midias.py --verificar-exclusao CAMINHO`;
+4. em uma branch, remova somente arquivos que retornarem `OK PARA LIMPEZA`;
+5. teste o site e a prévia do CMS antes de abrir PR;
+6. mantenha arquivos quando houver dúvida sobre outra referência ou uso externo.
 
 O repositório é público: remover um arquivo da versão atual não o elimina do
 histórico Git. Nunca envie fotografias privadas, rostos, placas, endereços,

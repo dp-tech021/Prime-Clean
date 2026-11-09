@@ -28,6 +28,9 @@ jobs:
       - name: Validar conteúdo e imagens
         run: python3 scripts/validar_conteudo.py
 
+      - name: Auditar referências e mídias órfãs
+        run: python3 scripts/auditar_midias.py
+
       - name: Testar fixtures do validador
         run: python3 -m unittest discover -s tests -p "test_*.py" -v
 

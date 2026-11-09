@@ -1,5 +1,9 @@
 {
   "instagram": "",
   "whatsapp": "",
-  "area": "Projeto demonstrativo — sem área de atendimento"
+  "area": "Projeto demonstrativo — sem área de atendimento",
+  "heroImage": "/media/hero/hero-sala.webp",
+  "heroImageAlt": "Imagem ilustrativa gerada por IA de um sofá verde em uma sala",
+  "heroImageIllustrative": true,
+  "heroImageVisible": true
 }

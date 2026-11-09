@@ -3,6 +3,22 @@
 Auditoria visual original da branch `feat/portfolio-demonstracao` e automação
 reproduzível adicionada em `test/qa-automatizado` em 09/11/2026.
 
+## Gerenciamento de imagens pelo proprietário
+
+Na branch `feat/gerenciamento-imagens-proprietario`, a foto principal foi
+integrada a `data/site.json` e ao Pages CMS. A auditoria confirmou zero órfãos e
+12 referências válidas. O navegador validou:
+
+- foto principal carregada e rotulada como gerada por IA;
+- fallback gráfico acessível quando a foto principal retorna 404;
+- serviço sem foto preservado com fallback;
+- adição, ocultação, ordem e remoção de serviços e comparações por JSON;
+- comparação com imagem ausente removida sem quebrar a página;
+- 360, 768 e 1280 px sem overflow ou links externos.
+
+O teste autenticado no Pages CMS continua pendente. Não foram executados login,
+upload ou commit pelo serviço hospedado.
+
 ## Preparação do case e publicação
 
 Na branch `docs/publicacao-portfolio`, o QA automatizado passou novamente. O
@@ -22,6 +38,7 @@ Pré-requisitos: Python 3.10+ e Node.js. Não há dependências externas de test
 
 ```bash
 python3 scripts/validar_conteudo.py
+python3 scripts/auditar_midias.py
 python3 -m unittest discover -s tests -p "test_*.py" -v
 node --check app.js
 ```
@@ -29,14 +46,15 @@ node --check app.js
 Resultado local desta branch:
 
 ```text
-OK: dados do repositório válido; 11 imagem(ns) local(is) verificada(s).
-Ran 3 tests in ...
+OK: dados do repositório válido; 12 imagem(ns) local(is) verificada(s).
+OK: 12 mídia(s) referenciada(s) existe(m); 0 arquivo(s) órfão(s).
+Ran 11 tests in ...
 OK
 ```
 
-`node --check app.js` terminou com código 0 e sem saída. Os fixtures inválidos
-falharam, respectivamente, com `before: arquivo de imagem não encontrado` e
-`before: URL externa não é permitida`.
+`node --check app.js` terminou com código 0 e sem saída. As fixtures inválidas
+cobrem arquivo ausente, URL externa e texto alternativo inadequado. A fixture de
+serviço sem foto passa para confirmar o contrato de fallback.
 
 O validador usa somente a biblioteca padrão. Duplicidade de `order` e lista fora
 de ordem geram aviso, pois o contrato atual permite empate e o frontend ordena
@@ -89,6 +107,8 @@ canais comerciais.
   interface executada.
 - [x] Cinco cartões de serviço e três comparações sintéticas carregados.
 - [x] Todas as imagens referenciadas existem e carregam sem erro.
+- [x] Exclusão de arquivo referenciado bloqueada pela auditoria de mídia.
+- [x] Arquivo órfão listado sem exclusão automática.
 - [x] Sem erro JavaScript, resposta HTTP com erro ou overflow horizontal.
 - [x] Nenhuma dependência de execução adicionada.
 

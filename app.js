@@ -88,11 +88,42 @@
   const site = siteData && typeof siteData === 'object' && !Array.isArray(siteData) ? siteData : {};
   const c = {
     area: typeof site.area === 'string' && site.area.trim() ? site.area.trim() : fallbackSite.area,
+    heroImage: safeLocalImage(site.heroImage),
+    heroImageAlt: typeof site.heroImageAlt === 'string' ? site.heroImageAlt.trim() : '',
+    heroImageIllustrative: site.heroImageIllustrative === true,
+    heroImageVisible: site.heroImageVisible === true,
     services: normalizeServices(servicesData, fallbackServices)
       .filter(service => service.visible)
       .sort((a, b) => a.order - b.order),
     comparisons: normalizeComparisons(comparisonsData)
   };
+  const heroVisual = document.getElementById('hero-visual');
+  const heroImage = document.getElementById('hero-image');
+  const heroImageNote = document.getElementById('hero-image-note');
+  if (heroVisual && heroImage && heroImageNote && c.heroImageVisible && c.heroImage && c.heroImageAlt && c.heroImageIllustrative) {
+    const fallbackLabel = heroVisual.getAttribute('aria-label') || 'Ilustração gráfica de um sofá';
+    function restoreHeroFallback() {
+      heroImage.hidden = true;
+      heroImage.removeAttribute('src');
+      heroImage.alt = '';
+      heroImageNote.hidden = true;
+      heroVisual.classList.remove('has-photo');
+      heroVisual.setAttribute('role', 'img');
+      heroVisual.setAttribute('aria-label', fallbackLabel);
+    }
+    heroImage.addEventListener('load', () => {
+      heroImage.hidden = false;
+      heroImageNote.hidden = false;
+      heroVisual.classList.add('has-photo');
+      heroVisual.removeAttribute('role');
+      heroVisual.removeAttribute('aria-label');
+    }, { once: true });
+    heroImage.addEventListener('error', restoreHeroFallback, { once: true });
+    heroImage.alt = c.heroImageAlt;
+    heroImage.decoding = 'async';
+    heroImage.fetchPriority = 'high';
+    heroImage.src = c.heroImage;
+  }
   const grid = document.getElementById('services');
   if (grid) c.services.forEach(s => {
     const card = document.createElement('article');
