@@ -99,3 +99,12 @@ test('migration preserva RLS e não concede escrita anônima', async () => {
   assert.doesNotMatch(sql, /grant\s+(?:insert|update|delete)[^;]*\bto\s+anon\b/i);
   assert.match(sql, /create policy pc_services_public_select[\s\S]*for select to anon, authenticated using \(visible\)/i);
 });
+
+test('wrangler mantém Preview separado de produção sem copiar chaves de runtime', async () => {
+  const wrangler = JSON.parse(await readFile(new URL('../wrangler.jsonc', import.meta.url), 'utf8'));
+  assert.equal(wrangler.name, 'prime-clean');
+  assert.deepEqual(wrangler.previews, {});
+  assert.equal(wrangler.assets.binding, 'ASSETS');
+  assert.equal(wrangler.build.command, 'node scripts/build_public.mjs');
+  assert.equal(Object.hasOwn(wrangler, 'vars'), false);
+});
