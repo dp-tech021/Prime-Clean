@@ -1,0 +1,13 @@
+{
+  "name": "prime-clean",
+  "main": "worker/index.mjs",
+  "compatibility_date": "2026-11-09",
+  "build": {
+    "command": "node scripts/build_public.mjs"
+  },
+  "assets": {
+    "directory": "./dist-public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  }
+}

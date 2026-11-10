@@ -1,4 +1,9 @@
-# Manual da demonstração — Prime-Clean
+# Manual legado — Pages CMS e rollback da Prime-Clean
+
+> O fluxo editorial vigente está no painel próprio descrito em
+> [`admin/MANUAL-IMAGENS.md`](admin/MANUAL-IMAGENS.md). Este documento permanece
+> somente para recuperar ou revisar os JSONs antigos durante o período de
+> rollback. Depois do cutover, não edite Pages CMS e Supabase em paralelo.
 
 > **Projeto fictício para portfólio — demonstração de interface e gerenciamento
 > de conteúdo; não é uma empresa em operação.**

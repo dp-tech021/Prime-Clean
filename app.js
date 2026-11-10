@@ -1,5 +1,6 @@
 (async () => {
   'use strict';
+  const { loadPublicConfig, loadSupabaseContent, safePublicImageUrl } = await import('./public-content.mjs');
   const fallbackSite = {
     area: 'Projeto demonstrativo — sem área de atendimento'
   };
@@ -17,6 +18,10 @@
     if (!/^(?:\.\/|\/)?media\/[a-zA-Z0-9_\/.-]+\.(?:jpe?g|png|webp|avif)$/i.test(value)) return '';
     // Caminho relativo funciona na raiz e em prévias publicadas sob subdiretório.
     return value.replace(/^(?:\.\/|\/)/, '');
+  }
+
+  function safeImage(value) {
+    return safeLocalImage(value) || safePublicImageUrl(value);
   }
 
   async function loadJson(path) {
@@ -39,7 +44,7 @@
       return [{
         title: service.title.trim(),
         description: service.description.trim(),
-        image: safeLocalImage(service.image),
+        image: safeImage(service.image),
         imageAlt: typeof service.imageAlt === 'string' ? service.imageAlt.trim() : '',
         illustrative: service.illustrative !== false,
         order: Number.isFinite(service.order) ? service.order : index + 1,
@@ -58,8 +63,8 @@
       if (entry.published !== true || !demonstrative) return [];
       if (typeof entry.title !== 'string' || !entry.title.trim()) return [];
       if (typeof entry.service !== 'string' || !entry.service.trim()) return [];
-      const before = safeLocalImage(entry.before);
-      const after = safeLocalImage(entry.after);
+      const before = safeImage(entry.before);
+      const after = safeImage(entry.after);
       const canonicalBefore = before.replace(/^(?:\.\/|\/)/, '');
       const canonicalAfter = after.replace(/^(?:\.\/|\/)/, '');
       if (!before || !after || canonicalBefore === canonicalAfter) return [];
@@ -80,23 +85,34 @@
     }).sort((a, b) => a.order - b.order);
   }
 
-  const [siteData, servicesData, comparisonsData] = await Promise.all([
-    loadJson('data/site.json'),
-    loadJson('data/servicos.json'),
-    loadJson('data/comparacoes.json')
-  ]);
-  const site = siteData && typeof siteData === 'object' && !Array.isArray(siteData) ? siteData : {};
-  const c = {
-    area: typeof site.area === 'string' && site.area.trim() ? site.area.trim() : fallbackSite.area,
-    heroImage: safeLocalImage(site.heroImage),
-    heroImageAlt: typeof site.heroImageAlt === 'string' ? site.heroImageAlt.trim() : '',
-    heroImageIllustrative: site.heroImageIllustrative === true,
-    heroImageVisible: site.heroImageVisible === true,
-    services: normalizeServices(servicesData, fallbackServices)
-      .filter(service => service.visible)
-      .sort((a, b) => a.order - b.order),
-    comparisons: normalizeComparisons(comparisonsData)
-  };
+  let c;
+  let contentStatus = 'Conteúdo local de rollback ativo.';
+  try {
+    const config = await loadPublicConfig();
+    if (config.mode === 'supabase') {
+      const remote = await loadSupabaseContent(config);
+      c = { ...remote.site, services: remote.services, comparisons: remote.comparisons };
+      contentStatus = 'Conteúdo demonstrativo atualizado pelo painel administrativo.';
+    } else {
+      const [siteData, servicesData, comparisonsData] = await Promise.all([
+        loadJson('data/site.json'), loadJson('data/servicos.json'), loadJson('data/comparacoes.json')
+      ]);
+      const site = siteData && typeof siteData === 'object' && !Array.isArray(siteData) ? siteData : {};
+      c = {
+        area: typeof site.area === 'string' && site.area.trim() ? site.area.trim() : fallbackSite.area,
+        heroImage: safeLocalImage(site.heroImage),
+        heroImageAlt: typeof site.heroImageAlt === 'string' ? site.heroImageAlt.trim() : '',
+        heroImageIllustrative: site.heroImageIllustrative === true,
+        heroImageVisible: site.heroImageVisible === true,
+        services: normalizeServices(servicesData, fallbackServices).filter(service => service.visible).sort((a, b) => a.order - b.order),
+        comparisons: normalizeComparisons(comparisonsData)
+      };
+    }
+  } catch (error) {
+    console.warn('Prime-Clean: a fonte pública está indisponível; nenhum conteúdo editorial anterior será republicado.', error);
+    c = { area: fallbackSite.area, heroImage: '', heroImageAlt: '', heroImageIllustrative: false, heroImageVisible: false, services: [], comparisons: [] };
+    contentStatus = 'Conteúdo demonstrativo temporariamente indisponível. Tente novamente mais tarde.';
+  }
   const heroVisual = document.getElementById('hero-visual');
   const heroImage = document.getElementById('hero-image');
   const heroImageNote = document.getElementById('hero-image-note');
@@ -132,7 +148,7 @@
     art.className = 'service-art';
     art.textContent = '✦';
     art.setAttribute('aria-hidden', 'true');
-    const serviceImage = safeLocalImage(s.image);
+    const serviceImage = safeImage(s.image);
     if (serviceImage) {
       const photo = document.createElement('img');
       let note = null;
@@ -177,8 +193,8 @@
     const records = Array.isArray(c.comparisons) ? c.comparisons : [];
     records.forEach(entry => {
       if (!entry || entry.published !== true || typeof entry.title !== 'string' || !entry.title.trim()) return;
-      const before = safeLocalImage(entry.before);
-      const after = safeLocalImage(entry.after);
+      const before = safeImage(entry.before);
+      const after = safeImage(entry.after);
       if (!before || !after) return; // Pares incompletos não são divulgados.
       const card = document.createElement('article'); card.className = 'compare-card';
       const frame = document.createElement('div'); frame.className = 'compare-frame';
@@ -224,7 +240,7 @@
   }
 
   const projectStatus = document.getElementById('project-status');
-  if (projectStatus) projectStatus.textContent = 'Demonstração carregada sem canais comerciais ou navegação externa.';
+  if (projectStatus) projectStatus.textContent = contentStatus;
 
   const area = document.getElementById('area');
   if (area && typeof c.area === 'string') area.textContent = c.area;

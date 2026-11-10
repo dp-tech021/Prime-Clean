@@ -66,5 +66,7 @@ O painel gerencia `site_settings`, `services`, `comparisons` e `media_assets`
 usando o bucket existente `prime-clean-media`. Uploads validam WebP/JPEG/PNG,
 5 MiB e rotulagem sintética; substituições usam nomes novos. A biblioteca mostra
 referências e só exclui órfãos, mantendo a proteção RLS e a policy de Storage.
-O site público continua nos JSONs. Testes com mocks estão automatizados; Auth e
-Storage reais permanecem pendentes de homologação.
+O site público possui integração Supabase com ativação controlada. Enquanto o
+Worker estiver em `json`, a página usa o rollback local; depois do cutover em
+`supabase`, não há fallback automático. Auth e Storage reais permanecem
+pendentes de homologação.

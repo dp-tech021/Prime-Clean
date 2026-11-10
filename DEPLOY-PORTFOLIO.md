@@ -1,4 +1,8 @@
-# Publicação do portfólio no Cloudflare Pages
+# Publicação legada do portfólio no Cloudflare Pages
+
+> Para a integração dinâmica com o painel Supabase, use o procedimento atual
+> de Cloudflare Workers em [`DEPLOY-SITE-SUPABASE.md`](DEPLOY-SITE-SUPABASE.md).
+> Este arquivo documenta o deploy estático anterior e não ativa a nova fonte.
 
 Este guia prepara a publicação da Prime-Clean como projeto fictício. Ele não
 registra um deploy como concluído: o proprietário da conta precisa executar os
